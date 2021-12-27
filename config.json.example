@@ -1,0 +1,16 @@
+{
+	"alerts": [
+		15,
+		10,
+		5,
+		2,
+		1
+	],
+	"editor": "nano",
+	"pzservers": [
+
+	],
+	"restarts": [
+		"08:00"
+	]
+}

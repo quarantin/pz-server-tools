@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ -z "${1}" ]; then
+	echo Usage: ${0} command...
+	exit
+fi
+
+PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+if [ -z "${PIDS}" ]; then
+	echo Process not found for user ${USER}
+	exit
+fi
+
+for PID in ${PIDS[@]}; do
+	LINK="$(readlink "/proc/${PID}/fd/0")"
+	if [ "${LINK}" != "/dev/null" ]; then
+
+		if [ "${1}" == 'servermsg' ]; then
+			shift
+			sudo ioctl ${PID} servermsg \"${@}\"
+		else
+			sudo ioctl ${PID} ${@}
+		fi
+
+		echo OK
+		exit
+	fi
+done
+
+echo No running pzserver found

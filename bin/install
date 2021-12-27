@@ -1,0 +1,93 @@
+#!/bin/bash
+
+REPO="$(dirname "$(dirname "${0}")")"
+. "${REPO}/scripts/pzenv"
+
+REPOCONFIG="${REPO}/${CONFIGFILE}.example"
+REPOCRON="${REPO}/cron/${NAME}"
+REPOENV="${REPO}/env"
+SCRIPTS="${REPO}/scripts"
+SRC="${REPO}/src"
+
+# Ask for password before printing anything to the console
+sudo echo -n
+
+echo -n .
+sudo mkdir -p "${CACHEDIR}"
+
+echo -n .
+sudo chmod 755 "${CACHEDIR}"
+
+echo -n .
+sudo mkdir -p "${CONFIGDIR}"
+
+echo -n .
+sudo chmod 755 "${CONFIGDIR}"
+
+if ! [ -f "${CONFIG}" ]; then
+
+	echo -n .
+	sudo cp "${REPOCONFIG}" "${CONFIG}"
+
+	echo -n .
+	sudo chmod 644 "${CONFIG}"
+fi
+
+echo -n .
+install_steamcmd
+
+for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
+	echo -n .
+	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
+done
+
+echo -n .
+sudo apt-get update > /dev/null
+
+echo -n .
+sudo apt-get install gcc jq make python3 virtualenv > /dev/null
+
+echo -n .
+virtualenv -p python3 "${REPOENV}" > /dev/null
+
+echo -n .
+. "${REPOENV}/bin/activate"
+
+echo -n .
+python3 -m pip install -r "${REPO}/requirements.txt" > /dev/null
+
+echo -n .
+deactivate
+
+echo -n .
+sudo cp -a "${REPOENV}" "${CONFIGDIR}/"
+
+echo -n .
+sudo chown -R root:root "${ENV}"
+
+echo -n .
+rm -rf "${REPOENV}"
+
+echo -n .
+cd "${SRC}"
+
+echo -n .
+make clean > /dev/null
+
+echo -n .
+make > /dev/null
+
+echo -n .
+sudo make install > /dev/null
+
+echo -n .
+cd ..
+
+echo -n .
+sudo cp "${REPOCRON}" "${CRONFILE}"
+
+echo -n .
+sudo chmod 644 "${CRONFILE}"
+
+echo
+echo OK

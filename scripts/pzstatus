@@ -1,0 +1,17 @@
+#!/bin/bash
+
+STATUS='Status: Not running'
+PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+if [ -z "${PIDS}" ]; then
+	echo "${STATUS}"
+	exit
+fi
+
+for PID in ${PIDS[@]}; do
+	LINK="$(readlink "/proc/${PID}/fd/0")"
+	if [ "${LINK}" != "/dev/null" ]; then
+		STATUS='Status: Running'
+	fi
+done
+
+echo $STATUS

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+if [ -z "${PIDS}" ]; then
+	echo Process not found for user ${USER}
+	exit
+fi
+
+STATUS='No process found'
+for PID in ${PIDS[@]}; do
+	LINK="$(readlink "/proc/${PID}/fd/0")"
+	if [ "${LINK}" != "/dev/null" ]; then
+		sudo ioctl ${PID} quit
+		STATUS=OK
+	fi
+done
+
+echo $STATUS

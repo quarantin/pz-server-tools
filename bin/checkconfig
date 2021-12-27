@@ -1,0 +1,3 @@
+#!/bin/bash
+
+python -m json.tool /etc/pz-server-tools/config.json > /dev/null && echo OK

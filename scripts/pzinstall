@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+"${STEAM}/steamcmd.sh" +force_install_dir "${HOME}/pzserver/" +login anonymous +app_update 380870 b41multiplayer validate +quit
+
+echo OK

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+check_running
+
+detach "$(dirname "${0}")/pzserverloop" &
+
+echo OK

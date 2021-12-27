@@ -1,0 +1,224 @@
+#!/etc/pz-server-tools/env/bin/python
+
+import os
+from os.path import dirname, exists, isfile, join, realpath
+
+import sys
+import json
+import time
+import errno
+import requests
+
+from retry import retry
+from datetime import datetime, timedelta
+
+class PZMonitor:
+
+	def __init__(self, config):
+		self.config = config
+		self.lock_path = '/var/cache/pz-server-tools/lock'
+		self.cache_path = '/var/cache/pz-server-tools/cache.json'
+		self.root = os.getuid() == 0
+
+		alerts = config.get('alerts', [15, 10, 5, 2, 1])
+		self.alert_sequence = self.get_alert_sequence(alerts)
+
+		self.tty = sys.stdin.isatty()
+		if not self.tty or self.root:
+			self.log_fd = open('/var/log/pz-server-tools.log', 'a')
+			self.lock()
+
+		self.run()
+
+		if not self.tty or self.root:
+			self.unlock()
+
+	def run(self):
+
+		new_check, users = self.check_mods()
+		if isfile(self.cache_path):
+
+			with open(self.cache_path) as fd:
+				old_check = json.loads(fd.read())
+
+			self.check_diff(old_check, new_check, users)
+
+		if not self.tty or self.root:
+			with open(self.cache_path, 'w') as fd:
+				fd.write(json.dumps(new_check) + os.linesep)
+
+	def lock(self):
+
+		flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
+
+		try:
+			os.open(self.lock_path, flags)
+
+		except OSError as error:
+			if error.errno == errno.EEXIST:
+				self.log('Another instance of this script is already running! Quitting.')
+				sys.exit(0)
+			raise
+
+	def unlock(self):
+		os.remove(self.lock_path)
+
+	def log(self, message):
+
+		if self.tty and not self.root:
+			print(message)
+
+		else:
+			self.log_fd.write(str(datetime.now()) + " " + message + os.linesep)
+
+	def show_result(self, users):
+
+		if not users:
+			print('All PZ servers are up-to-date.')
+
+		else:
+			print('\nPZ servers to restart:')
+			for user in users:
+				print('\t- ' + user)
+
+	@retry(tries=5)
+	def get_mod_updates(self, items):
+
+		steam_url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
+
+		if len(items) == 0:
+			return items
+
+		data = {}
+		data['itemcount'] = len(items)
+
+		for i, workshop_id in enumerate(items):
+			key = 'publishedfileids[%d]' % i
+			data[key] = workshop_id
+
+		jsondata = requests.post(steam_url, data=data).json()
+
+		for workshop_item in jsondata['response']['publishedfiledetails']:
+
+			item_id = workshop_item['publishedfileid']
+			item = items[item_id]
+
+			item['name']    = workshop_item['title']
+			item['updated'] = workshop_item['time_updated']
+
+		return items
+
+	def check_mods(self):
+
+		items = {}
+		users = {}
+
+		prefix_items = 'WorkshopItems='
+
+		for user in self.config['pzservers']:
+
+			servertest_ini = '/home/%s/Zomboid/Server/servertest.ini' % user
+			with open(servertest_ini) as fd:
+				lines = fd.read().split('\n')
+
+			for line in lines:
+
+				if not line.startswith(prefix_items):
+					continue
+
+				item_ids = line[len(prefix_items):].strip().split(';')
+				for item in item_ids:
+
+					if not item.strip():
+						continue
+
+					if item not in items:
+						items[item] = {}
+						users[item] = set()
+
+					users[item].add(user)
+
+		return self.get_mod_updates(items), users
+
+	def check_diff(self, old_check, new_check, usersdb):
+
+		users = set()
+
+		for item_id, item_data in new_check.items():
+
+			if item_id not in old_check:
+				self.log('Mod update detected: ' + item_data['name'])
+				users.update(usersdb[item_id])
+
+			else:
+				old_date = old_check[item_id]['updated']
+				new_date = new_check[item_id]['updated']
+				if old_date < new_date:
+					self.log('Mod update detected: ' + item_id + '/' + item_data['name'] + ' (require server restart)')
+					users.update(usersdb[item_id])
+
+		if self.tty and not self.root:
+			self.show_result(users)
+
+		else:
+			self.restart_servers(users)
+
+	def get_alert_sequence(self, alerts):
+
+		alert_sequence = []
+
+		for i, minutes in enumerate(alerts):
+
+			delta = 0
+			if i + 1 < len(alerts):
+				delta = alerts[i + 1]
+
+			alert_sequence.append(minutes - delta)
+
+		return alert_sequence
+
+	def restart_servers(self, users):
+
+		alerts = list(self.alert_sequence)
+		for delay in self.alert_sequence:
+
+			countdown = sum(alerts)
+
+			plural = countdown >= 2 and 's' or ''
+			minutes = str(timedelta(minutes=countdown)).lstrip('0').lstrip(':')
+			message = 'Restarting server in %s minute%s!' % (minutes, plural)
+
+			self.log(message)
+			for user in users:
+				self.pzserver_message(user, message)
+
+			alerts.remove(delay)
+
+			time.sleep(delay * 60)
+
+		for user in users:
+			self.pzserver_restart(user)
+
+	def pzserver_restart(self, user):
+		self.log('Restarting server ' + user)
+		restartswitch = "/tmp/pzserver.%s.restart" % user
+		if not exists(restartswitch):
+			open(restartswitch, 'w').close()
+
+	def pzserver_message(self, user, message):
+		os.system('sudo -u "%s" /usr/local/bin/pzmessage "%s"' % (user, message))
+
+if __name__ == '__main__':
+
+	config_path = '/etc/pz-server-tools/config.json'
+	if len(sys.argv) > 1:
+		config_path = sys.argv[1]
+
+	if not isfile(config_path):
+		print('Configuration not found: ' + config_path, file=sys.stderr)
+		sys.exit(1)
+
+	with open(config_path) as fd:
+		config = json.loads(fd.read())
+
+	PZMonitor(config)

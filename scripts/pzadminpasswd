@@ -1,0 +1,53 @@
+#!/etc/pz-server-tools/env/bin/python
+
+import bcrypt
+import hashlib
+import sqlite3
+
+def md5(string):
+	m = hashlib.md5()
+	m.update(string.encode('utf-8'))
+	return m.digest().hex().encode('utf-8')
+
+def digest(string):
+	salt = b'$2a$12$O/BFHoDFPrfFaNPAACmWpu'
+	return bcrypt.hashpw(md5(string), salt).decode('utf-8')
+
+def update_password(pzserver, user, password, config='servertest'):
+	filepath = '/home/%s/Zomboid/db/%s.db' % (pzserver, config)
+	connection = sqlite3.connect(filepath)
+	cursor = connection.cursor()
+	print(digest(password))
+	cursor.execute("UPDATE whitelist SET password=? WHERE username=?", (digest(password), user))
+	connection.commit()
+	connection.close()
+
+def main():
+
+	import sys
+	import getpass
+	from os.path import basename
+
+	if basename(sys.argv[0]) == 'pzadminpasswd':
+
+		if len(sys.argv) < 2:
+			print('Usage: %s "<password>"' % sys.argv[0])
+			return
+
+		username = 'admin'
+		password = sys.argv[1]
+
+	else:
+
+		if len(sys.argv) < 3:
+			print('Usage: %s "<user>" "<password>"' % sys.argv[0])
+			return
+
+		username = sys.argv[1]
+		password = sys.argv[2]
+	
+	pzserver = getpass.getuser()
+	update_password(pzserver, password)
+
+if __name__ == '__main__':
+	main()

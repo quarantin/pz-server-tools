@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+if ! [ -d "${ZOMBOIDSERVERDIR}" ] || ! [ -f "${ZOMBOIDSERVERSPAWNPOINTS}" ]; then
+	echo Configuration not found.
+	exit
+fi
+
+"${EDITOR}" "${ZOMBOIDSERVERSPAWNPOINTS}"

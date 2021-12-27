@@ -1,0 +1,16 @@
+#
+# cron-jobs for pz-server-tools
+#
+
+MAILTO=root
+
+# Check mod updates every 10 minutes and restart
+# the servers if a mod update is detected.
+*/10 * * * *	nobody /usr/local/bin/pzcheckmods
+
+# Update Project Zomboid Dedicated Servers
+# directly from Steam every day at 07:45.
+45 7 * * *	root /usr/local/bin/pzupdate
+
+# Don't change this line!
+* * * * *	root /usr/local/bin/pzrestarter

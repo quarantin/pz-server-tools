@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Ask for password before printing anything to the console
+sudo echo -n
+
+CURRENT_BRANCH="$(git name-rev --name-only HEAD)"
+
+BRANCH="${CURRENT_BRANCH}"
+if ! [ -z "${1}" ]; then
+	BRANCH="${1}"
+fi
+
+if [ "${BRANCH}" != "${CURRENT_BRANCH}" ]; then
+	git checkout "${BRANCH}"
+fi
+
+git fetch
+
+git reset --hard "origin/${BRANCH}"
+
+"$(dirname "${0}")/install"

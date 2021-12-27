@@ -1,0 +1,89 @@
+#!/bin/bash
+
+NAME='pz-server-tools'
+
+BIN='/usr/local/bin'
+LOG="/var/log/${NAME}.log"
+PYTHON='/usr/bin/python'
+
+PZSERVER="${HOME}/pzserver"
+PZLAUNCHER="${PZSERVER}/start-server.sh"
+
+CACHEDIR="/var/cache/${NAME}"
+CACHEFILE='cache.json'
+CACHE="${CACHEDIR}/${CACHEFILE}"
+
+CONFIGDIR="/etc/${NAME}"
+CONFIGFILE="config.json"
+CONFIG="${CONFIGDIR}/${CONFIGFILE}"
+
+CRONDIR="/etc/cron.d"
+CRONFILE="${CRONDIR}/${NAME}"
+
+ENV="${CONFIGDIR}/env"
+LOCK="${CACHEDIR}/lock"
+LOGFILE="${PZSERVER}/pzserver.log"
+KILLSWITCH="/tmp/pzserver.${USER}.kill"
+
+STEAM="${HOME}/Steam"
+STEAMCMD="${STEAM}/steamcmd.sh"
+STEAMCMDARCHIVE='steamcmd_linux.tar.gz'
+STEAMCMDARCHIVEPATH="/tmp/${STEAMCMDARCHIVE}"
+STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE}"
+
+ZOMBOIDSERVERDIR="${HOME}/Zomboid/Server"
+ZOMBOIDSERVERCONFIG="${ZOMBOIDSERVERDIR}/servertest.ini"
+ZOMBOIDSERVERSANDBOX="${ZOMBOIDSERVERDIR}/servertest_SandboxVars.lua"
+ZOMBOIDSERVERSPAWNPOINTS="${ZOMBOIDSERVERDIR}/servertest_spawnpoints.lua"
+ZOMBOIDSERVERSPAWNREGIONS="${ZOMBOIDSERVERDIR}/servertest_spawnregions.lua"
+
+if [ -f "${CONFIG}" ]; then
+	EDITOR="$(jq -r .editor "${CONFIG}")"
+	if [ "${EDITOR}" = "null" ]; then
+		EDITOR='nano'
+	fi
+fi
+
+install_steamcmd() {
+
+	if ! [ -d "${STEAM}" ] || ! [ -f "${STEAMCMD}" ]; then
+		mkdir -p ${STEAM}
+		wget -q -O "${STEAMCMDARCHIVEPATH}" "${STEAMCMD_URL}"
+		tar xf "${STEAMCMDARCHIVEPATH}" -C "${STEAM}"
+		rm -f "${STEAMCMDARCHIVEPATH}"
+	fi
+}
+
+check_running() {
+
+	PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+	for PID in ${PIDS[@]}; do
+		LINK="$(readlink "/proc/${PID}/fd/0")"
+		if [ "${LINK}" != '/dev/null' ]; then
+			echo pzserver is already running.
+			exit
+		fi
+	done
+}
+
+confirm_yes_no() {
+
+	while true; do
+
+		echo
+		echo Please type \`yes\` to proceed, or \`no\` to abort
+		read CONFIRM
+		echo
+
+		if [ "${CONFIRM}" = "n" ] || [ "${CONFIRM}" = "no" ]; then
+			return 0
+			
+
+		elif [ "${CONFIRM}" = "y" ] || [ "${CONFIRM}" = "yes" ]; then
+			return 1
+		fi
+
+		echo Invalid response ${CONFIRM}
+		echo
+	done
+}

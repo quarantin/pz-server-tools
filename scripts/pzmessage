@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [ -z "${1}" ]; then
+	echo Usage: ${0} message...
+	exit
+fi
+
+PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+if [ -z "${PIDS}" ]; then
+	echo Process not found for user ${USER}
+	exit
+fi
+
+STATUS='No process found'
+for PID in ${PIDS[@]}; do
+	LINK="$(readlink "/proc/${PID}/fd/0")"
+	if [ "${LINK}" != "/dev/null" ]; then
+		sudo ioctl ${PID} servermsg \"${@}\"
+		STATUS=OK
+	fi
+done
+
+echo $STATUS
