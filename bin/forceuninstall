@@ -8,4 +8,6 @@ DEBIAN_FRONTEND=noninteractive sudo dpkg --remove-architecture i386
 
 DEBIAN_FRONTEND=noninteractive sudo apt-get --yes remove gcc jq make virtualenv
 
+sudo /etc/init.d/cron restart > /dev/null
+
 echo OK
