@@ -1,0 +1,57 @@
+#!/etc/pz-server-tools/env/bin/python
+
+import os
+import sys
+import pwd
+import json
+import shutil
+
+actions = {
+	'-a':    'add',
+	'--add': 'add',
+	'-d':    'del',
+	'--del': 'del',
+}
+
+def usage():
+	print('Usage: %s [--add|--del] <user>' % sys.argv[0], file=sys.stderr)
+	sys.exit(1)
+
+if os.getuid() != 0:
+	print('This script needs root privileges!', file=sys.stderr)
+	sys.exit(1)
+
+if len(sys.argv) < 3:
+	usage()
+
+action = sys.argv[1]
+if action not in actions:
+	usage()
+
+try:
+	user = sys.argv[2]
+	pwd.getpwnam(user)
+
+except KeyError:
+	print('Invalid user `%s`: User does not exist' % user, file=sys.stderr)
+	sys.exit(1)
+
+action = actions[action]
+config_file = '/etc/pz-server-tools/config.json'
+backup_file = config_file + '.bak'
+with open(config_file) as fd:
+	config = json.loads(fd.read())
+
+if action == 'add':
+	if user not in config.get('pzservers', {}):
+		config['pzservers'].append(user)
+else:
+	if user in config.get('pzservers', {}):
+		config['pzservers'].remove(user)
+
+shutil.copyfile(config_file, backup_file)
+
+with open(config_file, 'w') as fd:
+	fd.write(json.dumps(config, indent='\t') + os.linesep)
+
+os.remove(backup_file)
