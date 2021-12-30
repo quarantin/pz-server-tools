@@ -47,9 +47,6 @@ if ! [ -f "${CONFIG}" ]; then
 	sudo chmod 644 "${CONFIG}"
 fi
 
-echo -n .
-install_steamcmd
-
 for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	echo -n .
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
