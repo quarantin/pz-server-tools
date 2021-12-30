@@ -1,0 +1,5 @@
+Monitor memory and trigger reboot if needed
+Handle first server start: Ask for password
+Fix pzcmd:
+	- Check all commands are working
+	- Show error message if command is invalid or unknown
