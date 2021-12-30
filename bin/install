@@ -97,5 +97,8 @@ sudo cp "${REPOCRON}" "${CRONFILE}"
 echo -n .
 sudo chmod 644 "${CRONFILE}"
 
+echo -n.
+sudo /etc/init.d/cron restart > /dev/null
+
 echo
 echo OK
