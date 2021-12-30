@@ -1,3 +1,4 @@
+Rename pz-server-tools to pzst
 Fix pzcheckmod cronjob not running
 Trigger alert sequence on daily restart
 Trigger alert sequence on pzreboot (by default?)
@@ -7,3 +8,7 @@ Detect map mods and create symlinks
 Fix pzcmd:
 	- Check all commands are working
 	- Show error message if command is invalid or unknown
+
+Map problem:
+	https://youtu.be/z11zDix8l2Y?t=539
+	https://theindiestone.com/forums/index.php?%2Ftopic%2F18329-mod-and-map-installation-instructions-on-multiplayer-server-pz-3320%2F
