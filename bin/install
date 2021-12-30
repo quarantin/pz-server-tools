@@ -1,5 +1,22 @@
 #!/bin/bash
 
+# Ask for password before printing anything to the console
+sudo echo -n
+
+echo -n .
+DEBIAN_FRONTEND=noninteractive sudo dpkg --add-architecture i386 > /dev/null
+
+echo -n .
+DEBIAN_FRONTEND=noninteractive sudo apt-get update > /dev/null
+
+echo -n .
+DEBIAN_FRONTEND=noninteractive sudo apt-get --yes upgrade > /dev/null
+
+for PKG in gcc jq make libsdl2-2.0-0:i386 python3 virtualenv; do
+	echo -n .
+	DEBIAN_FRONTEND=noninteractive sudo apt-get --yes install "${PKG}" > /dev/null
+done
+
 REPO="$(dirname "$(dirname "${0}")")"
 . "${REPO}/scripts/pzenv"
 
@@ -8,9 +25,6 @@ REPOCRON="${REPO}/cron/${NAME}"
 REPOENV="${REPO}/env"
 SCRIPTS="${REPO}/scripts"
 SRC="${REPO}/src"
-
-# Ask for password before printing anything to the console
-sudo echo -n
 
 echo -n .
 sudo mkdir -p "${CACHEDIR}"
@@ -40,12 +54,6 @@ for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	echo -n .
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
 done
-
-echo -n .
-sudo apt-get update > /dev/null
-
-echo -n .
-sudo apt-get install gcc jq make python3 virtualenv > /dev/null
 
 echo -n .
 virtualenv -p python3 "${REPOENV}" > /dev/null
