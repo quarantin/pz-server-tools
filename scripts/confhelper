@@ -1,4 +1,4 @@
-#!/etc/pz-server-tools/env/bin/python
+#!/etc/pzst/env/bin/python
 
 import os
 import sys
@@ -37,7 +37,7 @@ except KeyError:
 	sys.exit(1)
 
 action = actions[action]
-config_file = '/etc/pz-server-tools/config.json'
+config_file = '/etc/pzst/config.json'
 backup_file = config_file + '.bak'
 with open(config_file) as fd:
 	config = json.loads(fd.read())

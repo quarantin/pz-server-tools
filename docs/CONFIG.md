@@ -19,9 +19,9 @@ Project Zomboid Server Tools let you choose which text editor to use to edit the
 ## Project Zomboid Dedicated Servers
 Project Zomboid Server Tools let you run multiple pzserver instances on the same machine.
 
-Edit the file **/etc/pz-server-tools/config.json** as root:
+Edit the file **/etc/pzst/config.json** as root:
 
-	sudo nano /etc/pz-server-tools/config.json
+	sudo nano /etc/pzst/config.json
 
 Add each system user that is running a Project Zomboid Dedicated Server to the list under **pzservers**. For example if you have two servers running with users **pzserver1** and **pzserver2**, the configuration should look like this:
 
@@ -35,9 +35,9 @@ Add each system user that is running a Project Zomboid Dedicated Server to the l
 ## Alerts Before Restart
 Project Zomboid Server Tools let you configure multiple alerts before restarting pzservers.
 
-Edit the file **/etc/pz-server-tools/config.json** as root:
+Edit the file **/etc/pzst/config.json** as root:
 
-	sudo nano /etc/pz-server-tools/config.json
+	sudo nano /etc/pzst/config.json
 
 Assuming you want all your pzservers to wait 15 minutes before restart, sending an alert to players every 5 minutes, your configuration should look like this:
 
@@ -56,9 +56,9 @@ This would configure the server to send the first alert 15 minutes before reboot
 ## Daily Restarts
 Project Zomboid Server Tools let you restart your pzserver at specific times of day. The daily restart will take into account the alerts defined in previous section.
 
-Edit the file **/etc/pz-server-tools/config.json** as root:
+Edit the file **/etc/pzst/config.json** as root:
 
-	sudo nano /etc/pz-server-tools/config.json
+	sudo nano /etc/pzst/config.json
 
 Assuming you want to restart all your pzservers every day at 00:00, 06:00, 12:00, and 18:00, the configuration should look like this:
 

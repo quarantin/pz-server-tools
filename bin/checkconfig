@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python -m json.tool /etc/pz-server-tools/config.json > /dev/null && echo OK
+. "$(dirname "${0}")/pzenv"
+
+python -m json.tool "${CONFIG}" > /dev/null && echo OK

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAME='pz-server-tools'
+NAME='pzst'
 
 BIN='/usr/local/bin'
 LOG="/var/log/${NAME}.log"

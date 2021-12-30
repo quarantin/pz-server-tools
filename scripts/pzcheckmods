@@ -1,4 +1,4 @@
-#!/etc/pz-server-tools/env/bin/python
+#!/etc/pzst/env/bin/python
 
 import os
 from os.path import dirname, exists, isfile, join, realpath
@@ -17,9 +17,9 @@ class PZMonitor:
 
 	def __init__(self, config):
 		self.config = config
-		self.log_path = '/var/log/pz-server-tools.log'
-		self.lock_path = '/var/cache/pz-server-tools/lock'
-		self.cache_path = '/var/cache/pz-server-tools/cache.json'
+		self.log_path = '/var/log/pzst.log'
+		self.lock_path = '/var/cache/pzst/lock'
+		self.cache_path = '/var/cache/pzst/cache.json'
 		self.root = os.getuid() == 0
 
 		alerts = config.get('alerts', [15, 10, 5, 2, 1])
@@ -224,7 +224,7 @@ class PZMonitor:
 
 if __name__ == '__main__':
 
-	config_path = '/etc/pz-server-tools/config.json'
+	config_path = '/etc/pzst/config.json'
 	if len(sys.argv) > 1:
 		config_path = sys.argv[1]
 

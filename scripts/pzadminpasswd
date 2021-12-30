@@ -1,4 +1,4 @@
-#!/etc/pz-server-tools/env/bin/python
+#!/etc/pzst/env/bin/python
 
 import bcrypt
 import hashlib
