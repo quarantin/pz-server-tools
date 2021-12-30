@@ -1,3 +1,5 @@
+Trigger alert sequence on daily restart
+Trigger alert sequence on pzreboot (by default?)
 Monitor memory and trigger reboot if needed
 Handle first server start: Ask for password
 Fix pzcmd:
