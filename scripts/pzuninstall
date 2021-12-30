@@ -30,6 +30,8 @@ for USER in ${USERS[@]}; do
 
 	sudo rm -rf "/home/${USER}/pzserver"
 
+	sudo confhelper --del ${USER}
+
 done
 
 echo OK
