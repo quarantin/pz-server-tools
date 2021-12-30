@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. "$(dirname "${0}")/pzenv"
+DIR="$(dirname "${0}")"
+. "${DIR}/pzenv"
 
 USERS=("${@}")
 if [ -z "${USERS}" ]; then
@@ -17,9 +18,10 @@ fi
 
 for USER in ${USERS[@]}; do
 
-	echo You\'re about to uninstall Project Zomboid Dedicated Server for user ${USER}
-	echo This will delete the following folder: /home/${USER}/pzserver
+	TARGET="/home/${USER}/pzserver"
 
+	echo You\'re about to uninstall Project Zomboid Dedicated Server for user ${USER}
+	echo This will delete the following folder: ${TARGET}
 	confirm_yes_no
 	if [ "${?}" = '0' ]; then
 
@@ -28,9 +30,9 @@ for USER in ${USERS[@]}; do
 		continue
 	fi
 
-	sudo rm -rf "/home/${USER}/pzserver"
+	sudo rm -rf "${TARGET}"
 
-	sudo confhelper --del ${USER}
+	sudo "${DIR}/confhelper" --del ${USER}
 
 done
 
