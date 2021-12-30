@@ -24,14 +24,13 @@ class PZMonitor:
 		self.alert_sequence = self.get_alert_sequence(alerts)
 
 		self.tty = sys.stdin.isatty()
-		if not self.tty or self.root:
-			self.log_fd = open('/var/log/pz-server-tools.log', 'a')
-			self.lock()
+		self.log_fd = open('/var/log/pz-server-tools.log', 'a')
+
+		self.lock()
 
 		self.run()
 
-		if not self.tty or self.root:
-			self.unlock()
+		self.unlock()
 
 	def run(self):
 
@@ -43,9 +42,8 @@ class PZMonitor:
 
 			self.check_diff(old_check, new_check, users)
 
-		if not self.tty or self.root:
-			with open(self.cache_path, 'w') as fd:
-				fd.write(json.dumps(new_check) + os.linesep)
+		with open(self.cache_path, 'w') as fd:
+			fd.write(json.dumps(new_check) + os.linesep)
 
 	def lock(self):
 
@@ -65,7 +63,7 @@ class PZMonitor:
 
 	def log(self, message):
 
-		if self.tty and not self.root:
+		if self.tty:
 			print(message)
 
 		else:
@@ -157,7 +155,7 @@ class PZMonitor:
 					self.log('Mod update detected: ' + item_id + '/' + item_data['name'] + ' (require server restart)')
 					users.update(usersdb[item_id])
 
-		if self.tty and not self.root:
+		if self.tty:
 			self.show_result(users)
 
 		else:
@@ -213,6 +211,10 @@ if __name__ == '__main__':
 	config_path = '/etc/pz-server-tools/config.json'
 	if len(sys.argv) > 1:
 		config_path = sys.argv[1]
+
+	if os.getuid() != 0:
+		print('This script needs root privileges!', file=sys.stderr)
+		sys.exit(1)
 
 	if not isfile(config_path):
 		print('Configuration not found: ' + config_path, file=sys.stderr)
