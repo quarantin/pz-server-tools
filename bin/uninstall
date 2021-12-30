@@ -21,7 +21,7 @@ for SCRIPT in $(ls -1 "${REPO}/scripts"); do
 	sudo rm -f "${BIN}/${SCRIPT}"
 done
 
-sudo rm -f "${CACHE}" "${LOCK}" "${CONFIG}" "${CRONFILE}" "${LOG}"
+sudo rm -f "${CACHE}" "${LOCK}" "${CONFIG}" "${CONFIG}.bak" "${CRONFILE}" "${LOG}"
 
 sudo rm -rf "${ENV}"
 
