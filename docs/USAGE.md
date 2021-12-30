@@ -4,10 +4,12 @@
 To install a new pzserver, first you have to choose a system username for that server. Each pzserver instance needs a different username. Let's assume you choose the username **pzserver1**. Run the following commands to create the new user, and replace **pzserver1** with whatever username you choose:
 
 	sudo useradd -m -k /etc/skel -s /bin/bash pzserver1
+	sudo passwd pzserver1
+	sudo usermod -aG sudo username
 
 Then login as that user:
 
-	sudo -s -u pzserver1
+	sudo -i -u pzserver1
 
 Now that you're connected as **pzserver1**, you can run the following command to install your new pzserver:
 
