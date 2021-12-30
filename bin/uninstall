@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ask for password before printing anything to the console
+sudo echo -n
+
 REPO="$(dirname "$(dirname "${0}")")"
 . "${REPO}/scripts/pzenv"
 
