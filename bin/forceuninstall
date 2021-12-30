@@ -1,0 +1,11 @@
+#!/bin/bash
+
+"$(dirname "${0}")/uninstall" --non-interactive
+
+DEBIAN_FRONTEND=noninteractive sudo apt-get --yes purge ".*:i386"
+
+DEBIAN_FRONTEND=noninteractive sudo dpkg --remove-architecture i386
+
+DEBIAN_FRONTEND=noninteractive sudo apt-get --yes remove gcc jq make virtualenv
+
+echo OK
