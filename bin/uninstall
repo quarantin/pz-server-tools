@@ -5,13 +5,16 @@ REPO="$(dirname "$(dirname "${0}")")"
 
 SRC="${REPO}/src"
 
-echo You\'re about to uninstall Project Zomboid server tools
-echo This will delete all related files and configuration
+if [ -z "${1}" ]; then
 
-confirm_yes_no
-if [ "${?}" = '0' ]; then
-	echo Aborted
-	exit
+	echo You\'re about to uninstall Project Zomboid server tools
+	echo This will delete all related files and configuration
+
+	confirm_yes_no
+	if [ "${?}" = '0' ]; then
+		echo Aborted
+		exit
+	fi
 fi
 
 for SCRIPT in $(ls -1 "${REPO}/scripts"); do
@@ -34,4 +37,6 @@ cd "${SRC}"
 
 sudo make uninstall > /dev/null
 
-echo OK
+if [ -z "${1}" ]; then
+	echo OK
+fi
