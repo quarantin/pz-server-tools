@@ -7,6 +7,7 @@ import sys
 import json
 import time
 import errno
+import logging
 import requests
 
 from retry import retry
@@ -16,6 +17,7 @@ class PZMonitor:
 
 	def __init__(self, config):
 		self.config = config
+		self.log_path = '/var/log/pz-server-tools.log'
 		self.lock_path = '/var/cache/pz-server-tools/lock'
 		self.cache_path = '/var/cache/pz-server-tools/cache.json'
 		self.root = os.getuid() == 0
@@ -24,7 +26,7 @@ class PZMonitor:
 		self.alert_sequence = self.get_alert_sequence(alerts)
 
 		self.tty = sys.stdin.isatty()
-		self.log_fd = open('/var/log/pz-server-tools.log', 'a')
+		self.logger = logging.basicConfig(filename=self.log_path)
 
 		self.lock()
 
@@ -34,6 +36,7 @@ class PZMonitor:
 
 	def run(self):
 
+		self.log('run')
 		new_check, users = self.check_mods()
 		if isfile(self.cache_path):
 
@@ -47,6 +50,8 @@ class PZMonitor:
 
 	def lock(self):
 
+		self.log('lock')
+
 		flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
 
 		try:
@@ -59,6 +64,7 @@ class PZMonitor:
 			raise
 
 	def unlock(self):
+		self.log('unlock')
 		os.remove(self.lock_path)
 
 	def log(self, message):
@@ -67,9 +73,11 @@ class PZMonitor:
 			print(message)
 
 		else:
-			self.log_fd.write(str(datetime.now()) + " " + message + os.linesep)
+			self.logger.info(str(datetime.now()) + " " + message + os.linesep)
 
 	def show_result(self, users):
+
+		self.log('show_result')
 
 		if not users:
 			print('All PZ servers are up-to-date.')
@@ -81,6 +89,8 @@ class PZMonitor:
 
 	@retry(tries=5)
 	def get_mod_updates(self, items):
+
+		self.log('get_mod_updates')
 
 		steam_url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
 
@@ -113,6 +123,8 @@ class PZMonitor:
 
 		prefix_items = 'WorkshopItems='
 
+		self.log('check_mods')
+
 		for user in self.config['pzservers']:
 
 			servertest_ini = '/home/%s/Zomboid/Server/servertest.ini' % user
@@ -142,6 +154,7 @@ class PZMonitor:
 
 		users = set()
 
+		self.log('check_diff')
 		for item_id, item_data in new_check.items():
 
 			if item_id not in old_check:
@@ -177,6 +190,7 @@ class PZMonitor:
 
 	def restart_servers(self, users):
 
+		self.log('restart_servers')
 		alerts = list(self.alert_sequence)
 		for delay in self.alert_sequence:
 
@@ -198,12 +212,14 @@ class PZMonitor:
 			self.pzserver_restart(user)
 
 	def pzserver_restart(self, user):
+		self.log('pzserver_restart')
 		self.log('Restarting server ' + user)
 		restartswitch = "/tmp/pzserver.%s.restart" % user
 		if not exists(restartswitch):
 			open(restartswitch, 'w').close()
 
 	def pzserver_message(self, user, message):
+		self.log('pzserver_message')
 		os.system('sudo -u "%s" /usr/local/bin/pzmessage "%s"' % (user, message))
 
 if __name__ == '__main__':
