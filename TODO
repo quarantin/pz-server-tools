@@ -1,7 +1,9 @@
+Fix pzcheckmod cronjob not running
 Trigger alert sequence on daily restart
 Trigger alert sequence on pzreboot (by default?)
 Monitor memory and trigger reboot if needed
 Handle first server start: Ask for password
+Detect map mods and create symlinks
 Fix pzcmd:
 	- Check all commands are working
 	- Show error message if command is invalid or unknown
