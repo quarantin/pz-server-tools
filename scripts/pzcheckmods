@@ -25,8 +25,8 @@ class PZMonitor:
 		alerts = config.get('alerts', [15, 10, 5, 2, 1])
 		self.alert_sequence = self.get_alert_sequence(alerts)
 
-		self.tty = sys.stdin.isatty()
-		self.logger = logging.basicConfig(filename=self.log_path)
+		self.from_cron = '--from-cron' in sys.argv
+		logging.basicConfig(filename=self.log_path)
 
 		self.lock()
 
@@ -69,11 +69,11 @@ class PZMonitor:
 
 	def log(self, message):
 
-		if self.tty:
-			print(message)
+		if self.from_cron:
+			logging.info(str(datetime.now()) + " " + message + os.linesep)
 
 		else:
-			self.logger.info(str(datetime.now()) + " " + message + os.linesep)
+			print(message)
 
 	def show_result(self, users):
 
@@ -168,11 +168,11 @@ class PZMonitor:
 					self.log('Mod update detected: ' + item_id + '/' + item_data['name'] + ' (require server restart)')
 					users.update(usersdb[item_id])
 
-		if self.tty:
-			self.show_result(users)
+		if self.from_cron:
+			self.restart_servers(users)
 
 		else:
-			self.restart_servers(users)
+			self.show_result(users)
 
 	def get_alert_sequence(self, alerts):
 
@@ -224,14 +224,11 @@ class PZMonitor:
 
 if __name__ == '__main__':
 
-	config_path = '/etc/pzst/config.json'
-	if len(sys.argv) > 1:
-		config_path = sys.argv[1]
-
 	if os.getuid() != 0:
 		print('This script needs root privileges!', file=sys.stderr)
 		sys.exit(1)
 
+	config_path = '/etc/pzst/config.json'
 	if not isfile(config_path):
 		print('Configuration not found: ' + config_path, file=sys.stderr)
 		sys.exit(1)
