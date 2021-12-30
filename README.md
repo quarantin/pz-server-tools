@@ -1,6 +1,10 @@
 # Project Zomboid Server Tools
 A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
 
+# WARNING - USE AT YOUR OWN RISK
+This project is a work in progress. Expect bugs! Expect breakage!
+Don't expect any kind of support unit the first release is ready!
+
 # Features
 - Install Project Zomboid Dedicated Server easily in a single command.
 - Restart Project Zomboid Dedicated Server at specific times of day.
