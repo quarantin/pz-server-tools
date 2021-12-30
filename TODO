@@ -1,4 +1,3 @@
-Rename pz-server-tools to pzst
 Fix pzcheckmod cronjob not running
 Trigger alert sequence on daily restart
 Trigger alert sequence on pzreboot (by default?)
