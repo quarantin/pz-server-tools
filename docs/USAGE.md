@@ -33,7 +33,17 @@ If you need to use RCON, you have to the the option **RCONPassword** and **RCONP
 	RCONPassword=yourRconPassword
 
 ### Adding Mods
-If you want to enable mods on your server you have to edit the configuration and add your mods to the **WorkshopItems** option. For each mod you have to add the Workshop ID of the mod, using semicolon ( ; ) as delimiter. The Workshop ID can be found on Steam Workshop when visiting the page for the mod. For example if you want to install the mod **Just Throw Them Out The Window**, available here: https://steamcommunity.com/sharedfiles/filedetails/?id=2659216714, you just have to copy-paste the value of the **id** field of your browser address bar, in this case **2659216714**. Let's assume you also want to add the mod **Quick Item Action** available here: https://steamcommunity.com/sharedfiles/filedetails/?id=2642486124 whose Workshop ID is **2642486124**. Then your configuration should look like this:
+If you want to enable mods on your server you have to edit the configuration and add your mods to the **WorkshopItems** option. For each mod you have to add the Workshop ID of the mod, using semicolon ( ; ) as delimiter. The Workshop ID can be found on Steam Workshop when visiting the page for the mod.
+
+For example if you want to install the mod **Just Throw Them Out The Window**, available here:
+
+https://steamcommunity.com/sharedfiles/filedetails/?id=2659216714
+
+you just have to copy-paste the value of the **id** field of your browser address bar, in this case **2659216714**. Let's assume you also want to add the mod **Quick Item Action** available here:
+
+https://steamcommunity.com/sharedfiles/filedetails/?id=2642486124
+
+whose Workshop ID is **2642486124**. Then your configuration should look like this:
 
 	WorkshopItems=2659216714;2642486124
 
