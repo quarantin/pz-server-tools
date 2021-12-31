@@ -1,17 +1,14 @@
 #!/bin/bash
 
-STATUS='Status: Not running'
-PIDS=($(grep -l 'ProjectZomboid\(32\|64\)' /proc/[0-9]*/cmdline | cut -f3 -d/))
-if [ -z "${PIDS}" ]; then
-	echo "${STATUS}"
-	exit
+. "$(dirname "${0}")/pzenv"
+
+PID=$(get_pz_pid)
+if [ -z "${PID}" ]; then
+
+	echo Status: Not running
+
+else
+
+	echo Status: Running
+
 fi
-
-for PID in ${PIDS[@]}; do
-	LINK="$(readlink "/proc/${PID}/fd/0")"
-	if [ "${LINK}" != "/dev/null" ]; then
-		STATUS='Status: Running'
-	fi
-done
-
-echo $STATUS

@@ -1,30 +1,23 @@
 #!/bin/bash
 
+. "$(dirname "${0}")/pzenv"
+
 if [ -z "${1}" ]; then
 	echo Usage: ${0} command...
 	exit
 fi
 
-PIDS=($(grep -l 'ProjectZomboid\(32\|64\)' /proc/[0-9]*/cmdline | cut -f3 -d/))
-if [ -z "${PIDS}" ]; then
-	echo Process not found for user ${USER}
+PID=$(get_pz_pid)
+if [ -z "${PID}" ]; then
+	echo No running pzserver found
 	exit
 fi
 
-for PID in ${PIDS[@]}; do
-	LINK="$(readlink "/proc/${PID}/fd/0")"
-	if [ "${LINK}" != "/dev/null" ]; then
+if [ "${1}" == 'servermsg' ]; then
+	shift
+	sudo ioctl "${PID}" servermsg \"${@}\"
+else
+	sudo ioctl "${PID}" ${@}
+fi
 
-		if [ "${1}" == 'servermsg' ]; then
-			shift
-			sudo ioctl ${PID} servermsg \"${@}\"
-		else
-			sudo ioctl ${PID} ${@}
-		fi
-
-		echo OK
-		exit
-	fi
-done
-
-echo No running pzserver found
+echo OK
