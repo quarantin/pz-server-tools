@@ -22,7 +22,7 @@ https://github.com/quarantin/pz-server-tools/blob/main/docs/CONFIG.md
 https://github.com/quarantin/pz-server-tools/blob/main/docs/USAGE.md
 
 # Tools
-Once Project Zomboid Server Tools have been installed and configured successfully, you will have access to the following commands:
+Once Project Zomboid Server Tools have been successfully installed and configured you will have access to the following commands:
 - **pzinstall**: Install or update Project Zomboid Dedicated Server for the current user
 - **pzuninstall**: Uninstall Project Zomboid Dedicated Server for the current user
 - **pzcheckmods**: Check mod updates
@@ -40,5 +40,5 @@ Once Project Zomboid Server Tools have been installed and configured successfull
 - **pzadminpasswd**: Change pzserver admin password
 - **pzuserpasswd**: Change pzserver password of a user
 - **pzcmd**: Run a server command (like *chopper*, *additem*, etc)
-- **pzmessage**: Display a message on the server visible to all connected players
+- **pzmessage**: Display a message in-game visible to all connected players
 - **pzrestart**: Restart pzserver
