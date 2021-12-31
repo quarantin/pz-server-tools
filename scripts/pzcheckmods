@@ -93,7 +93,7 @@ class PZMonitor:
 		steam_url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
 
 		if len(mods) == 0:
-			return mods
+			return {}
 
 		data = {}
 		data['itemcount'] = len(mods)
