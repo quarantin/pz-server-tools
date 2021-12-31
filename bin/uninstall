@@ -8,15 +8,6 @@ REPO="$(dirname "$(dirname "${0}")")"
 
 SRC="${REPO}/src"
 
-echo You\'re about to uninstall Project Zomboid Server Tools
-echo This will delete all related files and configuration
-
-confirm_yes_no
-if [ "${?}" = '0' ]; then
-	echo Aborted
-	exit
-fi
-
 echo [*] Removing system user: pzst
 
 sudo userdel pzst 2> /dev/null || true
@@ -35,6 +26,10 @@ for SCRIPT in $(ls -1 "${REPO}/scripts"); do
 done
 
 sudo make -C "${SRC}" uninstall > /dev/null
+
+if [ -f "${CONFIG}" ]; then
+	cp "${CONFIG}" "${REPO}"
+fi
 
 sudo rm -f "${CACHE}" "${LOCK}" "${CONFIG}" "${CRONFILE}" "${LOGFILE}"
 
