@@ -12,6 +12,7 @@
 
 #define BUF_SIZE 64
 #define MAX_WAIT 60
+#define MIN_UID 1000
 
 void do_ioctl(int fd, char *data) {
 
@@ -58,7 +59,7 @@ int check_target_pid(char *pidstr) {
 	char path[BUF_SIZE];
 
 	pid = atoi(pidstr);
-	if (pid < 1000) {
+	if (pid < MIN_UID) {
 		printf("This command is not allowed when targeting a system process!\n");
 		exit(EXIT_FAILURE);
 	}
