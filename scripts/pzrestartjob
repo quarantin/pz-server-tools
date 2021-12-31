@@ -7,8 +7,8 @@ import time
 
 from pwd import getpwnam
 from os.path import exists
-from subprocess import call
 from datetime import timedelta
+from subprocess import call, DEVNULL
 
 class PZRestarterJob:
 
@@ -31,10 +31,10 @@ class PZRestarterJob:
 		os.remove(jobpath)
 
 	def pzserver_message(self, server, message):
-		call(['sudo', '-u', server, '/usr/local/bin/pzmessage', message ])
+		call(['sudo', '-u', server, '/usr/local/bin/pzmessage', message ], stdout=DEVNULL)
 
 	def pzserver_restart(self, server):
-		call(['sudo', '-u', server, '/usr/local/bin/pzrestart' ])
+		call(['sudo', '-u', server, '/usr/local/bin/pzrestart' ], stdout=DEVNULL)
 
 	def wait_alert_sequence(self):
 
