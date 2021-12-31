@@ -11,6 +11,7 @@ SRC="${REPO}/src"
 echo [*] Removing system user: pzst
 
 sudo userdel pzst 2> /dev/null || true
+sudo groupdel pzst 2> /dev/null || true
 
 echo [*] Deleting virtual environment
 
