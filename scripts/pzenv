@@ -23,7 +23,7 @@ CRONFILE="${CRONDIR}/${NAME}"
 ENV="${CONFIGDIR}/env"
 LOCK="${CACHEDIR}/lock"
 PZSERVERLOG="${PZSERVER}/pzserver.log"
-KILLSWITCH="/tmp/pzserver.${USER}.kill"
+KILLSWITCH="${CACHEDIR}/kill.${USER}"
 RESTARTSWITCH="${CACHEDIR}/restart.${USER}"
 
 STEAM="${HOME}/Steam"
