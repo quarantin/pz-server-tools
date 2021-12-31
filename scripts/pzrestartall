@@ -14,7 +14,7 @@ fi
 STATUS='No pzserver to restart'
 for USER in ${USERS[@]}; do
 
-	RESTARTSWITCH="/tmp/pzserver.${USER}.restart"
+	RESTARTSWITCH="${CACHEDIR}/restart.${USER}"
 	if [ -f "${RESTARTSWITCH}" ]; then
 		sudo pzrestartjob "${USER}" > /dev/null &
 		STATUS='OK'

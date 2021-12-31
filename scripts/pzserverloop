@@ -15,7 +15,7 @@ while true; do
 	rm -f "${RESTARTSWITCH}"
 	if [ -f "${KILLSWITCH}" ]; then
 		echo Kill switch detected, quitting.
-		rm -f "${KILLSWITCH}" "/tmp/pzserver.${USER}.restart"
+		rm -f "${KILLSWITCH}"
 		break
 	fi
 

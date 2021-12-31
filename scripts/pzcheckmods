@@ -147,7 +147,7 @@ class PZMonitor:
 					break
 
 		for server in servers_to_restart:
-			restartswitch = '/tmp/pzserver.%s.restart' % server
+			restartswitch = '/var/cache/pzst/restart.' + server
 			open(restartswitch, 'w').close()
 
 if __name__ == '__main__':
