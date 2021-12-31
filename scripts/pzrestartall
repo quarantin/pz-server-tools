@@ -3,10 +3,14 @@
 . "$(dirname "${0}")/pzenv"
 
 USERS=($(jq -r -c '.pzservers[]' "${CONFIG}"))
-RESTARTS=($(jq -r -c '."daily-restarts"[]' "${CONFIG}"))
+if [ -z "${USERS}" ]; then
+	echo No running pzserver found
+	exit
+fi
 
-if [ -z "${USERS}" ] || [ -z "${RESTARTS}" ]; then
-	echo No pzserver to restart
+RESTARTS=($(jq -r -c '."daily-restarts"[]' "${CONFIG}"))
+if [ -z "${RESTARTS}" ]; then
+	echo No daily restarts configured
 	exit
 fi
 
