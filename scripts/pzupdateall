@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+USERS=($(jq -r -c '.pzservers[]' "${CONFIG}"))
+for USER in ${USERS[@]}; do
+	echo Updating pzserver ${USER}...
+	sudo -u "${USER}" pzinstall > /dev/null
+done
+
+echo OK
