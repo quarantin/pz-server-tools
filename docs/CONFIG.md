@@ -1,7 +1,9 @@
 # Project Zomboid Server Tools Configuration
 
 ## Check Configuration for Syntax Errors
-Every time you change Project Zomboid Server Tools configuration you should check for syntax errors. **Project Zomboid Server Tools won't work properly if you have a syntax error in the configuration**.
+Every time you change Project Zomboid Server Tools configuration you should check for syntax errors.
+
+**Project Zomboid Server Tools won't work properly if you have a syntax error in the configuration!**
 
 To check the configuration for syntax errors, run the following command:
 
@@ -14,22 +16,6 @@ Project Zomboid Server Tools let you choose which text editor to use to edit the
 
 	{
 		"editor": "vim"
-	}
-
-## Project Zomboid Dedicated Servers
-Project Zomboid Server Tools let you run multiple pzserver instances on the same machine.
-
-Edit the file **/etc/pzst/config.json** as root:
-
-	sudo nano /etc/pzst/config.json
-
-Add each system user that is running a Project Zomboid Dedicated Server to the list under **pzservers**. For example if you have two servers running with users **pzserver1** and **pzserver2**, the configuration should look like this:
-
-	{
-		"pzservers": [
-			"pzserver1",
-			"pzserver2"
-		]
 	}
 
 ## Alerts Before Restart
