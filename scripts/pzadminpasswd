@@ -17,7 +17,6 @@ def update_password(pzserver, user, password, config='servertest'):
 	filepath = '/home/%s/Zomboid/db/%s.db' % (pzserver, config)
 	connection = sqlite3.connect(filepath)
 	cursor = connection.cursor()
-	print(digest(password))
 	cursor.execute("UPDATE whitelist SET password=? WHERE username=?", (digest(password), user))
 	connection.commit()
 	connection.close()
@@ -47,7 +46,7 @@ def main():
 		password = sys.argv[2]
 	
 	pzserver = getpass.getuser()
-	update_password(pzserver, password)
+	update_password(pzserver, username, password)
 
 if __name__ == '__main__':
 	main()
