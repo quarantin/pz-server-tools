@@ -12,6 +12,4 @@ if ! [ -e "${KILLSWITCH}" ]; then
 	touch "${KILLSWITCH}"
 fi
 
-sudo ioctl "${PID}" quit
-
-echo OK
+sudo ioctl "${PID}" quit && echo OK

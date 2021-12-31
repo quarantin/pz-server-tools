@@ -15,9 +15,7 @@ fi
 
 if [ "${1}" == 'servermsg' ]; then
 	shift
-	sudo ioctl "${PID}" servermsg \"${@}\"
+	sudo ioctl "${PID}" servermsg \"${@}\" && echo OK
 else
-	sudo ioctl "${PID}" ${@}
+	sudo ioctl "${PID}" ${@} && echo OK
 fi
-
-echo OK

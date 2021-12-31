@@ -13,6 +13,4 @@ if [ -z "${PID}" ]; then
 	exit
 fi
 
-sudo ioctl "${PID}" servermsg \"${@}\"
-
-echo OK
+sudo ioctl "${PID}" servermsg \"${@}\" && echo OK
