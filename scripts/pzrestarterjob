@@ -1,11 +1,11 @@
 #!/etc/pzst/env/bin/python
 
 import os
-
 import sys
 import json
 import time
 
+from os.path import exists
 from subprocess import call
 from datetime import timedelta
 
@@ -15,10 +15,17 @@ class PZRestarterJob:
 		self.server = server
 		self.restart_sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
 
+		jobpath = '/tmp/pzserver.%s.restartjob' % server
+		if exists(jobpath):
+			return
+
+		open(jobpath, 'w').close()
+
 		if not now:
 			self.wait_alert_sequence()
 
 		self.pzserver_restart(server)
+		os.remove(jobpath)
 
 	def pzserver_message(self, server, message):
 		call(['sudo', '-u', server, '/usr/local/bin/pzmessage', message ])
