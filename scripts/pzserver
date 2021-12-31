@@ -4,6 +4,10 @@
 
 check_running
 
+check_first_time
+
 detach "$(dirname "${0}")/pzserverloop" &
+
+input_admin_password
 
 echo OK
