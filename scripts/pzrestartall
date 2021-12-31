@@ -1,29 +1,24 @@
 #!/bin/bash
 
+# Ask for sudo password before printing anything to the console
+sudo echo -n
+
 . "$(dirname "${0}")/pzenv"
 
-USERS=($(jq -r -c '.pzservers[]' "${CONFIG}"))
+USERS=($(jq -r -c 'try .pzservers[]' "${CONFIG}"))
 if [ -z "${USERS}" ]; then
-	echo No running pzserver found
+	echo No pzserver configured
 	exit
 fi
 
-RESTARTS=($(jq -r -c '."daily-restarts"[]' "${CONFIG}"))
-if [ -z "${RESTARTS}" ]; then
-	echo No daily restarts configured
-	exit
-fi
+STATUS='No pzserver to restart'
+for USER in ${USERS[@]}; do
 
-NOW="$(date +%H:%M)"
-
-for RESTART in ${RESTARTS[@]}; do
-
-	if [ "${RESTART}" != "${NOW}" ]; then
-		continue
+	if [ -f "${RESTARTSWITCH}" ]; then
+		sudo pzrestarterjob "${USER}" &
+		STATUS='OK'
 	fi
 
-	for USER in ${USERS[@]}; do
-		sudo -u "${USER}" pzrestart
-	done
-
 done
+
+echo "${STATUS}"
