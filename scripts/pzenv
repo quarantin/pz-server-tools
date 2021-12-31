@@ -56,33 +56,36 @@ install_steamcmd() {
 
 check_running() {
 
-	PIDS=($(grep -l 'ProjectZomboid\(32\|64\)' /proc/[0-9]*/cmdline | cut -f3 -d/))
-	for PID in ${PIDS[@]}; do
-		LINK="$(readlink "/proc/${PID}/fd/0")"
-		if [ "${LINK}" != '/dev/null' ]; then
+	PID=$(get_pz_pid)
+	if ! [ -z "${PID}" ]; then
 			echo pzserver is already running.
 			exit
-		fi
-	done
+	fi
 }
 
-confirm_yes_no() {
+search_pz() {
 
-	while true; do
+	SERVER="${1}"
+	if [ -z "${SERVER}" ]; then
+		SERVER="${USER}"
+	fi
 
-		echo
-		echo Please type \`yes\` to proceed, or \`no\` to abort
-		read CONFIRM
-		echo
+	while read PROC; do
 
-		if [ "${CONFIRM}" = "n" ] || [ "${CONFIRM}" = "no" ]; then
-			return 0
-			
-		elif [ "${CONFIRM}" = "y" ] || [ "${CONFIRM}" = "yes" ]; then
-			return 1
+		grep -l 'ProjectZomboid\(32\|64\)' "${PROC}/cmdline" 2> /dev/null | cut -f3 -d/
+
+	done < <(find /proc -maxdepth 1 -type d -user "${SERVER}")
+}
+
+get_pz_pid() {
+
+	PIDS=$(search_pz)
+	for PID in ${PIDS[@]}; do
+
+		LINK="$(readlink "/proc/${PID}/fd/0")"
+		if [ "${LINK}" != "/dev/null" ]; then
+			echo $PID
 		fi
 
-		echo Invalid response ${CONFIRM}
-		echo
 	done
 }
