@@ -15,6 +15,42 @@ Now that you're connected as **pzserver1**, you can run the following command to
 
 	pzinstall
 
+## Configuring Project Zomboid Dedicated Server
+
+### Configuring Ports
+If you will run multiple pzservers on the same machine, you have to configure a different port for each server. Furthermore, each server needs exactly one port, plus one extra port per player configured on the server. So for example if you have a pzserver running on port 16261 and you configure 32 players, your other pzservers can't use a port in the range 16261-16293.
+Run the following command to edit pzserver configuration:
+
+	pzconfig
+
+And change the value of the **DefaultPort** option according to your needs:
+
+	DefaultPort=16261
+
+If you need to use RCON, you have to the the option **RCONPassword** and **RCONPort**. You also have to use a different port for each of your pzservers. So for example if using RCON your configuration should look like this:
+
+	RCONPort=27015
+	RCONPassword=yourRconPassword
+
+### Adding Mods
+If you want to enable mods on your server you have to edit the configuration and add your mods to the **WorkshopItems** option. For each mod you have to add the Workshop ID of the mod, using semicolon ( ; ) as delimiter. The Workshop ID can be found on Steam Workshop when visiting the page for the mod. For example if you want to install the mod **Just Throw Them Out The Window**, available here: https://steamcommunity.com/sharedfiles/filedetails/?id=2659216714, you just have to copy-paste the value of the **id** field of your browser address bar, in this case **2659216714**. Let's assume you also want to add the mod **Quick Item Action** available here: https://steamcommunity.com/sharedfiles/filedetails/?id=2642486124 whose Workshop ID is **2642486124**. Then your configuration should look like this:
+
+	WorkshopItems=2659216714;2642486124
+
+### Sandbox Settings
+In order to edit your server sandbox settings run the following command:
+
+	pzsandbox
+
+### Spawn Points and Regions
+If you want to change the spawn points where player can land in the game run the following command:
+
+	pzspawnpoints
+
+For spaw regions, run the following command:
+
+	pzspawnregions
+
 ## Starting Project Zomboid Dedicated Server
 Once your new pzserver is installed you can start it using the following command:
 
