@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import time
+import errno
 
 from pwd import getpwnam
 from os.path import exists
@@ -14,23 +15,40 @@ class PZRestarterJob:
 
 	def __init__(self, config, server, now=False):
 		self.server = server
+		self.lockpath = '/tmp/pzserver.%s.restartjob' % server
 		self.restart_sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
 		self.env = dict(os.environ)
 		self.env['USER'] = server
-		uid = getpwnam(server).pw_uid
 
-		jobpath = '/tmp/pzserver.%s.restartjob' % server
-		if exists(jobpath):
-			return
-
-		open(jobpath, 'w').close()
-		os.chown(jobpath, uid, uid)
+		self.lock()
 
 		if not now:
 			self.wait_alert_sequence()
 
 		self.pzserver_restart(server)
-		os.remove(jobpath)
+
+		self.unlock()
+
+	def lock(self):
+
+		uid = getpwnam(self.server).pw_uid
+		flags = os.O_CREAT|os.O_EXCL|os.O_WRONLY
+
+		try:
+
+			os.close(os.open(self.lockpath, flags, mode=0o644))
+			os.chown(self.lockpath, uid, uid)
+
+		except OSError as error:
+
+			if error.errno == errno.EEXIST:
+				print('Another instance of this script is already running!', file=sys.stderr)
+				sys.exit(0)
+
+			raise
+
+	def unlock(self):
+		os.remove(self.lockpath)
 
 	def pzserver_message(self, server, message):
 		call(['/usr/local/bin/pzmessage', message ], env=self.env, stdout=DEVNULL)
@@ -86,12 +104,16 @@ if __name__ == '__main__':
 	now = False
 	server = None
 
-	for arg in sys.argv:
+	for arg in sys.argv[1:]:
 
 		if arg in [ '-n', '--now' ]:
 			now = True
 
 		else:
 			server = arg
+
+	if not server:
+		print('Usage: %s <pzserver>' % sys.argv[0], file=sys.stderr)
+		sys.exit(1)
 
 	PZRestarterJob(config, server, now=now)
