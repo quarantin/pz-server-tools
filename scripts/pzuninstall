@@ -1,39 +1,9 @@
 #!/bin/bash
 
-DIR="$(dirname "${0}")"
-. "${DIR}/pzenv"
+. "$(dirname "${0}")/pzenv"
 
-USERS=("${@}")
-if [ -z "${USERS}" ]; then
-	if [ -f "${CONFIG}" ]; then
-		USERS=($(jq -r -c '.pzservers[]' "${CONFIG}"))
-	fi
-fi
+rm -rf "${PZSERVER}"
 
-if [ -z "${USERS}" ]; then
-	echo No pzserver found in configuration
-	echo Quitting
-	exit
-fi
-
-for USER in ${USERS[@]}; do
-
-	TARGET="/home/${USER}/pzserver"
-
-	echo You\'re about to uninstall Project Zomboid Dedicated Server for user ${USER}
-	echo This will delete the following folder: ${TARGET}
-	confirm_yes_no
-	if [ "${?}" = '0' ]; then
-
-		echo Skipping uninstall for user ${USER}
-		echo
-		continue
-	fi
-
-	sudo rm -rf "${TARGET}"
-
-	sudo "${DIR}/confhelper" --del ${USER}
-
-done
+pzst_config --del
 
 echo OK
