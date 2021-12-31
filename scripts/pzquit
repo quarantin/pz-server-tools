@@ -8,8 +8,6 @@ if [ -z "${PID}" ]; then
 	exit
 fi
 
-if ! [ -e "${KILLSWITCH}" ]; then
-	touch "${KILLSWITCH}"
-fi
+touch "${KILLSWITCH}"
 
 sudo ioctl "${PID}" quit && echo OK
