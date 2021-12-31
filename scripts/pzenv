@@ -80,25 +80,31 @@ check_first_time() {
 	fi
 }
 
+wait_log_entry() {
+
+	LOGENTRY="${1}"
+	while true; do
+
+		READY=$(grep "${LOGENTRY}" "${PZSERVERLOG}")
+		if ! [ -z "${READY}" ]; then
+			break
+		fi
+
+		sleep 1
+	done
+}
+
 input_admin_password() {
 
 	if ! [ -z "${PASSWD}" ]; then
 
-		while true; do
-
-			READY=$(grep 'Enter new administrator password' "${PZSERVERLOG}")
-			if ! [ -z "${READY}" ]; then
-				break
-			fi
-
-			sleep 1
-		done
+		wait_log_entry 'Enter new administrator password:'
 
 		PID=$(get_pz_pid)
 
 		sudo ioctl "${PID}" "${PASSWD}"
 
-		sleep 2
+		wait_log_entry 'Confirm the password:'
 
 		sudo ioctl "${PID}" "${PASSWD}"
 	fi
