@@ -1,3 +1,5 @@
+Stop pzserver before pzuninstall
+Stop all pzserver before bin/uninstall
 Fix pzcheckmod cronjob not running
 Trigger alert sequence on daily restart
 Trigger alert sequence on pzreboot (by default?)
