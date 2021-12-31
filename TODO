@@ -1,4 +1,5 @@
 Add commands to backup/restore current save
+Add commands pause/unpause to pause the game
 Stop pzserver before pzuninstall
 Stop all pzserver before bin/uninstall
 Monitor memory and trigger reboot if needed
