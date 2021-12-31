@@ -36,6 +36,7 @@ Once Project Zomboid Server Tools have been installed and configured successfull
 - **pzlog**: Show pzserver console output
 - **pzquit**: Stop pzserver
 - **pzstop**: An alias for pzquit
+- **pzkill**: Kill pzserver in case it's not responding
 - **pzadminpasswd**: Change pzserver admin password
 - **pzuserpasswd**: Change pzserver password of a user
 - **pzcmd**: Run a server command (like *chopper*, *additem*, etc)
