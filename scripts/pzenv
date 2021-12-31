@@ -3,7 +3,7 @@
 NAME='pzst'
 
 BIN='/usr/local/bin'
-LOG="/var/log/${NAME}.log"
+LOGFILE="/var/log/${NAME}.log"
 PYTHON='/usr/bin/python'
 
 PZSERVER="${HOME}/pzserver"
@@ -22,7 +22,7 @@ CRONFILE="${CRONDIR}/${NAME}"
 
 ENV="${CONFIGDIR}/env"
 LOCK="${CACHEDIR}/lock"
-LOGFILE="${PZSERVER}/pzserver.log"
+PZSERVERLOG="${PZSERVER}/pzserver.log"
 KILLSWITCH="/tmp/pzserver.${USER}.kill"
 
 STEAM="${HOME}/Steam"
@@ -78,7 +78,6 @@ confirm_yes_no() {
 		if [ "${CONFIRM}" = "n" ] || [ "${CONFIRM}" = "no" ]; then
 			return 0
 			
-
 		elif [ "${CONFIRM}" = "y" ] || [ "${CONFIRM}" = "yes" ]; then
 			return 1
 		fi
