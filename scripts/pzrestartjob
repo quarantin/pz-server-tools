@@ -5,6 +5,7 @@ import sys
 import json
 import time
 
+from pwd import getpwnam
 from os.path import exists
 from subprocess import call
 from datetime import timedelta
@@ -14,12 +15,14 @@ class PZRestarterJob:
 	def __init__(self, config, server, now=False):
 		self.server = server
 		self.restart_sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
+		uid = getpwnam(server).pw_uid
 
 		jobpath = '/tmp/pzserver.%s.restartjob' % server
 		if exists(jobpath):
 			return
 
 		open(jobpath, 'w').close()
+		os.chown(jobpath, uid, uid)
 
 		if not now:
 			self.wait_alert_sequence()
