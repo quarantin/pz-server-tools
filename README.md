@@ -23,9 +23,8 @@ https://github.com/quarantin/pz-server-tools/blob/main/docs/USAGE.md
 
 # Tools
 Once Project Zomboid Server Tools have been installed and configured successfully, you will have access to the following commands:
-- **pzinstall**: Install Project Zomboid Dedicated Server for the current user
+- **pzinstall**: Install or update Project Zomboid Dedicated Server for the current user
 - **pzuninstall**: Uninstall Project Zomboid Dedicated Server for the current user
-- **pzupdate**: Update Project Zomboid Dedicated Server
 - **pzcheckmods**: Check mod updates
 - **pzconfig**: Edit pzserver configuration (servertest.ini)
 - **pzsandbox**: Edit pzserver sandbox configuration (servertest_SandboxVars.lua)
