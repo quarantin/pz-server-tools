@@ -63,6 +63,8 @@ check_first_time() {
 		# Ask for sudo password before printing anything to the console
 		sudo -n echo
 
+		rm -f "${PZSERVERLOG}"
+
 		while true; do
 			echo Enter new administrator password \(will not be echoed\):
 			read -s PASSWD
