@@ -11,7 +11,7 @@ class PZRestarterJob:
 
 	def __init__(self, config, server, now=False):
 		self.server = server
-		self.sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
+		self.restart_sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
 
 		if not now:
 			self.wait_alert_sequence()
@@ -47,7 +47,7 @@ class PZRestarterJob:
 
 		alert_sequence = []
 
-		for i, minutes in enumerate(self.sequence):
+		for i, minutes in enumerate(self.restart_sequence):
 
 			delta = 0
 			if i + 1 < len(self.restart_sequence):
