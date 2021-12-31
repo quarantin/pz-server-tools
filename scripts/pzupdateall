@@ -11,10 +11,9 @@ if [ -z "${USERS}" ]; then
 	exit
 fi
 
-echo Updating pzservers:
 for USER in ${USERS[@]}; do
 
-	echo \t- ${USER}
+	echo Updating pzservers \`${USER}\`
 
 	sudo -u "${USER}" pzinstall > /dev/null && sudo pzrestarterjob "${USER}" &
 
