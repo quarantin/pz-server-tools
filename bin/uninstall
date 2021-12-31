@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ask for password before printing anything to the console
+# Ask for sudo password before printing anything to the console
 sudo echo -n
 
 REPO="$(dirname "$(dirname "${0}")")"
@@ -8,25 +8,35 @@ REPO="$(dirname "$(dirname "${0}")")"
 
 SRC="${REPO}/src"
 
-if [ -z "${1}" ]; then
+echo You\'re about to uninstall Project Zomboid Server Tools
+echo This will delete all related files and configuration
 
-	echo You\'re about to uninstall Project Zomboid server tools
-	echo This will delete all related files and configuration
-
-	confirm_yes_no
-	if [ "${?}" = '0' ]; then
-		echo Aborted
-		exit
-	fi
+confirm_yes_no
+if [ "${?}" = '0' ]; then
+	echo Aborted
+	exit
 fi
+
+echo [*] Removing system user: pzst
+
+sudo userdel pzst 2> /dev/null || true
+
+echo [*] Deleting virtual environment
+
+sudo rm -rf "${ENV}"
+
+echo [*] Uninstalling Project Zomboid Server Tools
+
+sudo rm -f "${CRONFILE}"
+sudo /etc/init.d/cron restart > /dev/null
 
 for SCRIPT in $(ls -1 "${REPO}/scripts"); do
 	sudo rm -f "${BIN}/${SCRIPT}"
 done
 
-sudo rm -f "${CACHE}" "${LOCK}" "${CONFIG}" "${CONFIG}.bak" "${CRONFILE}" "${LOG}"
+sudo make -C "${SRC}" uninstall > /dev/null
 
-sudo rm -rf "${ENV}"
+sudo rm -f "${CACHE}" "${LOCK}" "${CONFIG}" "${CRONFILE}" "${LOGFILE}"
 
 if [ -d "${CACHEDIR}" ]; then
 	sudo rmdir "${CACHEDIR}"
@@ -36,10 +46,4 @@ if [ -d "${CONFIGDIR}" ]; then
 	sudo rmdir "${CONFIGDIR}"
 fi
 
-cd "${SRC}"
-
-sudo make uninstall > /dev/null
-
-if [ -z "${1}" ]; then
-	echo OK
-fi
+echo OK
