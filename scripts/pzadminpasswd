@@ -47,6 +47,7 @@ def main():
 	
 	pzserver = getpass.getuser()
 	update_password(pzserver, username, password)
+	print('OK')
 
 if __name__ == '__main__':
 	main()
