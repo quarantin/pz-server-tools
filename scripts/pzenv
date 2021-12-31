@@ -54,6 +54,31 @@ install_steamcmd() {
 	fi
 }
 
+check_first_time() {
+
+	DB="/home/${USER}/Zomboid/db/"
+	if ! [ -f "${DB}" ]; then
+
+		# Ask for sudo password before printing anything to the console
+		sudo -n echo
+
+		while true; do
+			echo Enter new administrator password \(will not be echoed\):
+			read -s PASSWD
+			echo
+			echo Confirm the password:
+			read -s CONFIRM
+
+			if [ "${PASSWD}" == "${CONFIRM}" ]; then
+				break
+			fi
+
+			echo The passwords don\'t match, please try again
+			echo
+		done
+	fi
+}
+
 check_running() {
 
 	PID=$(get_pz_pid)
