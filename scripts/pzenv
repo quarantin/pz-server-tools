@@ -87,9 +87,12 @@ wait_log_entry() {
 	LOGENTRY="${1}"
 	while true; do
 
-		READY=$(grep "${LOGENTRY}" "${PZSERVERLOG}")
-		if ! [ -z "${READY}" ]; then
-			break
+		if [ -f "${PZSERVERLOG}" ]; then
+
+			READY=$(grep "${LOGENTRY}" "${PZSERVERLOG}")
+			if ! [ -z "${READY}" ]; then
+				break
+			fi
 		fi
 
 		sleep 1
