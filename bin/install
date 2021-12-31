@@ -1,21 +1,26 @@
 #!/bin/bash
+set -e
 
-# Ask for password before printing anything to the console
+# Ask for sudo password before printing anything to the console
 sudo echo -n
 
-echo -n .
-DEBIAN_FRONTEND=noninteractive sudo dpkg --add-architecture i386 > /dev/null
+PACKAGES='gcc jq libsdl2-2.0-0:i386 make python3 virtualenv'
 
-echo -n .
-DEBIAN_FRONTEND=noninteractive sudo apt-get update > /dev/null
+echo [*] Adding architecture i386
+sudo dpkg --add-architecture i386
 
-echo -n .
-DEBIAN_FRONTEND=noninteractive sudo apt-get --yes upgrade > /dev/null
+echo [*] Updating package cache
+sudo apt-get -qq update
 
-for PKG in gcc jq make libsdl2-2.0-0:i386 python3 virtualenv; do
+echo [*] Upgrading packages
+sudo apt-get -qq --yes upgrade
+
+echo -n [*] Installing packages
+for PACKAGE in ${PACKAGES}; do
 	echo -n .
-	DEBIAN_FRONTEND=noninteractive sudo apt-get --yes install "${PKG}" > /dev/null
+	sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
 done
+echo
 
 REPO="$(dirname "$(dirname "${0}")")"
 . "${REPO}/scripts/pzenv"
@@ -26,76 +31,55 @@ REPOENV="${REPO}/env"
 SCRIPTS="${REPO}/scripts"
 SRC="${REPO}/src"
 
-echo -n .
-sudo mkdir -p "${CACHEDIR}"
+echo [*] Adding system user: pzst
 
-echo -n .
-sudo chmod 755 "${CACHEDIR}"
+sudo useradd -r pzst 2> /dev/null || true
 
-echo -n .
-sudo mkdir -p "${CONFIGDIR}"
+echo [*] Creating virtual environment
 
-echo -n .
-sudo chmod 755 "${CONFIGDIR}"
+virtualenv -p python3 "${REPOENV}" > /dev/null
+
+. "${REPOENV}/bin/activate"
+
+python3 -m pip install -r "${REPO}/requirements.txt" > /dev/null
+
+deactivate
+
+sudo rm -rf "${ENV}"
+
+echo [*] Installing Project Zomboid Server Tools
+
+sudo touch           "${LOGFILE}"
+sudo chown root:pzst "${LOGFILE}"
+sudo chmod 664       "${LOGFILE}"
+
+sudo mkdir -p        "${CACHEDIR}"
+sudo chown root:pzst "${CACHEDIR}"
+sudo chmod 755       "${CACHEDIR}"
+
+sudo mkdir -p        "${CONFIGDIR}"
+sudo chown root:pzst "${CONFIGDIR}"
+sudo chmod 755       "${CONFIGDIR}"
 
 if ! [ -f "${CONFIG}" ]; then
-
-	echo -n .
 	sudo cp "${REPOCONFIG}" "${CONFIG}"
-
-	echo -n .
-	sudo chmod 644 "${CONFIG}"
 fi
+sudo chown root:pzst "${CONFIG}"
+sudo chmod 664       "${CONFIG}"
+
+sudo mv "${REPOENV}" "${CONFIGDIR}"
+sudo chown -R root:root "${ENV}"
 
 for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
-	echo -n .
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
 done
 
-echo -n .
-virtualenv -p python3 "${REPOENV}" > /dev/null
+make -C "${SRC}" clean > /dev/null
+make -C "${SRC}" > /dev/null
+sudo make -C "${SRC}" install > /dev/null
 
-echo -n .
-. "${REPOENV}/bin/activate"
-
-echo -n .
-python3 -m pip install -r "${REPO}/requirements.txt" > /dev/null
-
-echo -n .
-deactivate
-
-echo -n .
-sudo cp -a "${REPOENV}" "${CONFIGDIR}/"
-
-echo -n .
-sudo chown -R root:root "${ENV}"
-
-echo -n .
-rm -rf "${REPOENV}"
-
-echo -n .
-cd "${SRC}"
-
-echo -n .
-make clean > /dev/null
-
-echo -n .
-make > /dev/null
-
-echo -n .
-sudo make install > /dev/null
-
-echo -n .
-cd ..
-
-echo -n .
 sudo cp "${REPOCRON}" "${CRONFILE}"
-
-echo -n .
 sudo chmod 644 "${CRONFILE}"
-
-echo -n .
 sudo /etc/init.d/cron restart > /dev/null
 
-echo
 echo OK
