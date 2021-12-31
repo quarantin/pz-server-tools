@@ -33,7 +33,7 @@ Add each system user that is running a Project Zomboid Dedicated Server to the l
 	}
 
 ## Alerts Before Restart
-Project Zomboid Server Tools let you configure multiple alerts before restarting pzservers.
+Project Zomboid Server Tools let you configure how to alert players in-game before restarting pzservers.
 
 Edit the file **/etc/pzst/config.json** as root:
 
@@ -42,7 +42,7 @@ Edit the file **/etc/pzst/config.json** as root:
 Assuming you want all your pzservers to wait 15 minutes before restart, sending an alert to players every 5 minutes, your configuration should look like this:
 
 	{
-		"alerts": [
+		"restart-sequence": [
 			15,
 			10,
 			5,
