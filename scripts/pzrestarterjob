@@ -40,7 +40,6 @@ class PZRestarterJob:
 			minutes = str(timedelta(minutes=countdown)).lstrip('0').lstrip(':')
 			message = 'Restarting server in %s minute%s!' % (minutes, plural)
 
-			self.log(message)
 			self.pzserver_message(self.server, message)
 
 			time.sleep(delay * 60)
