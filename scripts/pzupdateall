@@ -15,7 +15,7 @@ for USER in ${USERS[@]}; do
 
 	echo Updating pzservers \`${USER}\`
 
-	sudo -u "${USER}" pzinstall > /dev/null && sudo pzrestarterjob "${USER}" &
+	sudo -u "${USER}" pzinstall > /dev/null && sudo pzrestartjob "${USER}" > /dev/null &
 
 done
 

@@ -16,7 +16,7 @@ for USER in ${USERS[@]}; do
 
 	RESTARTSWITCH="/tmp/pzserver.${USER}.restart"
 	if [ -f "${RESTARTSWITCH}" ]; then
-		sudo pzrestarterjob "${USER}" &
+		sudo pzrestartjob "${USER}" > /dev/null &
 		STATUS='OK'
 	fi
 
