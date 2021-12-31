@@ -1,0 +1,25 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+USERS=($(jq -r -c '.pzservers[]' "${CONFIG}"))
+RESTARTS=($(jq -r -c '.restarts[]' "${CONFIG}"))
+
+if [ -z "${USERS}" ] || [ -z "${RESTARTS}" ]; then
+	echo No pzserver to restart
+	exit
+fi
+
+NOW="$(date +%H:%M)"
+
+for RESTART in ${RESTARTS[@]}; do
+
+	if [ "${RESTART}" != "${NOW}" ]; then
+		continue
+	fi
+
+	for USER in ${USERS[@]}; do
+		sudo -u "${USER}" pzrestart
+	done
+
+done
