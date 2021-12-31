@@ -24,6 +24,7 @@ ENV="${CONFIGDIR}/env"
 LOCK="${CACHEDIR}/lock"
 PZSERVERLOG="${PZSERVER}/pzserver.log"
 KILLSWITCH="/tmp/pzserver.${USER}.kill"
+RESTARTSWITCH="/tmp/pzserver.${USER}.restart"
 
 STEAM="${HOME}/Steam"
 STEAMCMD="${STEAM}/steamcmd.sh"
