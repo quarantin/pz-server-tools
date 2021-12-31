@@ -26,12 +26,11 @@ void do_ioctl(int fd, char *data) {
 
 void wait_pid(pid_t pid) {
 
+	int err;
 	time_t start;
-	int err, failure;
 
 	start = time(NULL);
 
-	failure = 0;
 	while (1) {
 
 		err = kill(pid, 0);
@@ -39,8 +38,8 @@ void wait_pid(pid_t pid) {
 			break;
 
 		if (time(NULL) - start > MAX_WAIT) {
-			failure = 1;
-			break;
+			printf("\nSomething went wrong! Process not responding after %d seconds\n", MAX_WAIT);
+			exit(EXIT_FAILURE);
 		}
 
 		printf(".");
@@ -49,9 +48,6 @@ void wait_pid(pid_t pid) {
 	}
 
 	printf("\n");
-
-	if (failure)
-		printf("Something went wrong! Process not responding after %d seconds\n", MAX_WAIT);
 }
 
 int check_target_pid(char *pidstr) {
