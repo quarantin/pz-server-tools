@@ -1,0 +1,88 @@
+#!/etc/pzst/env/bin/python
+
+import os
+
+import sys
+import json
+
+from subprocess import call
+
+class PZRestarterJob:
+
+	def __init__(self, config, server, now=False):
+		self.server = server
+		self.sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
+
+		if not now:
+			self.wait_alert_sequence()
+
+		self.pzserver_restart(server)
+
+	def pzserver_message(self, server, message):
+		call(['sudo', '-u', server, '/usr/local/bin/pzmessage', message ])
+
+	def pzserver_restart(self, server):
+		call(['sudo', '-u', server, '/usr/local/bin/pzrestart' ])
+
+	def wait_alert_sequence(self):
+
+		sequence = self.get_alert_sequence()
+
+		alerts = list(sequence)
+		for delay in sequence:
+
+			countdown = sum(alerts)
+			alerts.remove(delay)
+
+			plural = countdown >= 2 and 's' or ''
+			minutes = str(timedelta(minutes=countdown)).lstrip('0').lstrip(':')
+			message = 'Restarting server in %s minute%s!' % (minutes, plural)
+
+			self.log(message)
+			self.pzserver_message(self.server, message)
+
+			time.sleep(delay * 60)
+
+	def get_alert_sequence(self):
+
+		alert_sequence = []
+
+		for i, minutes in enumerate(self.sequence):
+
+			delta = 0
+			if i + 1 < len(self.restart_sequence):
+				delta = self.restart_sequence[i + 1]
+
+			alert_sequence.append(minutes - delta)
+
+		return alert_sequence
+
+
+if __name__ == '__main__':
+
+	from os.path import isfile
+
+	if os.getuid() != 0:
+		print('This script needs root privileges!', file=sys.stderr)
+		sys.exit(1)
+
+	config_path = '/etc/pzst/config.json'
+	if not isfile(config_path):
+		print('Configuration not found: ' + config_path, file=sys.stderr)
+		sys.exit(1)
+
+	with open(config_path) as fd:
+		config = json.loads(fd.read())
+
+	now = False
+	server = None
+
+	for arg in sys.argv:
+
+		if arg in [ '-n', '--now' ]:
+			now = True
+
+		else:
+			server = arg
+
+	PZRestarterJob(config, server, now=now)
