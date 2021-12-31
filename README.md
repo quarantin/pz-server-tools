@@ -33,12 +33,13 @@ Once Project Zomboid Server Tools have been successfully installed and configure
 - **pzserver**: Start pzserver in the background (no need to use screen)
 - **pzstart**: An alias for pzserver
 - **pzstatus**: Check pzserver status
+- **pzrestart**: Restart pzserver
 - **pzlog**: Show pzserver console output
 - **pzquit**: Stop pzserver
 - **pzstop**: An alias for pzquit
 - **pzkill**: Kill pzserver in case it's not responding
+- **pzmem**: Change maximum memory allocation of pzserver
 - **pzadminpasswd**: Change pzserver admin password
 - **pzuserpasswd**: Change pzserver password of a user
 - **pzcmd**: Run a server command (like *chopper*, *additem*, etc)
 - **pzmessage**: Display a message in-game visible to all connected players
-- **pzrestart**: Restart pzserver

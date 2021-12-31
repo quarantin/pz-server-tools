@@ -1,0 +1,24 @@
+#!/etc/pzst/env/bin/python
+
+import os
+import sys
+import json
+
+if len(sys.argv) < 2:
+	print('Usage: %s <gigabytes>' % sys.argv[0])
+	sys.exit()
+
+gigabytes = sys.argv[1]
+
+for arch in [ 32, 64 ]:
+
+	filepath = '/home/%s/pzserver/ProjectZomboid%d.json' % (os.getlogin(), arch)
+	with open(filepath) as fd:
+		jsondata = json.loads(fd.read())
+
+	for index, option in enumerate(jsondata['vmArgs']):
+		if option.startswith('-Xmx'):
+			jsondata['vmArgs'][index] = '-Xmx' + gigabytes + 'g'
+
+	with open(filepath, 'w') as fd:
+		fd.write(json.dumps(jsondata, indent='\t') + os.linesep)
