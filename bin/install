@@ -55,7 +55,7 @@ sudo chmod 664       "${LOGFILE}"
 
 sudo mkdir -p        "${CACHEDIR}"
 sudo chown root:pzst "${CACHEDIR}"
-sudo chmod 755       "${CACHEDIR}"
+sudo chmod 775       "${CACHEDIR}"
 
 sudo mkdir -p        "${CONFIGDIR}"
 sudo chown root:pzst "${CONFIGDIR}"
