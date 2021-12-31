@@ -56,7 +56,7 @@ install_steamcmd() {
 
 check_running() {
 
-	PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+	PIDS=($(grep -l 'ProjectZomboid\(32\|64\)' /proc/[0-9]*/cmdline | cut -f3 -d/))
 	for PID in ${PIDS[@]}; do
 		LINK="$(readlink "/proc/${PID}/fd/0")"
 		if [ "${LINK}" != '/dev/null' ]; then

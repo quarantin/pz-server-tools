@@ -5,7 +5,7 @@ if [ -z "${1}" ]; then
 	exit
 fi
 
-PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+PIDS=($(grep -l 'ProjectZomboid\(32\|64\)' /proc/[0-9]*/cmdline | cut -f3 -d/))
 if [ -z "${PIDS}" ]; then
 	echo Process not found for user ${USER}
 	exit

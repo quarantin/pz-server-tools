@@ -1,7 +1,7 @@
 #!/bin/bash
 
 STATUS='Status: Not running'
-PIDS=("$(pgrep -u ${USER} ProjectZomboid)")
+PIDS=($(grep -l 'ProjectZomboid\(32\|64\)' /proc/[0-9]*/cmdline | cut -f3 -d/))
 if [ -z "${PIDS}" ]; then
 	echo "${STATUS}"
 	exit
