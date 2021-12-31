@@ -1,7 +1,6 @@
+Add commands to backup/restore current save
 Stop pzserver before pzuninstall
 Stop all pzserver before bin/uninstall
-Trigger alert sequence on daily restart
-Trigger alert sequence on pzreboot (by default?)
 Monitor memory and trigger reboot if needed
 Detect map mods and create symlinks
 Fix pzcmd:
