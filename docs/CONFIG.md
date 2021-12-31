@@ -49,7 +49,7 @@ Edit the file **/etc/pzst/config.json** as root:
 Assuming you want to restart all your pzservers every day at 00:00, 06:00, 12:00, and 18:00, the configuration should look like this:
 
 	{
-		"restarts": [
+		"daily-restarts": [
 			"00:00",
 			"06:00",
 			"12:00",

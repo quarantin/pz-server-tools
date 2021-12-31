@@ -1,4 +1,7 @@
 {
+	"daily-restarts": [
+		"07:45"
+	],
 	"editor": "nano",
 	"pzservers": [
 
@@ -9,8 +12,5 @@
 		 5,
 		 2,
 		 1
-	],
-	"restarts": [
-		"07:45"
 	]
 }
