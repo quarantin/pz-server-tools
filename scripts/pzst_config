@@ -16,12 +16,12 @@ TMP=$(mktemp)
 
 if [ "${ARG}" = '-a' ] || [ "${ARG}" = '--add' ]; then
 
-	jq ".pzservers |= (. + [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
+	jq --tab ".pzservers |= (. + [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
 	sg pzst "cp ${TMP} ${CONFIG}"
 
 elif [ "${ARG}" = '-d' ] || [ "${ARG}" = '--del' ]; then
 
-	jq ".pzservers |= (. - [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
+	jq --tab ".pzservers |= (. - [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
 	sg pzst "cp ${TMP} ${CONFIG}"
 
 else
