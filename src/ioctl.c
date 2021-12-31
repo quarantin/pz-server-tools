@@ -11,7 +11,7 @@
 #include <unistd.h>
 
 #define BUF_SIZE 64
-#define MAX_WAIT 60
+#define MAX_WAIT 30
 #define MIN_UID 1000
 
 void do_ioctl(int fd, char *data) {
