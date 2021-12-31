@@ -7,7 +7,11 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <time.h>
 #include <unistd.h>
+
+#define BUF_SIZE 64
+#define MAX_WAIT 60
 
 void do_ioctl(int fd, char *data) {
 
@@ -22,13 +26,22 @@ void do_ioctl(int fd, char *data) {
 
 void wait_pid(pid_t pid) {
 
-	int err;
+	time_t start;
+	int err, failure;
 
+	start = time(NULL);
+
+	failure = 0;
 	while (1) {
 
 		err = kill(pid, 0);
 		if (err && errno == ESRCH)
 			break;
+
+		if (time(NULL) - start > MAX_WAIT) {
+			failure = 1;
+			break;
+		}
 
 		printf(".");
 		fflush(stdout);
@@ -36,20 +49,45 @@ void wait_pid(pid_t pid) {
 	}
 
 	printf("\n");
+
+	if (failure)
+		printf("Something went wrong! Process not responding after %d seconds\n", MAX_WAIT);
 }
 
-int main(int argc, char **argv) {
+int check_target_pid(char *pidstr) {
 
 	int fd;
 	pid_t pid;
-	char path[64];
+	struct stat info;
+	char path[BUF_SIZE];
 
-	if (argc < 3) {
-		printf("Usage: %s <pid> \"<command> [args...]\"\n\n", argv[0]);
+	pid = atoi(pidstr);
+	if (pid < 1000) {
+		printf("This command is not allowed when targeting a system process!\n");
 		exit(EXIT_FAILURE);
 	}
 
-	pid = atoi(argv[1]);
+	snprintf(path, sizeof(path), "/proc/%d/loginuid", pid);
+
+	memset(&info, 0, sizeof(info));
+	if (stat(path, &info) < 0) {
+		printf("No process found with pid %d\n", pid);
+		exit(EXIT_FAILURE);
+	}
+
+	if (!info.st_uid) {
+		printf("This command is not allowed when targeting a process running as root!\n");
+		exit(EXIT_FAILURE);
+	}
+
+	return pid;
+}
+
+void send_command(pid_t pid, int argc, char **argv) {
+
+	int fd;
+	char path[BUF_SIZE];
+
 	snprintf(path, sizeof(path), "/proc/%d/fd/0", pid);
 
 	fd = open(path, O_WRONLY);
@@ -58,7 +96,7 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	for (int i = 2; i < argc; i++) {
+	for (int i = 0; i < argc; i++) {
 
 		for (int j = 0; j < strlen(argv[i]); j++)
 			do_ioctl(fd, &argv[i][j]);
@@ -70,8 +108,22 @@ int main(int argc, char **argv) {
 
 	close(fd);
 
-	if (!strcmp(argv[2], "quit"))
+	if (!strcmp(argv[0], "quit"))
 		wait_pid(pid);
+}
+
+int main(int argc, char **argv) {
+
+	pid_t pid;
+
+	if (argc < 3) {
+		printf("Usage: %s <pid> \"<command> [args...]\"\n\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
+
+	pid = check_target_pid(argv[1]);
+
+	send_command(pid, argc - 2, &argv[2]);
 
 	exit(EXIT_SUCCESS);
 }
