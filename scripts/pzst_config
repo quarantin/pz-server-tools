@@ -1,57 +1,31 @@
-#!/etc/pzst/env/bin/python
+#!/bin/bash
 
-import os
-import sys
-import pwd
-import json
-import shutil
+. "$(dirname "${0}")/pzenv"
 
-actions = {
-	'-a':    'add',
-	'--add': 'add',
-	'-d':    'del',
-	'--del': 'del',
+usage() {
+	echo "Usage ${0} [--add|--del]"
+	exit
 }
 
-def usage():
-	print('Usage: %s [--add|--del] <user>' % sys.argv[0], file=sys.stderr)
-	sys.exit(1)
+if [ -z "${1}" ]; then
+	usage "${0}"
+fi
 
-if os.getuid() != 0:
-	print('This script needs root privileges!', file=sys.stderr)
-	sys.exit(1)
+ARG="${1}"
+TMP=$(mktemp)
 
-if len(sys.argv) < 3:
-	usage()
+if [ "${ARG}" = '-a' ] || [ "${ARG}" = '--add' ]; then
 
-action = sys.argv[1]
-if action not in actions:
-	usage()
+	jq ".pzservers |= (. + [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
+	sg pzst "cp ${TMP} ${CONFIG}"
 
-try:
-	user = sys.argv[2]
-	pwd.getpwnam(user)
+elif [ "${ARG}" = '-d' ] || [ "${ARG}" = '--del' ]; then
 
-except KeyError:
-	print('Invalid user `%s`: User does not exist' % user, file=sys.stderr)
-	sys.exit(1)
+	jq ".pzservers |= (. - [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
+	sg pzst "cp ${TMP} ${CONFIG}"
 
-action = actions[action]
-config_file = '/etc/pzst/config.json'
-backup_file = config_file + '.bak'
-with open(config_file) as fd:
-	config = json.loads(fd.read())
-
-if action == 'add':
-	if user not in config.get('pzservers', {}):
-		config['pzservers'].append(user)
-else:
-	if user in config.get('pzservers', {}):
-		config['pzservers'].remove(user)
-
-shutil.copyfile(config_file, backup_file)
-
-with open(config_file, 'w') as fd:
-	fd.write(json.dumps(config, indent='\t') + os.linesep)
-
-os.remove(backup_file)
+else
+	echo "Invalid option ${ARG}"
+	echo
+	usage "${0}"
+fi
