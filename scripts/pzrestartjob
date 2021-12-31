@@ -15,7 +15,7 @@ class PZRestarterJob:
 
 	def __init__(self, config, server, now=False):
 		self.server = server
-		self.lockpath = '/tmp/pzserver.%s.restartjob' % server
+		self.lockpath = '/var/cache/pzst/restartjob.' + server
 		self.restart_sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
 		self.env = dict(os.environ)
 		self.env['USER'] = server
