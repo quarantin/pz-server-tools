@@ -58,7 +58,7 @@ install_steamcmd() {
 check_first_time() {
 
 	DB="/home/${USER}/Zomboid/db/"
-	if ! [ -f "${DB}" ]; then
+	if ! [ -d "${DB}" ]; then
 
 		# Ask for sudo password before printing anything to the console
 		sudo -n echo
