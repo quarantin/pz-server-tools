@@ -17,12 +17,12 @@ TMP=$(mktemp)
 if [ "${ARG}" = '-a' ] || [ "${ARG}" = '--add' ]; then
 
 	jq --tab ".pzservers |= (. + [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
-	sg pzst "cp ${TMP} ${CONFIG}"
+	cp ${TMP} ${CONFIG}
 
 elif [ "${ARG}" = '-d' ] || [ "${ARG}" = '--del' ]; then
 
 	jq --tab ".pzservers |= (. - [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
-	sg pzst "cp ${TMP} ${CONFIG}"
+	cp ${TMP} ${CONFIG}
 
 else
 	echo "Invalid option ${ARG}"

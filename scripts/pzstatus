@@ -2,8 +2,8 @@
 
 . "$(dirname "${0}")/pzenv"
 
-PID=$(get_pz_pid)
-if [ -z "${PID}" ]; then
+PZPID=$(get_pz_pid)
+if [ -z "${PZPID}" ]; then
 
 	echo Status: Not running
 

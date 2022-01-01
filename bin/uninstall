@@ -15,7 +15,7 @@ sudo groupdel pzst 2> /dev/null || true
 
 echo [*] Deleting virtual environment
 
-sudo rm -rf "${ENV}"
+sudo rm -rf "${CONFIGENV}"
 
 echo [*] Uninstalling Project Zomboid Server Tools
 
@@ -25,6 +25,10 @@ sudo /etc/init.d/cron restart > /dev/null
 for SCRIPT in $(ls -1 "${REPO}/scripts"); do
 	sudo rm -f "${BIN}/${SCRIPT}"
 done
+
+sudo service pzstd stop
+sudo systemctl disable pzstd.service
+sudo rm -f /etc/systemd/system/pzstd.service
 
 sudo make -C "${SRC}" uninstall > /dev/null
 

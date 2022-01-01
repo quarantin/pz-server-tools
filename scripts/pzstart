@@ -1,1 +1,9 @@
-pzserver
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+check_first_time
+
+detach "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${PORTOPTION} ${@} &
+
+echo OK

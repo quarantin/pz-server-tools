@@ -1,1 +1,9 @@
-pzquit
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+check_running
+
+touch "${KILLSWITCH}"
+
+pzstc "${PZPID}" quit

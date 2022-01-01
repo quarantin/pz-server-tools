@@ -4,15 +4,22 @@ To install a new pzserver, first you have to choose a system username for that s
 	sudo useradd -m -k /etc/skel -s /bin/bash pzserver1
 	sudo passwd pzserver1
 	sudo usermod -aG pzst pzserver1
-	sudo usermod -aG sudo pzserver1
 
 Then login as that user:
 
 	sudo -i -u pzserver1
 
+To get the list of available commands run this command:
+
+	pzserver
+
 Now that you're connected as **pzserver1**, you can run the following command to install your new pzserver:
 
 	pzinstall
+
+Start pzserver. The first time it should ask for the admin password:
+
+	pzstart
 
 # Configuring Project Zomboid Dedicated Server
 

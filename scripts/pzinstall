@@ -1,15 +1,10 @@
 #!/bin/bash
 
-# Ask for sudo password before printing anything to the console
-sudo echo -n
-
 . "$(dirname "${0}")/pzenv"
 
 install_steamcmd
 
 "${STEAM}/steamcmd.sh" +force_install_dir "${HOME}/pzserver/" +login anonymous +app_update 380870 b41multiplayer validate +quit
-
-sudo usermod -a -G pzst "${USER}"
 
 pzst_config --add
 

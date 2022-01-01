@@ -2,7 +2,7 @@
 
 . "$(dirname "${0}")/pzenv"
 
-check_running
+check_not_running
 
 while true; do
 
@@ -10,7 +10,12 @@ while true; do
 
 	[[ -f "${PZSERVERLOG}" ]] && cp "${PZSERVERLOG}" "${PZSERVERLOG}.old"
 
-	"${PZSERVERSTART}" &> "${PZSERVERLOG}"
+	"${PZSERVERSTART}" ${@} &> /dev/null
+
+	PORT="$(echo "${PORTOPTION}" | cut -f2 -d' ')"
+	if ! [ -z "${PORT}" ]; then
+		sed -i "s/^DefaultPort.*/DefaultPort=${PORT}/" "${PZSERVERCONFIG}"
+	fi
 
 	rm -f "${RESTARTSWITCH}"
 	if [ -f "${KILLSWITCH}" ]; then

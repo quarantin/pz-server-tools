@@ -2,12 +2,8 @@
 
 . "$(dirname "${0}")/pzenv"
 
-PID=$(get_pz_pid)
-if [ -z "${PID}" ]; then
-	echo No running pzserver found
-	exit
-fi
+check_running
 
 touch "${KILLSWITCH}"
 
-kill -SIGKILL "${PID}" && echo OK
+kill -SIGKILL "${PZPID}" && echo OK

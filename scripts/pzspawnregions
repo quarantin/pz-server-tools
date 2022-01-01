@@ -2,9 +2,9 @@
 
 . "$(dirname "${0}")/pzenv"
 
-if ! [ -d "${ZOMBOIDSERVERDIR}" ] || ! [ -f "${ZOMBOIDSERVERSPAWNREGIONS}" ]; then
+if ! [ -d "${PZSERVERDIR}" ] || ! [ -f "${PZSERVERSPAWNREGIONS}" ]; then
 	echo Configuration not found.
 	exit
 fi
 
-"${EDITOR}" "${ZOMBOIDSERVERSPAWNREGIONS}"
+"${EDITOR}" "${PZSERVERSPAWNREGIONS}"

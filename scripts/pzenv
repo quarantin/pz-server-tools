@@ -6,22 +6,19 @@ BIN='/usr/local/bin'
 LOGFILE="/var/log/${NAME}.log"
 PYTHON='/usr/bin/python'
 
-PZSERVER="${HOME}/pzserver"
-PZSERVERLOG="${PZSERVER}/pzserver.log"
-PZSERVERSTART="${PZSERVER}/start-server.sh"
 
 CACHEDIR="/var/cache/${NAME}"
 CACHEFILE='cache.json'
 CACHE="${CACHEDIR}/${CACHEFILE}"
 
 CONFIGDIR="/etc/${NAME}"
+CONFIGENV="${CONFIGDIR}/env"
 CONFIGFILE="config.json"
 CONFIG="${CONFIGDIR}/${CONFIGFILE}"
 
 CRONDIR="/etc/cron.d"
 CRONFILE="${CRONDIR}/${NAME}"
 
-ENV="${CONFIGDIR}/env"
 LOCK="${CACHEDIR}/lock"
 KILLSWITCH="${CACHEDIR}/kill.${USER}"
 RESTARTSWITCH="${CACHEDIR}/restart.${USER}"
@@ -32,11 +29,15 @@ STEAMCMDARCHIVE='steamcmd_linux.tar.gz'
 STEAMCMDARCHIVEPATH="/tmp/${STEAMCMDARCHIVE}"
 STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE}"
 
-ZOMBOIDSERVERDIR="${HOME}/Zomboid/Server"
-ZOMBOIDSERVERCONFIG="${ZOMBOIDSERVERDIR}/servertest.ini"
-ZOMBOIDSERVERSANDBOX="${ZOMBOIDSERVERDIR}/servertest_SandboxVars.lua"
-ZOMBOIDSERVERSPAWNPOINTS="${ZOMBOIDSERVERDIR}/servertest_spawnpoints.lua"
-ZOMBOIDSERVERSPAWNREGIONS="${ZOMBOIDSERVERDIR}/servertest_spawnregions.lua"
+ZOMBOID="${HOME}/Zomboid"
+PZSERVER="${HOME}/pzserver"
+PZSERVERDIR="${ZOMBOID}/Server"
+PZSERVERLOG="${ZOMBOID}/server-console.txt"
+PZSERVERCONFIG="${PZSERVERDIR}/servertest.ini"
+PZSERVERSTART="${PZSERVER}/start-server.sh"
+PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
+PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
+PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
 
 if [ -f "${CONFIG}" ]; then
 	EDITOR="$(jq -r .editor "${CONFIG}")"
@@ -55,96 +56,112 @@ install_steamcmd() {
 	fi
 }
 
-check_first_time() {
+read_adminuser() {
 
-	DB="/home/${USER}/Zomboid/db/"
-	if ! [ -d "${DB}" ]; then
+	DEFAULT_ADMINUSER='pzadmin'
+	echo Enter new administrator username \(default: ${DEFAULT_ADMINUSER}\)
+	read -e ADMINUSER
 
-		# Ask for sudo password before printing anything to the console
-		sudo -n echo
-
-		rm -f "${PZSERVERLOG}"
-
-		while true; do
-			echo Enter new administrator password \(will not be echoed\):
-			read -s PASSWD
-			echo
-			echo Confirm the password:
-			read -s CONFIRM
-
-			if [ "${PASSWD}" == "${CONFIRM}" ]; then
-				break
-			fi
-
-			echo The passwords don\'t match, please try again
-			echo
-		done
+	if [ -z "${ADMINUSER}" ]; then
+		ADMINUSER="${DEFAULT_ADMINUSER}"
 	fi
+
+	export ADMINUSEROPTION="-adminusername ${ADMINUSER}"
 }
 
-wait_log_entry() {
+read_adminpasswd() {
 
-	LOGENTRY="${1}"
 	while true; do
 
-		if [ -f "${PZSERVERLOG}" ]; then
+		echo
+		echo Enter new administrator password \(will not be echoed\):
+		read -s ADMINPASSWD
 
-			READY=$(grep "${LOGENTRY}" "${PZSERVERLOG}")
-			if ! [ -z "${READY}" ]; then
-				break
-			fi
+		echo
+		echo Confirm the password:
+		read -s CONFIRM
+
+		if [ "${ADMINPASSWD}" = "${CONFIRM}" ]; then
+			export ADMINPASSWDOPTION="-adminpassword ${ADMINPASSWD}"
+			break
 		fi
 
-		sleep 1
+		echo
+		echo The passwords don\'t match, please try again
+
 	done
 }
 
-input_admin_password() {
+read_port() {
 
-	if ! [ -z "${PASSWD}" ]; then
+	DEFAULT_PORT='16261'
+	while true; do
 
-		wait_log_entry 'Enter new administrator password:'
+		echo
+		echo Select Port \(default: ${DEFAULT_PORT}\):
+		read -e PORT
 
-		PID=$(get_pz_pid)
+		if [ -z "${PORT}" ]; then
+			PORT="${DEFAULT_PORT}"
+		fi
 
-		sudo ioctl "${PID}" "${PASSWD}"
+		OUTPUT=$(ss -nluw | grep ":${PORT} ")
+		if [ -z "${OUTPUT}" ]; then
+			export PORT="${PORT}"
+			export PORTOPTION="-port ${PORT}"
+			break
+		fi
 
-		wait_log_entry 'Confirm the password:'
+		echo The port ${PORT} is already in use, please select another port
+	done
+}
 
-		sudo ioctl "${PID}" "${PASSWD}"
+check_first_time() {
+
+	if ! [ -d "${PZSERVERDIR}" ]; then
+
+		read_adminuser
+
+		read_adminpasswd
+
+		read_port
 	fi
 }
 
 check_running() {
 
-	PID=$(get_pz_pid)
-	if ! [ -z "${PID}" ]; then
-			echo pzserver is already running.
-			exit
+	PZPID=$(get_pz_pid)
+	if [ -z "${PZPID}" ]; then
+		echo No running pzserver found
+		exit
 	fi
 }
 
-search_pz() {
+check_not_running() {
 
-	SERVER="${1}"
-	if [ -z "${SERVER}" ]; then
-		SERVER="${USER}"
+	PZPID=$(get_pz_pid)
+	if ! [ -z "${PZPID}" ]; then
+		echo pzserver already running.
+		exit
 	fi
+}
+
+search_pz_pid() {
 
 	while read PROC; do
 
-		grep -l 'ProjectZomboid\(32\|64\)' "${PROC}/cmdline" 2> /dev/null | cut -f3 -d/
+		grep -l 'ProjectZomboid' "${PROC}/comm" 2> /dev/null | cut -f3 -d/
 
-	done < <(find /proc -maxdepth 1 -type d -user "${SERVER}")
+	done < <(find /proc -maxdepth 1 -type d -user "${USER}")
 }
 
 get_pz_pid() {
 
-	PIDS=$(search_pz)
+	PIDS=$(search_pz_pid)
 	for PID in ${PIDS[@]}; do
 
 		LINK="$(readlink "/proc/${PID}/fd/0")"
-		if [ "${LINK}" != "/dev/null" ]; then
+		if [ "${LINK}" != '/dev/null' ]; then
 			echo $PID
 		fi
 

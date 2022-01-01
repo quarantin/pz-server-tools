@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ask for sudo password before printing anything to the console
-sudo echo -n
-
 . "$(dirname "${0}")/pzenv"
 
 USERS=($(jq -r -c 'try .pzservers[]' "${CONFIG}"))
@@ -16,7 +13,7 @@ for USER in ${USERS[@]}; do
 
 	RESTARTSWITCH="${CACHEDIR}/restart.${USER}"
 	if [ -f "${RESTARTSWITCH}" ]; then
-		sudo pzrestartjob "${USER}" > /dev/null &
+		pzrestartjob "${USER}" > /dev/null &
 		STATUS='OK'
 	fi
 

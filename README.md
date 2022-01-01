@@ -1,10 +1,6 @@
 # Project Zomboid Server Tools
 A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
 
-# WARNING - USE AT YOUR OWN RISK
-This project is a work in progress. Expect bugs! Expect breakage!
-Don't expect any kind of support unit the first release is ready!
-
 # Features
 - Install Project Zomboid Dedicated Server easily in a single command.
 - Restart Project Zomboid Dedicated Server at specific times of day.
@@ -13,27 +9,25 @@ Don't expect any kind of support unit the first release is ready!
 - Many more...
 
 # Tools
-Once Project Zomboid Server Tools have been successfully installed and configured you will have access to the following commands:
-- **pzinstall**: Install or update Project Zomboid Dedicated Server for the current user
-- **pzuninstall**: Uninstall Project Zomboid Dedicated Server for the current user
-- **pzcheckmods**: Check mod updates
-- **pzconfig**: Edit pzserver configuration (servertest.ini)
-- **pzsandbox**: Edit pzserver sandbox configuration (servertest_SandboxVars.lua)
-- **pzspawnpoints**: Edit pzserver spawn points configuration (servertest_spawnpoints.lua)
-- **pzspawnregions**: Edit pzserver spawn regions configuration (servertest_spawnregions.lua)
-- **pzserver**: Start pzserver in the background (no need to use screen)
-- **pzstart**: An alias for pzserver
-- **pzstatus**: Check pzserver status
-- **pzrestart**: Restart pzserver
-- **pzlog**: Show pzserver console output
-- **pzquit**: Stop pzserver
-- **pzstop**: An alias for pzquit
-- **pzkill**: Kill pzserver in case it's not responding
-- **pzmem**: Change maximum memory allocation of pzserver
-- **pzadminpasswd**: Change pzserver admin password
-- **pzuserpasswd**: Change pzserver password of a user
-- **pzcmd**: Run a server command (like *chopper*, *additem*, etc)
-- **pzmessage**: Display a message in-game visible to all connected players
+Once Project Zomboid Server Tools have been successfully installed you will have access to the following commands:
+- **pzinstall**        Install or update pzserver
+- **pzuninstall**      Uninstall pzserver
+- **pzconfig**         Edit pzserver configuration (servertest.ini)
+- **pzsandbox**        Edit pzserver sandbox settings
+- **pzspawnpoints**    Edit pzserver spawn points
+- **pzspawnregions**   Edit pzserver spawn regions
+- **pzcheckmods**      Check mod updates
+- **pzmaxmen**         Change pzserver maximum memory allocation
+- **pzadminpasswd**    Change pzserver admin password
+- **pzuserpasswd**     Change pzserver user password
+- **pzstatus**         Check pzserver status
+- **pzconsole**        Show pzserver console output
+- **pzstart**          Start pzserver in the background
+- **pzrestart**        Restart pzserver
+- **pzstop**           Stop pzserver
+- **pzkill**           Kill pzserver (unclean shutdown)
+- **pzcommand**        Run a server command (additem, chopper, etc)
+- **pzmessage**        Display custom message in-game
 
 # PZ Server Tools Installation
 https://github.com/quarantin/pz-server-tools/blob/main/docs/INSTALL.md

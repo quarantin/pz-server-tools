@@ -2,8 +2,12 @@
 
 . "$(dirname "${0}")/pzenv"
 
-rm -rf "${PZSERVER}"
+STATUS='No pzserver to uninstall'
 
-pzst_config --del
+if [ -d "${PZSERVER}" ]; then
+	STATUS='OK'
+	rm -rf "${PZSERVER}"
+	pzst_config --del
+fi
 
-echo OK
+echo ${STATUS}

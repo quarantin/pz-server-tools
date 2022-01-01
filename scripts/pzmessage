@@ -1,16 +1,12 @@
 #!/bin/bash
 
-. "$(dirname "${0}")/pzenv"
-
 if [ -z "${1}" ]; then
 	echo Usage: ${0} message...
 	exit
 fi
 
-PID=$(get_pz_pid)
-if [ -z "${PID}" ]; then
-	echo No running pzserver found
-	exit
-fi
+. "$(dirname "${0}")/pzenv"
 
-sudo ioctl "${PID}" servermsg \"${@}\" && echo OK
+check_running
+
+pzstc "${PZPID}" servermsg \"${@}\"

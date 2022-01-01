@@ -124,7 +124,7 @@ class PZMonitor:
 		for mod_id, mod in new_cache.items():
 
 			if mod_id not in old_cache:
-				print('New mod detected: ' + mod['name'])
+				print('New mod detected: [' + mod_id + '] ' + mod['name'])
 				mods.add(mod_id)
 
 			else:

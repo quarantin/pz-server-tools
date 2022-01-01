@@ -45,7 +45,7 @@ python3 -m pip install -r "${REPO}/requirements.txt" > /dev/null
 
 deactivate
 
-sudo rm -rf "${ENV}"
+sudo rm -rf "${CONFIGENV}"
 
 echo [*] Installing Project Zomboid Server Tools
 
@@ -68,7 +68,7 @@ sudo chown root:pzst "${CONFIG}"
 sudo chmod 664       "${CONFIG}"
 
 sudo mv "${REPOENV}" "${CONFIGDIR}"
-sudo chown -R root:root "${ENV}"
+sudo chown -R root:root "${CONFIGENV}"
 
 for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
@@ -77,6 +77,10 @@ done
 make -C "${SRC}" clean > /dev/null
 make -C "${SRC}" > /dev/null
 sudo make -C "${SRC}" install > /dev/null
+
+sudo cp "${REPO}/init.d/pzstd.service" /etc/systemd/system/
+sudo systemctl enable pzstd.service
+sudo service pzstd start
 
 sudo cp "${REPOCRON}" "${CRONFILE}"
 sudo chmod 644 "${CRONFILE}"

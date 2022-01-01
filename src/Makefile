@@ -1,29 +1,38 @@
-BIN        := /usr/local/bin
-IOCTL      := ioctl
-DETACH     := detach
+BIN    := /usr/local/bin
+PZSTC  := pzstc
+PZSTD  := pzstd
+DETACH := detach
+CFLAGS := -Wall -Werror -Wextra -pedantic
 
 all: build
 
-build: buildioctl builddetach
+build: buildpzst buildpzstd builddetach
 
-buildioctl:
-	gcc -o $(IOCTL) $(IOCTL).c
+buildpzst:
+	gcc $(CFLAGS) -o $(PZSTC) $(PZSTC).c
+
+buildpzstd:
+	gcc $(CFLAGS) -o $(PZSTD) $(PZSTD).c
 
 builddetach:
-	gcc -o $(DETACH) $(DETACH).c -lutil
+	gcc $(CFLAGS) -o $(DETACH) $(DETACH).c -lutil
 
 clean:
-	rm -f $(IOCTL) $(DETACH)
+	rm -f $(PZSTC) $(PZSTD) $(DETACH)
 
-install: uninstall installioctl installdetach
+install: uninstall clean build installpzst installpzstd installdetach
 
-installioctl:
-	cp $(IOCTL) $(BIN)
-	chmod a+x $(BIN)/$(IOCTL)
+installpzst:
+	cp $(PZSTC) $(BIN)
+	chmod 755 $(BIN)/$(PZSTC)
+
+installpzstd:
+	cp $(PZSTD) $(BIN)
+	chmod 755 $(BIN)/$(PZSTD)
 
 installdetach:
 	cp $(DETACH) $(BIN)
-	chmod a+x $(BIN)/$(DETACH)
+	chmod 755 $(BIN)/$(DETACH)
 
 uninstall:
-	rm -f $(BIN)/$(IOCTL) $(BIN)/$(DETACH)
+	rm -f $(BIN)/$(PZSTC) $(BIN)/$(PZSTD) $(BIN)/$(DETACH)

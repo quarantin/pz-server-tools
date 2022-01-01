@@ -1,13 +1,122 @@
 #!/bin/bash
 
-. "$(dirname "${0}")/pzenv"
+BASE="$(dirname "${0}")"
 
-check_running
+usage() {
+	echo "Usage: ${0} <command> [args]..."
+	echo
+	echo Available commands:
+	echo
+	echo '  install        Install or update pzserver'
+	echo '  uninstall      Uninstall pzserver'
+	echo
+	echo '  config         Edit pzserver configuration (servertest.ini)'
+	echo '  sandbox        Edit pzserver sandbox settings'
+	echo '  spawnpoints    Edit pzserver spawn points'
+	echo '  spawnregions   Edit pzserver spawn regions'
+	echo '  checkmods      Check mod updates'
+	echo '  maxmen         Change pzserver maximum memory allocation'
+	echo
+	echo '  adminpasswd    Change pzserver admin password'
+	echo '  userpasswd     Change pzserver user password'
+	echo '  status         Check pzserver status'
+	echo '  console        Show pzserver console output'
+	echo
+	echo '  start          Start pzserver in the background'
+	echo '  restart        Restart pzserver'
+	echo '  stop           Stop pzserver'
+	echo '  kill           Kill pzserver (unclean shutdown)'
+	echo
+	echo '  command        Run a server command (additem, chopper, etc)'
+	echo '  message        Display custom message in-game'
+	echo
+	exit
+}
 
-check_first_time
+COMMAND="${1}"
+if [ -z "${COMMAND}" ]; then
+	usage
+fi
 
-detach "$(dirname "${0}")/pzserverloop" &
+shift
 
-input_admin_password
+case "${COMMAND}" in
 
-echo OK
+	install)
+		"${BASE}/pzinstall" $@
+		;;
+
+	uninstall)
+		"${BASE}/pzuninstall" $@
+		;;
+
+	config)
+		"${BASE}/pzconfig" $@
+		;;
+
+	sandbox)
+		"${BASE}/pzsandbox" $@
+		;;
+
+	spawnpoints)
+		"${BASE}/pzspawnpoints" $@
+		;;
+
+	spawnregions)
+		"${BASE}/pzspawnregions" $@
+		;;
+
+	checkmods)
+		"${BASE}/pzcheckmods" $@
+		;;
+
+	maxmen)
+		"${BASE}/pzmaxmem" $@
+		;;
+
+	adminpasswd)
+		"${BASE}/pzadminpasswd" $@
+		;;
+
+	userpasswd)
+		"${BASE}/pzuserpasswd" $@
+		;;
+
+	status)
+		"${BASE}/pzstatus" $@
+		;;
+
+	console|log)
+		"${BASE}/pzconsole" $@
+		;;
+
+	start)
+		"${BASE}/pzstart" $@
+		;;
+
+	restart)
+		"${BASE}/pzrestart" $@
+		;;
+
+	stop|quit)
+		"${BASE}/pzstop" $@
+		;;
+
+	kill)
+		"${BASE}/pzkill" $@
+		;;
+
+	command|cmd)
+		"${BASE}/pzcommand" $@
+		;;
+
+	message|msg)
+		"${BASE}/pzmessage" $@
+		;;
+
+	*)
+		echo Unknown command ${COMMAND}
+		echo
+		usage
+		;;
+esac

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -z "${1}" ]; then
+	echo Usage: ${0} command...
+	exit
+fi
+
+. "$(dirname "${0}")/pzenv"
+
+check_running
+
+if [ "${1}" == 'servermsg' ]; then
+
+	shift
+	pzstc "${PZPID}" servermsg \"${@}\"
+
+else
+
+	pzstc "${PZPID}" ${@}
+fi

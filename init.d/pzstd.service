@@ -1,0 +1,6 @@
+[Service]
+ExecStart=/usr/local/bin/pzstd
+Restart=always
+
+[Install]
+WantedBy=default.target

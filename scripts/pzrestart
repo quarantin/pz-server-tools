@@ -1,14 +1,7 @@
 #!/bin/bash
 
-# Ask for sudo password before printing anything to the console
-sudo echo -n
-
 . "$(dirname "${0}")/pzenv"
 
-PID=$(get_pz_pid)
-if [ -z "${PID}" ]; then
-	echo No running pzserver found
-	exit
-fi
+check_running
 
-sudo ioctl "${PID}" quit && echo OK
+pzstc "${PZPID}" quit
