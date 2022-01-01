@@ -10,7 +10,7 @@ while true; do
 
 	[[ -f "${PZSERVERLOG}" ]] && cp "${PZSERVERLOG}" "${PZSERVERLOG}.old"
 
-	"${PZLAUNCHER}" &> "${PZSERVERLOG}"
+	"${PZSERVERSTART}" &> "${PZSERVERLOG}"
 
 	rm -f "${RESTARTSWITCH}"
 	if [ -f "${KILLSWITCH}" ]; then
