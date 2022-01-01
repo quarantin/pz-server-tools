@@ -1,6 +1,4 @@
-# Usage
-
-## Install Project Zomboid Dedicated Server
+# Install Project Zomboid Dedicated Server
 To install a new pzserver, first you have to choose a system username for that server. Each pzserver instance needs a different username. Let's assume you want to use the username **pzserver1**. Run the following commands to create the new user, and replace **pzserver1** with whatever username you choose:
 
 	sudo useradd -m -k /etc/skel -s /bin/bash pzserver1
@@ -15,9 +13,9 @@ Now that you're connected as **pzserver1**, you can run the following command to
 
 	pzinstall
 
-## Configuring Project Zomboid Dedicated Server
+# Configuring Project Zomboid Dedicated Server
 
-### Configuring Ports
+## Configuring Ports
 If you will run multiple pzservers on the same machine, you have to configure a different port for each server. Furthermore, each server needs exactly one port, plus one extra port per player configured on the server. So for example if you have a pzserver running on port 16261 and you configure 32 players, your other pzservers can't use a port in the range 16261-16293.
 Run the following command to edit pzserver configuration:
 
@@ -32,7 +30,7 @@ If you need to use RCON, you have to the the option **RCONPassword** and **RCONP
 	RCONPort=27015
 	RCONPassword=yourRconPassword
 
-### Adding Mods
+## Adding Mods
 If you want to enable mods on your server you have to edit the configuration and add your mods to the **WorkshopItems** option. For each mod you have to add the Workshop ID of the mod, using semicolon ( ; ) as delimiter. The Workshop ID can be found on Steam Workshop when visiting the page for the mod.
 
 For example if you want to install the mod **Just Throw Them Out The Window**, available here:
@@ -47,12 +45,12 @@ whose Workshop ID is **2642486124**. Then your configuration should look like th
 
 	WorkshopItems=2659216714;2642486124
 
-### Sandbox Settings
+## Sandbox Settings
 In order to edit your server sandbox settings run the following command:
 
 	pzsandbox
 
-### Spawn Points and Regions
+## Spawn Points and Regions
 If you want to change the spawn points where player can land in the game run the following command:
 
 	pzspawnpoints
@@ -61,17 +59,17 @@ For spaw regions, run the following command:
 
 	pzspawnregions
 
-## Starting Project Zomboid Dedicated Server
+# Starting Project Zomboid Dedicated Server
 Once your new pzserver is installed you can start it using the following command:
 
 	pzserver
 
-## Restarting Project Zomboid Dedicated Server
+# Restarting Project Zomboid Dedicated Server
 If you need to restart your pzserver run the following command:
 
 	pzrestart
 
-## Stopping Project Zomboid Dedicated Server
+# Stopping Project Zomboid Dedicated Server
 If you want to stop your pzserver run the following command:
 
 	pzquit

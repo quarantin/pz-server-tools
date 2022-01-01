@@ -12,15 +12,6 @@ Don't expect any kind of support unit the first release is ready!
 - Manage multiple Project Zomboid Dedicated Server running on the same machine.
 - Many more...
 
-# Installing Project Zomboid Server Tools
-https://github.com/quarantin/pz-server-tools/blob/main/docs/INSTALL.md
-
-# Configuring Project Zomboid Server Tools
-https://github.com/quarantin/pz-server-tools/blob/main/docs/CONFIG.md
-
-# Using Project Zomboid Server Tools
-https://github.com/quarantin/pz-server-tools/blob/main/docs/USAGE.md
-
 # Tools
 Once Project Zomboid Server Tools have been successfully installed and configured you will have access to the following commands:
 - **pzinstall**: Install or update Project Zomboid Dedicated Server for the current user
@@ -43,3 +34,12 @@ Once Project Zomboid Server Tools have been successfully installed and configure
 - **pzuserpasswd**: Change pzserver password of a user
 - **pzcmd**: Run a server command (like *chopper*, *additem*, etc)
 - **pzmessage**: Display a message in-game visible to all connected players
+
+# PZ Server Tools Installation
+https://github.com/quarantin/pz-server-tools/blob/main/docs/INSTALL.md
+
+# PZ Server Tools Configuration
+https://github.com/quarantin/pz-server-tools/blob/main/docs/CONFIG.md
+
+# PZ Server Operations
+https://github.com/quarantin/pz-server-tools/blob/main/docs/PZSERVER.md
