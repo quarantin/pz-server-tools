@@ -3,6 +3,7 @@ To install a new pzserver, first you have to choose a system username for that s
 
 	sudo useradd -m -k /etc/skel -s /bin/bash pzserver1
 	sudo passwd pzserver1
+	sudo usermod -aG pzst pzserver1
 	sudo usermod -aG sudo pzserver1
 
 Then login as that user:
