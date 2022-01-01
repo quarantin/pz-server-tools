@@ -22,3 +22,5 @@ for arch in [ 32, 64 ]:
 
 	with open(filepath, 'w') as fd:
 		fd.write(json.dumps(jsondata, indent='\t') + os.linesep)
+
+print('OK')
