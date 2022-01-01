@@ -12,7 +12,7 @@ gigabytes = sys.argv[1]
 
 for arch in [ 32, 64 ]:
 
-	filepath = '/home/%s/pzserver/ProjectZomboid%d.json' % (os.getlogin(), arch)
+	filepath = '/home/%s/pzserver/ProjectZomboid%d.json' % (os.getenv('USER'), arch)
 	with open(filepath) as fd:
 		jsondata = json.loads(fd.read())
 
