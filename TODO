@@ -1,4 +1,5 @@
 Rename PZLAUNCHER to PZSTARTSERVER
+Ask for pzserverport on first time and prevent other pzservers to use any port in the range (pzserverport, pzserverport + 32) (32 should be based on MaxPlayers)
 Fix documentation: run pzserver once before pzconfig. Then we have to use pzkill in case the server could not bind the port
 Fix problem on first install with pzst group
 Add commands to backup/restore current save
