@@ -1,14 +1,15 @@
+Rename PZLAUNCHER to PZSTARTSERVER
+Fix documentation: run pzserver once before pzconfig. Then we have to use pzkill in case the server could not bind the port
 Fix problem on first install with pzst group
 Add commands to backup/restore current save
 Add commands pause/unpause to pause the game
 Stop pzserver before pzuninstall
 Stop all pzserver before bin/uninstall
 Monitor memory and trigger reboot if needed
-Detect map mods and create symlinks
 Fix pzcmd:
 	- Check all commands are working
 	- Show error message if command is invalid or unknown
-
+Detect map mods and create symlinks
 Map problem:
 	https://youtu.be/z11zDix8l2Y?t=539
 	https://theindiestone.com/forums/index.php?%2Ftopic%2F18329-mod-and-map-installation-instructions-on-multiplayer-server-pz-3320%2F
