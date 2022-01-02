@@ -1,11 +1,34 @@
-Add commands to backup/restore current save
-Add commands pause/unpause to pause the game
-Stop pzserver before pzuninstall
-Stop all pzserver before bin/uninstall
-Monitor memory and trigger reboot if needed
-Prevent new pzservers to use any port in the port range of other pzservers
-Fix pzcommand: Check all commands are working
-Fix pzcommand: Show error message if command is invalid or unknown
-Detect map mods and create symlinks
-Map problem: https://youtu.be/z11zDix8l2Y?t=539
-Map problem: https://theindiestone.com/forums/index.php?%2Ftopic%2F18329-mod-and-map-installation-instructions-on-multiplayer-server-pz-3320%2F
+- Add commands to backup/restore current save
+- Add commands pause/unpause to pause the game
+- Stop pzserver before pzuninstall
+- Stop all pzserver before bin/uninstall
+- Monitor memory and trigger reboot if needed
+- Prevent new pzservers to use any port in the port range of other pzservers
+- Fix pzcommand
+	Check all commands are working
+	Show error message if command is invalid or unknown
+- Map problem: Detect map mods and create symlinks
+	https://youtu.be/z11zDix8l2Y?t=539
+	https://theindiestone.com/forums/index.php?%2Ftopic%2F18329-mod-and-map-installation-instructions-on-multiplayer-server-pz-3320%2F
+- Make a web UI
+	Controls:
+		Start - Start server
+		Stop - Stop Server
+		Restart - Restart server
+		Update & Restart - Restarts your server, updates your mods & deletes their old workshop folders to replace it with the new mod.
+		(also would be nice if it detected maps to copy and paste to the servers map folder so there's no issues too but it's okay if not)
+
+	File manager
+	Config file editor
+	Permissions manager
+		Add user 
+		Delete user
+		Set permissions
+
+	Console Viewer
+	Console message server
+	Dedicated memory setup
+	Filter catch logs (such as hacks for quick grabbing ability)
+
+	Extra:
+		big servers have bad zombie issues and the zpop files should be deleted here and there... for resource issues this helps alot after testing. 
