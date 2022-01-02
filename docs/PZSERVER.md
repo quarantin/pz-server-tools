@@ -33,7 +33,7 @@ And change the value of the **DefaultPort** option according to your needs:
 
 	DefaultPort=16261
 
-If you need to use RCON, you have to the the option **RCONPassword** and **RCONPort**. You also have to use a different port for each of your pzservers. So for example if using RCON your configuration should look like this:
+If you need to use RCON, you have to set the option **RCONPassword** and **RCONPort**. You also have to use a different port for each of your pzservers. So for example if using RCON your configuration should look like this:
 
 	RCONPort=27015
 	RCONPassword=yourRconPassword
