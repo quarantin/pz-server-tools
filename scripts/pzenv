@@ -79,9 +79,14 @@ read_adminpasswd() {
 
 		echo
 		echo Confirm the password:
-		read -s CONFIRM
+		read -s CONFIRMADMINPASSWD
 
-		if [ "${ADMINPASSWD}" = "${CONFIRM}" ]; then
+		if [ -z "${ADMINPASSWD}" ]; then
+			echo
+			echo Empty passwords are not allowed!
+			continue
+
+		elif [ "${ADMINPASSWD}" = "${CONFIRMADMINPASSWD}" ]; then
 			export ADMINPASSWDOPTION="-adminpassword ${ADMINPASSWD}"
 			break
 		fi
