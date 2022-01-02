@@ -4,11 +4,8 @@
 
 PZPID=$(get_pz_pid)
 if [ -z "${PZPID}" ]; then
-
 	echo Status: Not running
 
 else
-
 	echo Status: Running
-
 fi
