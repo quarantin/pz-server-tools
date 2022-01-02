@@ -22,7 +22,6 @@
 
 //#define DEBUG
 
-#define MIN_UID 100
 #define MAX_WAIT 30
 
 #define PZST_GROUP "pzst"
@@ -144,11 +143,6 @@ int wait_pz_pid(pid_t pz_pid, char *strerr, size_t strerrsz) {
 			return -1;
 		}
 
-#ifdef DEBUG
-
-		printf(".");
-		fflush(stdout);
-#endif
 		usleep(200 * 1000);
 	}
 
