@@ -67,11 +67,6 @@ For spaw regions, run the following command:
 
 	pzspawnregions
 
-# Starting Project Zomboid Dedicated Server
-Once your new pzserver is installed you can start it using the following command:
-
-	pzserver
-
 # Restarting Project Zomboid Dedicated Server
 If you need to restart your pzserver run the following command:
 
