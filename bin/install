@@ -4,7 +4,7 @@ set -e
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
-PACKAGES='gcc jq libsdl2-2.0-0:i386 make python3 virtualenv'
+PACKAGES='gcc iproute2 jq libsdl2-2.0-0:i386 make python3 virtualenv'
 
 echo [*] Adding architecture i386
 sudo dpkg --add-architecture i386
