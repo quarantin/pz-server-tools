@@ -13,7 +13,7 @@ from retry import retry
 from datetime import datetime, timedelta
 
 
-class PZMonitor:
+class PZModMonitor:
 
 	def __init__(self, config, restart=False, update_cache=False):
 
@@ -170,4 +170,4 @@ if __name__ == '__main__':
 	restart      = '-r' in sys.argv or '--restart'      in sys.argv
 	update_cache = '-u' in sys.argv or '--update-cache' in sys.argv
 
-	PZMonitor(config, restart=restart, update_cache=update_cache)
+	PZModMonitor(config, restart=restart, update_cache=update_cache)

@@ -11,6 +11,7 @@ from os.path import exists
 from datetime import timedelta
 from subprocess import call, DEVNULL
 
+
 class PZRestarterJob:
 
 	def __init__(self, config, server, now=False):

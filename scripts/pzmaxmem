@@ -4,6 +4,9 @@ import os
 import sys
 import json
 
+from os.path import isfile
+
+
 if len(sys.argv) < 2:
 	print('Usage: %s <gigabytes>' % sys.argv[0])
 	sys.exit()
@@ -13,6 +16,9 @@ gigabytes = sys.argv[1]
 for arch in [ 32, 64 ]:
 
 	filepath = '/home/%s/pzserver/ProjectZomboid%d.json' % (os.getenv('USER'), arch)
+	if not isfile(filepath):
+		continue
+
 	with open(filepath) as fd:
 		jsondata = json.loads(fd.read())
 
