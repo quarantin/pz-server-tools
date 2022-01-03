@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+. "$(dirname "$(dirname "${0}")")/scripts/pzenv"
+
+ARCHIVE='javamods-linux.zip'
+URL="https://github.com/quarantin/javamods/releases/download/0.0.2/${ARCHIVE}"
+
+if ! [ -d "${PZSERVER}" ]; then
+	echo No installed pzserver found
+	exit
+fi
+
+wget -q -O "${PZSERVER}/${ARCHIVE}" "${URL}"
+unzip -o -qq -d "${PZSERVER}" "${PZSERVER}/javamods-linux.zip"
+mv "${PZSERVER}/javamods.jar" "${PZSERVER}/java/"
+rm -f "${PZSERVER}/javamods.sh"
+
+echo OK
