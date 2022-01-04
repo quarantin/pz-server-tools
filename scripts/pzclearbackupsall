@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+USERS=($(jq -r -c 'try .pzservers[]' "${CONFIG}"))
+if [ -z "${USERS}" ]; then
+	echo No pzserver configured
+	exit
+fi
+
+for USER in ${USERS[@]}; do
+	echo $(sudo -u "${USER}" pzclearbackups) \(${USER}\)
+done
+
+echo OK
