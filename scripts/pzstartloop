@@ -12,6 +12,9 @@ while true; do
 
 	"${PZSERVERSTART}" ${@} &> /dev/null
 
+	mkdir -p "${PZSERVERBACKUP}"
+	cp -a "${PZSERVERSAVE}" "${PZSERVERBACKUP}/$(date +%Y%m%d-%H%M%S)"
+
 	PORT="$(echo "${PORTOPTION}" | cut -f2 -d' ')"
 	if ! [ -z "${PORT}" ]; then
 		sed -i "s/^DefaultPort.*/DefaultPort=${PORT}/" "${PZSERVERCONFIG}"
