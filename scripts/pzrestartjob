@@ -5,26 +5,47 @@ import sys
 import json
 import time
 import errno
+import signal
+import logging
 
 from pwd import getpwnam
 from os.path import exists
 from datetime import timedelta
 from subprocess import call, DEVNULL
 
+loglevel = logging.DEBUG
+logfile = '/var/log/pzst.log'
+logformat = '%(asctime)s %(name)s %(message)s'
+dateformat = '%Y-%m-%d %H:%M:%S'
+
+logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
+logger = logging.getLogger('PZRestarterJob')
+logger.addHandler(logging.StreamHandler(sys.stdout))
+
 
 class PZRestarterJob:
 
-	def __init__(self, config, server, now=False):
+	def __init__(self, config, server, restart_delay=0, restart_sequence=None):
 		self.server = server
-		self.lockpath = '/var/cache/pzst/restartjob.' + server
-		self.restart_sequence = config.get('restart-sequence', [15, 10, 5, 2, 1])
+		self.interrupted = False
 		self.env = dict(os.environ)
 		self.env['USER'] = server
+		self.lockpath = '/var/cache/pzst/restartjob.' + server
+
+		restart_sequence = restart_sequence or config.get('restart-sequence', [15, 10, 5, 2, 1])
+		signal.signal(signal.SIGINT, self.signal_handler)
+
+		logger.info(server + ' Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
 
 		self.lock()
 
-		if not now:
-			self.wait_alert_sequence()
+		self.wait_restart_delay(restart_delay)
+		if self.interrupted:
+			self.user_interrupted()
+
+		self.wait_restart_sequence(restart_sequence)
+		if self.interrupted:
+			self.user_interrupted()
 
 		self.pzserver_restart(server)
 
@@ -32,18 +53,16 @@ class PZRestarterJob:
 
 	def lock(self):
 
-		uid = getpwnam(self.server).pw_uid
 		flags = os.O_CREAT|os.O_EXCL|os.O_WRONLY
 
 		try:
 
-			os.close(os.open(self.lockpath, flags, mode=0o644))
-			os.chown(self.lockpath, uid, uid)
+			os.close(os.open(self.lockpath, flags, mode=0o444))
 
 		except OSError as error:
 
 			if error.errno == errno.EEXIST:
-				print('Another instance of this script is already running!', file=sys.stderr)
+				logger.info(self.server + ' Another instance of this script is already running!')
 				sys.exit(0)
 
 			raise
@@ -52,43 +71,70 @@ class PZRestarterJob:
 		os.remove(self.lockpath)
 
 	def pzserver_message(self, server, message):
+		logger.info(server + ' Sending message: ' + message)
 		call(['/usr/local/bin/pzmessage', message ], env=self.env, stdout=DEVNULL)
 
 	def pzserver_restart(self, server):
+		logger.info(server + ' Restarting now!')
 		call(['/usr/local/bin/pzrestart' ], env=self.env, stdout=DEVNULL)
 
-	def wait_alert_sequence(self):
+	def sleep(self, delay):
 
-		sequence = self.get_alert_sequence()
+		for second in range(0, delay):
+
+			if self.interrupted:
+				break
+
+			time.sleep(1)
+
+	def wait_restart_delay(self, restart_delay):
+
+		if restart_delay != 0:
+			plural = restart_delay >= 2 and 's' or ''
+			logger.info(server + ' Waiting %d minute%s before initiating restart sequence' % (restart_delay, plural))
+			self.sleep(restart_delay * 60)
+
+	def wait_restart_sequence(self, restart_sequence):
+
+		sequence = self.get_restart_sequence(restart_sequence)
 
 		alerts = list(sequence)
 		for delay in sequence:
 
+			if self.interrupted:
+				break
+
 			countdown = sum(alerts)
 			alerts.remove(delay)
 
-			plural = countdown >= 2 and 's' or ''
 			minutes = str(timedelta(minutes=countdown)).lstrip('0').lstrip(':')
-			message = 'Restarting server in %s minute%s!' % (minutes, plural)
-
+			message = 'Restarting server in %s' % minutes
 			self.pzserver_message(self.server, message)
 
-			time.sleep(delay * 60)
+			self.sleep(delay * 60)
 
-	def get_alert_sequence(self):
+	def get_restart_sequence(self, restart_sequence):
 
 		alert_sequence = []
 
-		for i, minutes in enumerate(self.restart_sequence):
+		for i, minutes in enumerate(restart_sequence):
 
 			delta = 0
-			if i + 1 < len(self.restart_sequence):
-				delta = self.restart_sequence[i + 1]
+			if i + 1 < len(restart_sequence):
+				delta = restart_sequence[i + 1]
 
 			alert_sequence.append(minutes - delta)
 
 		return alert_sequence
 
+	def signal_handler(self, sig, frame):
+		self.interrupted = True
+
+	def user_interrupted(self):
+		message = 'Job interrupted by user!'
+		logger.info(self.server + ' ' + message)
+		self.unlock()
+		sys.exit(0)
 
 if __name__ == '__main__':
 
@@ -105,10 +151,17 @@ if __name__ == '__main__':
 	now = False
 	server = None
 
-	for arg in sys.argv[1:]:
+	restart_delay = 0
+	restart_sequence = []
 
-		if arg in [ '-n', '--now' ]:
-			now = True
+	args = iter(sys.argv[1:])
+	for arg in args:
+
+		if arg in [ '-d', '--delay' ]:
+			restart_delay = int(next(args))
+
+		elif arg.isnumeric():
+			restart_sequence.append(int(arg))
 
 		else:
 			server = arg
@@ -117,4 +170,4 @@ if __name__ == '__main__':
 		print('Usage: %s <pzserver>' % sys.argv[0], file=sys.stderr)
 		sys.exit(1)
 
-	PZRestarterJob(config, server, now=now)
+	PZRestarterJob(config, server, restart_delay=restart_delay, restart_sequence=restart_sequence)
