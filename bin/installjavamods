@@ -16,4 +16,9 @@ unzip -o -qq -d "${PZSERVER}" "${PZSERVER}/javamods-linux.zip"
 mv "${PZSERVER}/javamods.jar" "${PZSERVER}/java/"
 rm -f "${PZSERVER}/javamods.sh"
 
+TMP=$(mktemp)
+jq '.javamods = true' "${CONFIG}" > "${TMP}"
+cp "${TMP}" "${CONFIG}"
+rm -f "${TMP}"
+
 echo OK
