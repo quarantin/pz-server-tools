@@ -9,6 +9,11 @@ if ! [ -d "${PZSERVER}" ]; then
 	exit
 fi
 
+TMP=$(mktemp)
+jq 'del(.javamods)' "${CONFIG}" > "${TMP}"
+cp "${TMP}" "${CONFIG}"
+rm -f "${TMP}"
+
 rm -f \
 	"${PZSERVER}/${ARCHIVE}"               \
 	"${PZSERVER}/javamods.json"            \
