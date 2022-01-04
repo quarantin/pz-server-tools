@@ -40,11 +40,18 @@ PZSERVERSTART="${PZSERVER}/start-server.sh"
 PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
 PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
+JAVAMODSSCRIPT='javamods-server-start.sh'
 
 if [ -f "${CONFIG}" ]; then
+
 	EDITOR="$(jq -r .editor "${CONFIG}")"
 	if [ "${EDITOR}" = "null" ]; then
 		EDITOR='nano'
+	fi
+
+	JAVAMODS="$(jq -r '.javamods' "${CONFIG}")"
+	if [ "${JAVAMODS}" = 'true' ] && [ -f "${PZSERVER}/${JAVAMODSSCRIPT}" ]; then
+		PZSERVERSTART="${PZSERVER}/${JAVAMODSSCRIPT}"
 	fi
 fi
 
