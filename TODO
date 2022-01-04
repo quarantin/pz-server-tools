@@ -1,4 +1,4 @@
-- Add commands to backup/restore current save
+- Add restore save backup
 - Add commands pause/unpause to pause the game
 - Stop pzserver before pzuninstall
 - Stop all pzserver before bin/uninstall
