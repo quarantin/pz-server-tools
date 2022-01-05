@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. "$(dirname "$(dirname "${0}")")/scripts/pzenv"
+. "$(dirname "${0}")/pzenv"
 
 ARCHIVE='javamods-linux.zip'
 
