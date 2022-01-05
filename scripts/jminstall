@@ -3,8 +3,9 @@ set -e
 
 . "$(dirname "${0}")/pzenv"
 
+VERSION=0.0.3
 ARCHIVE='javamods-linux.zip'
-URL="https://github.com/quarantin/javamods/releases/download/0.0.2/${ARCHIVE}"
+URL="https://github.com/quarantin/javamods/releases/download/${VERSION}/${ARCHIVE}"
 
 if ! [ -d "${PZSERVER}" ]; then
 	echo No installed pzserver found
