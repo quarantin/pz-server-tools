@@ -5,18 +5,34 @@ sudo echo -n
 
 . "$(dirname "${0}")/pzenv"
 
+DATE=$(date +%H:%M)
+
+RESTARTS=($(jq -r -c 'try ."daily-restarts"[]' "${CONFIG}"))
+if [ -z "${RESTARTS}" ]; then
+	echo No daily-restart configured
+	exit
+fi
+
 USERS=($(jq -r -c 'try .pzservers[]' "${CONFIG}"))
 if [ -z "${USERS}" ]; then
 	echo No pzserver configured
 	exit
 fi
 
-for USER in ${USERS[@]}; do
+for RESTART in ${RESTARTS[@]}; do
 
-	echo Updating pzservers \`${USER}\`
+	if [ "${RESTART}" = "${DATE}" ]; then
 
-	sudo -u "${USER}" pzinstall > /dev/null && sudo pzrestartjob "${USER}" > /dev/null &
+		for USER in ${USERS[@]}; do
 
+			echo Updating pzservers \`${USER}\`
+
+			sudo -u "${USER}" pzinstall > /dev/null && sudo pzrestartjob "${USER}" > /dev/null &
+
+		done
+
+		break
+	fi
 done
 
 echo OK
