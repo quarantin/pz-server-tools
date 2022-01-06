@@ -8,6 +8,8 @@ REPO="$(dirname "$(dirname "${0}")")"
 
 SRC="${REPO}/src"
 
+sudo rm -f "${INSTALLCHECK}"
+
 echo [*] Removing system user: pzst
 
 sudo userdel pzst 2> /dev/null || true
@@ -36,7 +38,7 @@ if [ -f "${CONFIG}" ]; then
 	cp "${CONFIG}" "${REPO}"
 fi
 
-sudo rm -f "${CACHE}" "${LOCK}" "${CONFIG}" "${CRONFILE}" "${LOGFILE}"
+sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}" "${LOGFILE}"
 
 if [ -d "${CACHEDIR}" ]; then
 	sudo rmdir "${CACHEDIR}"
