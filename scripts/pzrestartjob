@@ -140,17 +140,13 @@ if __name__ == '__main__':
 
 	from os.path import isfile
 
+	config = {}
 	config_path = '/etc/pzst/config.json'
-	if not isfile(config_path):
-		print('Configuration not found: ' + config_path, file=sys.stderr)
-		sys.exit(1)
+	if isfile(config_path):
+		with open(config_path) as fd:
+			config = json.loads(fd.read())
 
-	with open(config_path) as fd:
-		config = json.loads(fd.read())
-
-	now = False
 	server = None
-
 	restart_delay = 0
 	restart_sequence = []
 
