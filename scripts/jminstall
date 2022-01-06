@@ -18,8 +18,7 @@ unzip -o -qq -d "${PZSERVER}" "${TMP}"
 rm -f "${TMP}"
 
 TMP=$(mktemp)
-jq '.javamods = true' "${CONFIG}" > "${TMP}"
-cp "${TMP}" "${CONFIG}"
-rm -f "${TMP}"
+jq '.javamods = true' "${LOCALCONFIG}" > "${TMP}"
+mv -f "${TMP}" "${LOCALCONFIG}"
 
 echo OK
