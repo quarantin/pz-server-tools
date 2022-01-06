@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+if ! [ -f "${JAVAMODSCONSOLE}" ]; then
+	echo No log file found for this user.
+	exit
+fi
+
+tail -f -n +1 "${JAVAMODSCONSOLE}"
