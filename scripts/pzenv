@@ -16,6 +16,9 @@ CONFIGENV="${CONFIGDIR}/env"
 CONFIGFILE="config.json"
 CONFIG="${CONFIGDIR}/${CONFIGFILE}"
 
+LOCALCONFIGDIR="${HOME}/.pzst"
+LOCALCONFIG="${LOCALCONFIGDIR}/config.json"
+
 CRONDIR="/etc/cron.d"
 CRONFILE="${CRONDIR}/${NAME}"
 
@@ -42,7 +45,7 @@ PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
 JAVAMODSSCRIPT='javamods-server-start.sh'
 
-if [ -f "${CONFIG}" ]; then
+if [ -e "${CONFIG}" ]; then
 
 	EDITOR="$(jq -r .editor "${CONFIG}")"
 	if [ "${EDITOR}" = "null" ]; then
@@ -53,6 +56,11 @@ if [ -f "${CONFIG}" ]; then
 	if [ "${JAVAMODS}" = 'true' ] && [ -f "${PZSERVER}/${JAVAMODSSCRIPT}" ]; then
 		PZSERVERSTART="${PZSERVER}/${JAVAMODSSCRIPT}"
 	fi
+fi
+
+if ! [ -e "${LOCALCONFIG}" ]; then
+	mkdir -p "${LOCALCONFIGDIR}"
+	echo '{}' > "${LOCALCONFIG}"
 fi
 
 install_steamcmd() {
