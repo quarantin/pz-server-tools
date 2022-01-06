@@ -3,7 +3,7 @@ set -e
 
 . "$(dirname "${0}")/pzenv"
 
-VERSION=0.0.3
+VERSION=0.0.4
 ARCHIVE='javamods-linux.zip'
 URL="https://github.com/quarantin/javamods/releases/download/${VERSION}/${ARCHIVE}"
 
