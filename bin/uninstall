@@ -10,11 +10,6 @@ SRC="${REPO}/src"
 
 sudo rm -f "${INSTALLCHECK}"
 
-echo [*] Removing system user: pzst
-
-sudo userdel pzst 2> /dev/null || true
-sudo groupdel pzst 2> /dev/null || true
-
 echo [*] Deleting virtual environment
 
 sudo rm -rf "${CONFIGENV}"
@@ -28,8 +23,8 @@ for SCRIPT in $(ls -1 "${REPO}/scripts"); do
 	sudo rm -f "${BIN}/${SCRIPT}"
 done
 
-sudo service pzstd stop
-sudo systemctl disable pzstd.service
+sudo service pzstd stop 2> /dev/null
+sudo systemctl disable pzstd.service 2> /dev/null
 sudo rm -f /etc/systemd/system/pzstd.service
 
 sudo make -C "${SRC}" uninstall > /dev/null
@@ -43,5 +38,10 @@ fi
 if [ -d "${CONFIGDIR}" ]; then
 	sudo rmdir "${CONFIGDIR}"
 fi
+
+echo [*] Removing system user: pzst
+
+sudo userdel pzst 2> /dev/null || true
+sudo groupdel pzst 2> /dev/null || true
 
 echo OK
