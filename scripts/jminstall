@@ -12,10 +12,10 @@ if ! [ -d "${PZSERVER}" ]; then
 	exit
 fi
 
-wget -q -O "${PZSERVER}/${ARCHIVE}" "${URL}"
-unzip -o -qq -d "${PZSERVER}" "${PZSERVER}/javamods-linux.zip"
-mv "${PZSERVER}/javamods.jar" "${PZSERVER}/java/"
-rm -f "${PZSERVER}/javamods.sh"
+TMP=$(mktemp)
+wget -q -O "${TMP}" "${URL}"
+unzip -o -qq -d "${PZSERVER}" "${TMP}"
+rm -f "${TMP}"
 
 TMP=$(mktemp)
 jq '.javamods = true' "${CONFIG}" > "${TMP}"
