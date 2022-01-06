@@ -4,24 +4,6 @@ set -e
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
-PACKAGES='gcc iproute2 jq libsdl2-2.0-0:i386 make python3 virtualenv'
-
-echo [*] Adding architecture i386
-sudo dpkg --add-architecture i386
-
-echo [*] Updating package cache
-sudo apt-get -qq update
-
-echo [*] Upgrading packages
-sudo apt-get -qq --yes upgrade 3>&1 2>&3- 1>/dev/null
-
-echo -n [*] Installing packages
-for PACKAGE in ${PACKAGES}; do
-	echo -n .
-	sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
-done
-echo
-
 REPO="$(dirname "$(dirname "${0}")")"
 . "${REPO}/scripts/pzenv"
 
@@ -31,9 +13,30 @@ REPOENV="${REPO}/env"
 SCRIPTS="${REPO}/scripts"
 SRC="${REPO}/src"
 
-echo [*] Adding system user: pzst
+if ! [ -f "${INSTALLCHECK}" ]; then
 
-sudo useradd -r pzst 2> /dev/null || true
+	PACKAGES='gcc iproute2 jq libsdl2-2.0-0:i386 make python3 virtualenv'
+
+	echo [*] Adding architecture i386
+	sudo dpkg --add-architecture i386
+
+	echo [*] Updating package cache
+	sudo apt-get -qq update
+
+	echo [*] Upgrading packages
+	sudo apt-get -qq --yes upgrade 3>&1 2>&3- 1>/dev/null
+
+	echo -n [*] Installing packages
+	for PACKAGE in ${PACKAGES}; do
+		echo -n .
+		sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
+	done
+	echo
+
+	echo [*] Adding system user: pzst
+
+	sudo useradd -r pzst 2> /dev/null || true
+fi
 
 echo [*] Creating virtual environment
 
@@ -85,5 +88,7 @@ sudo service pzstd start
 sudo cp "${REPOCRON}" "${CRONFILE}"
 sudo chmod 644 "${CRONFILE}"
 sudo /etc/init.d/cron restart > /dev/null
+
+sudo touch "${INSTALLCHECK}"
 
 echo OK
