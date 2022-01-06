@@ -33,6 +33,7 @@ STEAMCMDARCHIVEPATH="/tmp/${STEAMCMDARCHIVE}"
 STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE}"
 
 ZOMBOID="${HOME}/Zomboid"
+
 PZSERVER="${HOME}/pzserver"
 PZSERVERDIR="${ZOMBOID}/Server"
 PZSERVERLOG="${ZOMBOID}/server-console.txt"
@@ -43,7 +44,9 @@ PZSERVERSTART="${PZSERVER}/start-server.sh"
 PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
 PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
-JAVAMODSSCRIPT='javamods-server-start.sh'
+
+JAVAMODSSCRIPT='javamods-start-server.sh'
+JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
 
 if [ -e "${CONFIG}" ]; then
 
