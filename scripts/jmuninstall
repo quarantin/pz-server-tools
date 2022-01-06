@@ -10,9 +10,8 @@ if ! [ -d "${PZSERVER}" ]; then
 fi
 
 TMP=$(mktemp)
-jq 'del(.javamods)' "${CONFIG}" > "${TMP}"
-cp "${TMP}" "${CONFIG}"
-rm -f "${TMP}"
+jq 'del(.javamods)' "${LOCALCONFIG}" > "${TMP}"
+mv "${TMP}" "${LOCALCONFIG}"
 
 rm -f \
 	"${PZSERVER}/${ARCHIVE}"               \
