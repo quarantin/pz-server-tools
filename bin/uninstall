@@ -34,10 +34,6 @@ sudo rm -f /etc/systemd/system/pzstd.service
 
 sudo make -C "${SRC}" uninstall > /dev/null
 
-if [ -f "${CONFIG}" ]; then
-	cp "${CONFIG}" "${REPO}"
-fi
-
 sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}" "${LOGFILE}"
 
 if [ -d "${CACHEDIR}" ]; then
