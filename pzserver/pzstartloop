@@ -19,11 +19,6 @@ while true; do
 		cp -a "${PZSERVERSAVE}" "${PZSERVERBACKUP}/$(date +%Y%m%d-%H%M%S)"
 	fi
 
-	PORT="$(echo "${PORTOPTION}" | cut -f2 -d' ')"
-	if ! [ -z "${PORT}" ]; then
-		sed -i "s/^DefaultPort.*/DefaultPort=${PORT}/" "${PZSERVERCONFIG}"
-	fi
-
 	rm -f "${RESTARTSWITCH}"
 	if [ -f "${KILLSWITCH}" ]; then
 		echo Kill switch detected, quitting.

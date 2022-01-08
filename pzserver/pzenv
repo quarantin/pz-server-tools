@@ -134,7 +134,8 @@ read_port() {
 
 		OUTPUT=$(ss -nluw | grep ":${PORT} ")
 		if [ -z "${OUTPUT}" ]; then
-			pzst_config --port "${PORT}"
+			mkdir -p "${PZSERVERDIR}"
+			echo "DefaultPort=${PORT}" > "${PZSERVERCONFIG}"
 			break
 		fi
 
@@ -163,9 +164,6 @@ check_first_time() {
 
 	ADMINUSER="$(jq -r 'try .admin // "pzadmin"' "${LOCALCONFIG}" 2> /dev/null)"
 	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
-
-	PORT="$(jq -r 'try .port // 16261' "${LOCALCONFIG}" 2> /dev/null)"
-	PORTOPTION="-port ${PORT}"
 }
 
 check_is_pzserver_user() {

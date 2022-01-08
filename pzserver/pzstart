@@ -6,6 +6,6 @@ check_is_pzserver_user
 
 check_first_time
 
-detach "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${PORTOPTION} ${@} &
+detach "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${@} &
 
 echo OK
