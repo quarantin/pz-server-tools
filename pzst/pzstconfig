@@ -8,3 +8,5 @@ if ! [ -f "${CONFIG}" ]; then
 fi
 
 "${EDITOR}" "${CONFIG}"
+
+"$(dirname "${0}")/pzst" checkconfig
