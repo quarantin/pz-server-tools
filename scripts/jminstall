@@ -8,11 +8,11 @@ if ! [ -d "${PZSERVER}" ]; then
 	exit
 fi
 
-rm -rf "${JAVAMODSHOME}"
+TMP=$(mktemp)
+wget -q -O "${TMP}" "${JAVAMODSURL}"
+unzip -o -qq -d "${PZSERVER}" "${TMP}"
+rm -f "${TMP}"
 
-git clone --quiet --depth 1 -c advice.detachedHead=false --branch "${JAVAMODSVERSION}" "${JAVAMODSURL}" "${JAVAMODSHOME}"
-
-mkdir -p "${JAVAMODSCONFIGDIR}"
-cp "${JAVAMODSHOME}/config.json" "${JAVAMODSCONFIGDIR}"
+"${PZSERVER}/jre64/bin/java" -jar "${PZSERVER}/java/javamods.jar"
 
 echo OK
