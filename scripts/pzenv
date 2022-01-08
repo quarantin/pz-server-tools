@@ -58,7 +58,7 @@ if [ -f "${CONFIG}" ]; then
 fi
 
 if [ -f "${JAVAMODSCONFIG}" ] && [ -f "${JAVAMODSSTART}" ]; then
-	ENABLEJAVAMODS="$(jq -r '.javamods' "${JAVAMODSCONFIG}")"
+	ENABLEJAVAMODS="$(jq -r '.enabled' "${JAVAMODSCONFIG}")"
 	if [ "${ENABLEJAVAMODS}" = 'true' ] ; then
 		PZSERVERSTART="${JAVAMODSSTART}"
 	fi
