@@ -3,4 +3,14 @@
 # Don't load pzstenv in case config.json is broken
 #. "$(dirname "${0}")/pzstenv"
 
-jq '' "/etc/pzst/config.json" > /dev/null && echo OK
+CONFIG=/etc/pzst/config.json
+jq '' "${CONFIG}"  > /dev/null && echo OK || (
+
+	echo
+	echo WARNING: The file ${CONFIG} is broken!
+	echo WARNING: Your pzserver tools will not work anymore unless you fix this file!
+	echo WARNING: Please fix ${CONFIG} before trying anything else!
+	echo
+	echo Use this command to fix it: pzst config
+	echo
+)
