@@ -21,13 +21,13 @@ Type this to get the list of available commands:
 
 Now that you're connected as **pzserver1**, you can run the following command to install your new pzserver:
 
-	pzinstall
+	pzserver install
 
 Start pzserver:
 
-	pzstart
+	pzserver start
 
-When run for the first time, **pzstart** will ask you to choose a username and a password for the admin user, and the port of the server.
+When you run **pzserver start** for the first time, it will ask you to choose a username/password for the admin user and the port of the server.
 
 # Configuring Project Zomboid Dedicated Server
 
@@ -35,7 +35,7 @@ When run for the first time, **pzstart** will ask you to choose a username and a
 If you will run multiple pzservers on the same machine, you have to configure a different port for each server. Furthermore, each server needs exactly one port, plus one extra port per player configured on the server. So for example if you have a pzserver running on port 16261 and you configure 32 players, your other pzservers can't use a port in the range 16261-16293.
 Run the following command to edit pzserver configuration:
 
-	pzconfig
+	pzserver config
 
 And change the value of the **DefaultPort** option according to your needs:
 
@@ -64,23 +64,32 @@ whose Workshop ID is **2642486124**. Then your configuration should look like th
 ## Sandbox Settings
 In order to edit your server sandbox settings run the following command:
 
-	pzsandbox
+	pzserver sandbox
 
 ## Spawn Points and Regions
 If you want to change the spawn points where player can land in the game run the following command:
 
-	pzspawnpoints
+	pzserver spawnpoints
 
 For spaw regions, run the following command:
 
-	pzspawnregions
+	pzserver spawnregions
 
 # Restarting Project Zomboid Dedicated Server
 If you need to restart your pzserver run the following command:
 
-	pzrestart
+	pzserver restart
 
 # Stopping Project Zomboid Dedicated Server
 If you want to stop your pzserver run the following command:
 
-	pzquit
+	pzserver quit
+
+# Killing Project Zomboid Dedicated Server
+In case your pzserver is not responding to other commands, you might want to kill the process. Beware though because it won't perform a clean shutdown of the pzserver!!!
+
+**WARNING**: Data loss is to be expected if you use this command!
+**WARNING**: It might very well corrupt your saved game!
+**WARNING**: Only use this command as a last resort!
+
+	pzserver kill
