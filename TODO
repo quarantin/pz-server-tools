@@ -32,3 +32,13 @@
 
 	Extra:
 		big servers have bad zombie issues and the zpop files should be deleted here and there... for resource issues this helps alot after testing. 
+
+- Nice to have:
+	WHAT'S EXPORTED/IMPORTED:
+	* Character's Name and Surname
+	* Character's sex and model
+	* Character's Profession
+	* Character's Traits
+	* Character's known recipes
+	* Character's EXP levels, bonuses and even current exp
+	* Character's read books, read page counts, and exp multipliers
