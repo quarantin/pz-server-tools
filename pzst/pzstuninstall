@@ -31,6 +31,10 @@ for SCRIPT in $(ls -1 "${REPO}/pzserver"); do
 	sudo rm -f "${BIN}/${SCRIPT}"
 done
 
+for SCRIPT in $(ls -1 "${REPO}/pzst"); do
+	sudo rm -f "${BIN}/${SCRIPT}"
+done
+
 sudo service pzstd stop 2> /dev/null
 sudo systemctl disable pzstd.service 2> /dev/null
 sudo rm -f /etc/systemd/system/pzstd.service
