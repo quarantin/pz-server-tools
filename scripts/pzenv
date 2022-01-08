@@ -32,6 +32,7 @@ STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE
 
 ZOMBOID="${HOME}/Zomboid"
 PZSERVER="${HOME}/pzserver"
+PZSERVERDB="${ZOMBOID}/db/servertest.db"
 PZSERVERDIR="${ZOMBOID}/Server"
 PZSERVERLOG="${ZOMBOID}/server-console.txt"
 PZSERVERSAVE="${ZOMBOID}/Saves/Multiplayer"
@@ -84,7 +85,7 @@ read_adminuser() {
 		ADMINUSER="${DEFAULT_ADMINUSER}"
 	fi
 
-	export ADMINUSEROPTION="-adminusername ${ADMINUSER}"
+	pzst_config --admin "${ADMINUSER}"
 }
 
 read_adminpasswd() {
@@ -105,7 +106,7 @@ read_adminpasswd() {
 			continue
 
 		elif [ "${ADMINPASSWD}" = "${CONFIRMADMINPASSWD}" ]; then
-			export ADMINPASSWDOPTION="-adminpassword ${ADMINPASSWD}"
+			ADMINPASSWDOPTION="-adminpassword ${ADMINPASSWD}"
 			break
 		fi
 
@@ -130,8 +131,7 @@ read_port() {
 
 		OUTPUT=$(ss -nluw | grep ":${PORT} ")
 		if [ -z "${OUTPUT}" ]; then
-			export PORT="${PORT}"
-			export PORTOPTION="-port ${PORT}"
+			PORTOPTION="-port ${PORT}"
 			break
 		fi
 
@@ -139,9 +139,19 @@ read_port() {
 	done
 }
 
+check_admin_exists() {
+
+	ADMINUSER="$(jq -r '.admin' "${CONFIG}")"
+	if [ -f "${PZSERVERDB}" ]; then
+		echo $(sqlite3 "${PZSERVERDB}" "SELECT username FROM whitelist WHERE username=\"${ADMINUSER}\"")
+	fi
+
+	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
+}
+
 check_first_time() {
 
-	if ! [ -d "${PZSERVERDIR}" ]; then
+	if [ -z "$(check_admin_exists)" ]; then
 
 		read_adminuser
 
