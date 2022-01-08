@@ -165,6 +165,14 @@ check_first_time() {
 	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
 }
 
+check_is_pzserver_user() {
+
+	if ! [ -d "${PZSERVER}" ]; then
+		echo No pzserver installed for user ${USER}
+		exit
+	fi
+}
+
 check_running() {
 
 	PZPID=$(get_pz_pid)
