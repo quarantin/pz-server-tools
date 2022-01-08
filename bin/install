@@ -42,6 +42,8 @@ echo [*] Creating virtual environment
 
 virtualenv -p python3 "${REPOENV}" > /dev/null
 
+chmod -R go-w "${REPOENV}"
+
 . "${REPOENV}/bin/activate"
 
 python3 -m pip install -r "${REPO}/requirements.txt" > /dev/null
