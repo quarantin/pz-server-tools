@@ -7,4 +7,11 @@ if ! [ -f "${PZSERVERLOG}" ]; then
 	exit
 fi
 
-tail -f -n +1 "${PZSERVERLOG}"
+FULL="${1}"
+if [ "${FULL}" = "--full" ]; then
+	AMOUNT=+1
+else
+	AMOUNT=-1000
+fi
+
+tail -f -n "${AMOUNT}" "${PZSERVERLOG}"
