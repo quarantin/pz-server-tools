@@ -83,7 +83,7 @@ sudo make -C "${SRC}" install > /dev/null
 
 sudo cp "${REPO}/init.d/pzstd.service" /etc/systemd/system/
 sudo systemctl enable pzstd.service 2> /dev/null
-sudo service pzstd start
+sudo service pzstd restart
 
 sudo cp "${REPOCRON}" "${CRONFILE}"
 sudo chmod 644 "${CRONFILE}"
