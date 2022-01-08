@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+find "${PZSERVERSAVE}" -type f -name 'zpop_[0-9]*_[0-9]*.bin' -print -exec rm -f {} \;
