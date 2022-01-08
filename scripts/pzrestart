@@ -4,6 +4,12 @@
 
 check_running
 
-detach pzrestartjob "${USER}" &
+NOW="${1}"
+if [ "${NOW}" == '--now' ]; then
+	pzrestartjob -d 0 0
+
+else
+	detach pzrestartjob "${USER}" &
+fi
 
 echo OK
