@@ -3,6 +3,8 @@
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
+echo [*] Updating Project Zomboid Server Tools
+
 CURRENT_BRANCH="$(git name-rev --name-only HEAD)"
 
 BRANCH="${CURRENT_BRANCH}"
