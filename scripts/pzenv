@@ -158,6 +158,7 @@ check_first_time() {
 		read_port
 	fi
 
+	ADMINUSER="$(jq -r '.admin' "${CONFIG}")"
 	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
 }
 
