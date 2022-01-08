@@ -3,6 +3,7 @@ A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
 
 # Features
 - Install Project Zomboid Dedicated Server easily in a single command.
+- Backup Project Zomboid Dedicated Server saved game automatically.
 - Restart Project Zomboid Dedicated Server at specific times of day.
 - Update Project Zomboid Dedicated Server from Steam automatically.
 - Restart Project Zomboid Dedicated Server when a mod is updated on Steam Workshop.
