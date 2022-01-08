@@ -42,3 +42,6 @@
 	* Character's known recipes
 	* Character's EXP levels, bonuses and even current exp
 	* Character's read books, read page counts, and exp multipliers
+
+- Troubleshing
+	Error! app state is 0x202 after update job (out of space)
