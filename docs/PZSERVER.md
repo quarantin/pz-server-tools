@@ -11,7 +11,7 @@ Add user **pzserver1** to group **pzst**:
 
 	sudo usermod -aG pzst pzserver1
 
-Then login as user **pzserver1**:
+Login as user **pzserver1**:
 
 	sudo -i -u pzserver1
 
