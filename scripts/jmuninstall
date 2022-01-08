@@ -10,6 +10,9 @@ fi
 rm -f \
 	"${PZSERVER}/javamods.json"            \
 	"${PZSERVER}/javamods-server-start.sh" \
-	"${PZSERVER}/java/javamods.jar"
+	"${PZSERVER}/java/javamods.jar"        \
+	"${JAVAMODSCONFIG}"
+
+rmdir "${JAVAMODSCONFIGDIR}"
 
 echo OK
