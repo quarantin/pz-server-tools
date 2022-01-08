@@ -1,33 +1,29 @@
 # Installing Project Zomboid Server Tools
-To install Project Zomboid Server Tools, you have to create a system account named **pzadmin**:
+To install Project Zomboid Server Tools, you have to create a system account named **pzstadmin**:
 
-	sudo useradd --create-home --shell /bin/bash pzadmin
+	sudo useradd --create-home --shell /bin/bash pzstadmin
 
-Set a password for user **pzadmin**:
-	sudo passwd pzadmin
+Set a password for user **pzstadmin**:
+	sudo passwd pzstadmin
 
-Add user **pzadmin** to group **sudo**:
-	sudo usermod -aG sudo pzadmin
+Add user **pzstadmin** to group **sudo**:
+	sudo usermod -aG sudo pzstadmin
 
-Login as user **pzadmin**:
-	sudo -i -u pzadmin
+Login as user **pzstadmin**:
+	sudo -i -u pzstadmin
 
 Run the following commands to install Project Zomboid Server Tools:
 
-	git clone https://github.com/quarantin/pz-server-tools pzst
-	cd pzst
-	./bin/install
+	git clone https://github.com/quarantin/pz-server-tools
+	cd pz-server-tools
+	./pzst/pzstinstall
 
 # Updating Project Zomboid Server Tools
 To update Project Zomboid Server Tools, run the following commands:
 
-	sudo -i -u pzadmin
-	cd pzst
-	./bin/update
+	sudo -u pzstadmin pzst update
 
 # Uninstalling Project Zomboid Server Tools
 To uninstall Project Zomboid Server Tools, run the following commands:
 
-	sudo -i -u pzadmin
-	cd pzst
-	./bin/uninstall
+	sudo -u pzstadmin pzst uninstall
