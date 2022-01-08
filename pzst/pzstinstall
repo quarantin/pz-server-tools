@@ -7,8 +7,8 @@ sudo echo -n
 CONFIG='/etc/pzst/config.json'
 REPO="$(dirname "$(dirname "${0}")")"
 
-if ! [ -f "${CONFIG}" ] || [ -d "${REPO}/scripts" ]; then
-	. "${REPO}/scripts/pzenv"
+if ! [ -f "${CONFIG}" ] || [ -d "${REPO}/pzserver" ]; then
+	. "${REPO}/pzserver/pzenv"
 
 else
 	REPO="$(jq -r '.install' "${CONFIG}")"
@@ -18,7 +18,7 @@ fi
 REPOCONFIG="${REPO}/${CONFIGFILE}.example"
 REPOCRON="${REPO}/cron/${NAME}"
 REPOENV="${REPO}/env"
-SCRIPTS="${REPO}/scripts"
+SCRIPTS="${REPO}/pzserver"
 PZST="${REPO}/pzst"
 SRC="${REPO}/src"
 
