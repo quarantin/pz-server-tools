@@ -2,6 +2,12 @@
 
 . "$(dirname "${0}")/pzenv"
 
+rm -f "${JAVAMODSCONFIG}"
+
+if [ -d "${JAVAMODSCONFIGDIR}" ]; then
+	rmdir "${JAVAMODSCONFIGDIR}"
+fi
+
 if ! [ -d "${PZSERVER}" ]; then
 	echo No installed pzserver found
 	exit
@@ -10,9 +16,6 @@ fi
 rm -f \
 	"${PZSERVER}/javamods.json"            \
 	"${PZSERVER}/javamods-start-server.sh" \
-	"${PZSERVER}/java/javamods.jar"        \
-	"${JAVAMODSCONFIG}"
-
-rmdir "${JAVAMODSCONFIGDIR}"
+	"${PZSERVER}/java/javamods.jar"
 
 echo OK
