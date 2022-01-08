@@ -4,7 +4,7 @@
 
 check_is_pzserver_user
 
-jmuninstall
+jmuninstall > /dev/null
 
 rm -rf "${PZSERVER}"
 
