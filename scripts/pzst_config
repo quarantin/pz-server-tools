@@ -6,12 +6,17 @@ TMP=$(mktemp)
 
 usage() {
 	rm -f "${TMP}"
-	echo "Usage ${0} [--add|--del|--admin <username>]"
+	echo "Usage ${0} [--add|--del|--admin <username>|--port <port>]"
 	exit
 }
 
 if [ -z "${1}" ]; then
-	usage "${0}"
+	usage
+fi
+
+if ! [ -f "${LOCALCONFIG}" ]; then
+	mkdir -p "${LOCALCONFIGDIR}"
+	echo '{}' > "${LOCALCONFIG}"
 fi
 
 ARG="${1}"
@@ -32,16 +37,28 @@ elif [ "${ARG}" = '-A' ] || [ "${ARG}" = '--admin' ]; then
 	if [ -z "${USERNAME}" ]; then
 		echo Option \`${ARG}\` requires a username
 		echo
-		usage "${0}"
+		usage
 	fi
 
-	jq --tab ".admin=\"${USERNAME}\"" "${CONFIG}" > "${TMP}"
-	cp "${TMP}" "${CONFIG}"
+	jq --tab ".admin=\"${USERNAME}\"" "${LOCALCONFIG}" > "${TMP}"
+	cp "${TMP}" "${LOCALCONFIG}"
+
+elif [ "${ARG}" = '-p' ] || [ "${ARG}" = '--port' ]; then
+
+	PORT="${2}"
+	if [ -z "${PORT}" ]; then
+		echo Option \`${ARG}\` requires a port number
+		echo
+		usage
+	fi
+
+	jq --tab ".port=${PORT}" "${LOCALCONFIG}" > "${TMP}"
+	cp "${TMP}" "${LOCALCONFIG}"
 
 else
 	echo "Invalid option ${ARG}"
 	echo
-	usage "${0}"
+	usage
 fi
 
 rm -f "${TMP}"
