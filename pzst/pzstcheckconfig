@@ -1,5 +1,5 @@
 #!/bin/bash
 
-. "$(dirname "${0}")/pzenv"
+. "$(dirname "${0}")/pzstenv"
 
 python -m json.tool "${CONFIG}" > /dev/null && echo OK

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+CONFIG='/etc/pzst/config.json'
+REPO="$(dirname "$(dirname "${0}")")"
+
+if ! [ -f "${CONFIG}" ] || [ -d "${REPO}/pzserver" ]; then
+	. "${REPO}/pzserver/pzenv"
+
+else
+	REPO="$(jq -r '.install' "${CONFIG}")"
+	. "$(dirname "${0}")/pzenv"
+fi
