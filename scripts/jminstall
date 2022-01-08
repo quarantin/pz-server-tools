@@ -3,22 +3,19 @@ set -e
 
 . "$(dirname "${0}")/pzenv"
 
-VERSION=0.0.4
-ARCHIVE='javamods-linux.zip'
-URL="https://github.com/quarantin/javamods/releases/download/${VERSION}/${ARCHIVE}"
-
 if ! [ -d "${PZSERVER}" ]; then
 	echo No installed pzserver found
 	exit
 fi
 
-TMP=$(mktemp)
-wget -q -O "${TMP}" "${URL}"
-unzip -o -qq -d "${PZSERVER}" "${TMP}"
-rm -f "${TMP}"
+VERSION=0.0.1
+JAVAMODSHOME="${HOME}/javamods"
+CLONEURL="https://github.com/quarantin/javamods/"
 
-TMP=$(mktemp)
-jq '.javamods = true' "${LOCALCONFIG}" > "${TMP}"
-mv -f "${TMP}" "${LOCALCONFIG}"
+rm -rf "${JAVAMODSHOME}"
+git clone --quiet --depth 1 -c advice.detachedHead=false --branch "${VERSION}" "${CLONEURL}" "${JAVAMODSHOME}"
+
+mkdir -p "${JAVAMODSDIR}"
+cp "${JAVAMODSHOME}/config.json" "${JAVAMODSDIR}"
 
 echo OK
