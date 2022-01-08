@@ -19,7 +19,8 @@ Once Project Zomboid Server Tools have been successfully installed you will have
 
 To get help about the different commands, just type the name of the command without arguments.
 
-Here's the help section for the **pzserver** command:
+## Command `pzserver`
+Here's the help section for the **`pzserver`** command:
 
 	$ pzserver
 
@@ -52,7 +53,8 @@ Here's the help section for the **pzserver** command:
 	  command        Run a server command (additem, chopper, etc)
 	  message        Display custom message in-game
 
-Here's the help section for the **pzst** command:
+## Command `pzst`
+Here's the help section for the **`pzst`** command:
 
 	$ pzst
 
@@ -67,7 +69,8 @@ Here's the help section for the **pzst** command:
 	  config         Edit pzst configuration
 	  checkconfig    Check pzst configuration for syntax errors
 
-Here's the help section for the **javamods** command:
+## Command `javamods`
+Here's the help section for the **`javamods`** command:
 
 	$ javamods
 
