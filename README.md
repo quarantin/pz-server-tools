@@ -13,9 +13,11 @@ A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
 
 # Tools
 Once Project Zomboid Server Tools have been successfully installed you will have access to the following commands:
-- **pzserver**         To manage your Project Zomboid Dedicated Servers
-- **pzst**             To manage your Project Zomboid Server Tools
-- **javamods**         To configure java mods to run on  your pzserver
+- **`pzserver`** Manage your Project Zomboid Dedicated Servers
+
+- **`pzst`** Manage your Project Zomboid Server Tools
+
+- **`javamods`** Configure Java mods to run on  your pzserver
 
 To get help about the different commands, just type the name of the command without arguments.
 
