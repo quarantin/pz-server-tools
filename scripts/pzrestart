@@ -4,4 +4,6 @@
 
 check_running
 
-pzstc "${PZPID}" quit
+detach pzrestartjob "${USER}" &
+
+echo OK
