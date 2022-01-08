@@ -55,14 +55,14 @@ JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
 JAVAMODSURL="https://github.com/quarantin/javamods/releases/download/${JAVAMODSVERSION}/${JAVAMODSARCHIVE}"
 
 if [ -f "${CONFIG}" ]; then
-	EDITOR="$(jq -r .editor "${CONFIG}")"
-	if [ "${EDITOR}" = "null" ]; then
-		EDITOR='nano'
+	EDITOR="$(jq -r 'try .editor // "nano"' "${CONFIG}" 2> /dev/null)"
+	if [ -z "${EDITOR}" ]; then
+		EDITOR=nano
 	fi
 fi
 
 if [ -f "${JAVAMODSCONFIG}" ] && [ -f "${JAVAMODSSTART}" ]; then
-	ENABLEJAVAMODS="$(jq -r '.enabled' "${JAVAMODSCONFIG}")"
+	ENABLEJAVAMODS="$(jq -r 'try .enabled' "${JAVAMODSCONFIG}" 2> /dev/null)"
 	if [ "${ENABLEJAVAMODS}" = 'true' ] ; then
 		PZSERVERSTART="${JAVAMODSSTART}"
 	fi
@@ -144,8 +144,8 @@ read_port() {
 
 check_admin_exists() {
 
-	ADMINUSER="$(jq -r '.admin' "${LOCALCONFIG}")"
-	if [ -f "${PZSERVERDB}" ]; then
+	ADMINUSER="$(jq -r 'try .admin // "pzadmin"' "${LOCALCONFIG}" 2> /dev/null)"
+	if ! [ -z "${ADMINUSER}" ] && [ "${ADMINUSER}" != 'null' ] && [ -f "${PZSERVERDB}" ]; then
 		echo $(sqlite3 "${PZSERVERDB}" "SELECT username FROM whitelist WHERE username=\"${ADMINUSER}\"")
 	fi
 }
@@ -161,10 +161,10 @@ check_first_time() {
 		read_port
 	fi
 
-	ADMINUSER="$(jq -r '.admin' "${LOCALCONFIG}")"
+	ADMINUSER="$(jq -r 'try .admin // "pzadmin"' "${LOCALCONFIG}" 2> /dev/null)"
 	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
 
-	PORT="$(jq -r '.port' "${LOCALCONFIG}")"
+	PORT="$(jq -r 'try .port // 16261' "${LOCALCONFIG}" 2> /dev/null)"
 	PORTOPTION="-port ${PORT}"
 }
 
