@@ -6,7 +6,6 @@ BIN='/usr/local/bin'
 LOGFILE="/var/log/${NAME}.log"
 PYTHON='/usr/bin/python'
 
-
 CACHEDIR="/var/cache/${NAME}"
 CACHEFILE='cache.json'
 CACHE="${CACHEDIR}/${CACHEFILE}"
@@ -15,9 +14,6 @@ CONFIGDIR="/etc/${NAME}"
 CONFIGENV="${CONFIGDIR}/env"
 CONFIGFILE="config.json"
 CONFIG="${CONFIGDIR}/${CONFIGFILE}"
-
-LOCALCONFIGDIR="${HOME}/.pzst"
-LOCALCONFIG="${LOCALCONFIGDIR}/config.json"
 
 CRONDIR="/etc/cron.d"
 CRONFILE="${CRONDIR}/${NAME}"
@@ -46,25 +42,23 @@ PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
 PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
 
-JAVAMODSSCRIPT='javamods-start-server.sh'
+JAVAMODSDIR="${HOME}/.javamods"
+JAVAMODSCONFIG="${JAVAMODSDIR}/config.json"
+JAVAMODSSTART="${PZSERVER}/javamods-start-server.sh"
 JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
 
-if [ -e "${CONFIG}" ]; then
-
+if [ -f "${CONFIG}" ]; then
 	EDITOR="$(jq -r .editor "${CONFIG}")"
 	if [ "${EDITOR}" = "null" ]; then
 		EDITOR='nano'
 	fi
-
-	JAVAMODS="$(jq -r '.javamods' "${CONFIG}")"
-	if [ "${JAVAMODS}" = 'true' ] && [ -f "${PZSERVER}/${JAVAMODSSCRIPT}" ]; then
-		PZSERVERSTART="${PZSERVER}/${JAVAMODSSCRIPT}"
-	fi
 fi
 
-if ! [ -e "${LOCALCONFIG}" ]; then
-	mkdir -p "${LOCALCONFIGDIR}"
-	echo '{}' > "${LOCALCONFIG}"
+if [ -f "${JAVAMODSCONFIG}" ] && [ -f "${JAVAMODSSTART}" ]; then
+	ENABLEJAVAMODS="$(jq -r '.javamods' "${JAVAMODSCONFIG}")"
+	if [ "${ENABLEJAVAMODS}" = 'true' ] ; then
+		PZSERVERSTART="${JAVAMODSSTART}"
+	fi
 fi
 
 install_steamcmd() {
