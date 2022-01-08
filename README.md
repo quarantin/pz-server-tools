@@ -28,9 +28,12 @@ Once Project Zomboid Server Tools have been successfully installed you will have
 - **pzstart**          Start pzserver in the background
 - **pzrestart**        Restart pzserver
 - **pzstop**           Stop pzserver
+- **pzquit**           An alias for pzstop
 - **pzkill**           Kill pzserver (unclean shutdown)
 - **pzcommand**        Run a server command (additem, chopper, etc)
+- **pzcmd**            An alias for pzcommand
 - **pzmessage**        Display custom message in-game
+- **pzmsg**            An alias for pzmessage
 
 # PZ Server Tools Installation
 https://github.com/quarantin/pz-server-tools/blob/main/docs/INSTALL.md
