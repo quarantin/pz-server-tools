@@ -20,4 +20,4 @@ git fetch --quiet
 
 git reset --quiet --hard "origin/${BRANCH}"
 
-"$(dirname "${0}")/install"
+"$(dirname "${0}")/pzstinstall"
