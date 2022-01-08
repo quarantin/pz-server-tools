@@ -22,6 +22,9 @@ Once Project Zomboid Server Tools have been successfully installed you will have
 - **pzuserpasswd**     Change pzserver user password
 - **pzstatus**         Check pzserver status
 - **pzconsole**        Show pzserver console output
+- **pzlog**            An alias for pzconsole
+- **pzclearbackups**   Clear old backups
+- **pzclearzpop**      Clear zombie population
 - **pzstart**          Start pzserver in the background
 - **pzrestart**        Restart pzserver
 - **pzstop**           Stop pzserver
