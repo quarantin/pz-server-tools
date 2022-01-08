@@ -1,16 +1,5 @@
 # Project Zomboid Server Tools Configuration
 
-## Check Configuration for Syntax Errors
-Every time you change Project Zomboid Server Tools configuration you should check for syntax errors.
-
-**Project Zomboid Server Tools won't work properly if you have a syntax error in the configuration!**
-
-To check the configuration for syntax errors, run the following command:
-
-	cd "${HOME}"
-	cd pz-server-tools
-	./bin/checkconfig
-
 ## Text Editor
 Project Zomboid Server Tools let you choose which text editor to use to edit the various configuration file of your pzservers. By default it will use **nano**, but you can configure any text editor that suits you. For example if you'd prefer to use **vim**, the configuration should look like this:
 
