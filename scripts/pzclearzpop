@@ -2,4 +2,6 @@
 
 . "$(dirname "${0}")/pzenv"
 
+check_is_pzserver_user
+
 find "${PZSERVERSAVE}" -type f -name 'zpop_[0-9]*_[0-9]*.bin' -print -exec rm -f {} \;

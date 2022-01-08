@@ -2,6 +2,8 @@
 
 . "$(dirname "${0}")/pzenv"
 
+check_is_pzserver_user
+
 if ! [ -f "${PZSERVERLOG}" ]; then
 	echo No log file found for this user.
 	exit

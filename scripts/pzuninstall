@@ -2,12 +2,12 @@
 
 . "$(dirname "${0}")/pzenv"
 
-STATUS='No pzserver to uninstall'
+check_is_pzserver_user
 
-if [ -d "${PZSERVER}" ]; then
-	STATUS='OK'
-	rm -rf "${PZSERVER}"
-	pzst_config --del
-fi
+jmuninstall
 
-echo ${STATUS}
+rm -rf "${PZSERVER}"
+
+pzst_config --del
+
+echo OK

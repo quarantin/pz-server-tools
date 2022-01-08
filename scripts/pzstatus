@@ -2,6 +2,8 @@
 
 . "$(dirname "${0}")/pzenv"
 
+check_is_pzserver_user
+
 PZPID=$(get_pz_pid)
 if [ -z "${PZPID}" ]; then
 	echo Status: Not running

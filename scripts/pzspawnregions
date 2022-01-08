@@ -2,6 +2,8 @@
 
 . "$(dirname "${0}")/pzenv"
 
+check_is_pzserver_user
+
 if ! [ -d "${PZSERVERDIR}" ] || ! [ -f "${PZSERVERSPAWNREGIONS}" ]; then
 	echo Configuration not found.
 	exit

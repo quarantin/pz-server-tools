@@ -3,10 +3,7 @@ set -e
 
 . "$(dirname "${0}")/pzenv"
 
-if ! [ -d "${PZSERVER}" ]; then
-	echo No installed pzserver found
-	exit
-fi
+check_is_pzserver_user
 
 TMP=$(mktemp)
 wget -q -O "${TMP}" "${JAVAMODSURL}"

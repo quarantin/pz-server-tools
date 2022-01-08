@@ -2,6 +2,8 @@
 
 . "$(dirname "${0}")/pzenv"
 
+check_is_pzserver_user
+
 check_first_time
 
 detach "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${PORTOPTION} ${@} &
