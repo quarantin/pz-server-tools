@@ -92,6 +92,8 @@ for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
 done
 
+sudo pzst_config --install "${REPO}"
+
 make -C "${SRC}" clean > /dev/null
 make -C "${SRC}" > /dev/null
 sudo make -C "${SRC}" install > /dev/null
