@@ -1,0 +1,43 @@
+#!/bin/bash
+
+BASE="$(dirname "${0}")"
+
+usage() {
+	echo "Usage: ${0} <commands>"
+	echo
+	echo Available commands:
+	echo
+	echo '  install        Install or update javamods'
+	echo '  uninstall      Uninstall javamods'
+	echo '  console        Show javamods console output'
+	echo
+	exit
+}
+
+COMMAND="${1}"
+if [ -z "${COMMAND}" ]; then
+	usage
+fi
+
+shift
+
+case "${COMMAND}" in
+
+	install)
+		"${BASE}/jminstall" $@
+		;;
+
+	uninstall)
+		"${BASE}/jmuninstall" $@
+		;;
+
+	console|log)
+		"${BASE}/jmconsole" $@
+		;;
+
+	*)
+		echo Unknown command ${COMMAND}
+		echo
+		usage
+	;;
+esac
