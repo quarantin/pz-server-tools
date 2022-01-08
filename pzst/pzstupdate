@@ -3,7 +3,11 @@
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
+. "$(dirname "${0}")/pzstenv"
+
 echo [*] Updating Project Zomboid Server Tools
+
+cd "${REPO}"
 
 CURRENT_BRANCH="$(git name-rev --name-only HEAD)"
 
