@@ -64,5 +64,3 @@ else
 fi
 
 rm -f "${TMP}"
-
-echo OK
