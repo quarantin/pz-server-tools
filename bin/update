@@ -11,11 +11,11 @@ if ! [ -z "${1}" ]; then
 fi
 
 if [ "${BRANCH}" != "${CURRENT_BRANCH}" ]; then
-	git checkout "${BRANCH}"
+	git checkout --quiet "${BRANCH}"
 fi
 
-git fetch
+git fetch --quiet
 
-git reset --hard "origin/${BRANCH}"
+git reset --quiet --hard "origin/${BRANCH}"
 
 "$(dirname "${0}")/install"
