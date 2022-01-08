@@ -2,8 +2,11 @@
 
 . "$(dirname "${0}")/pzenv"
 
+TMP=$(mktemp)
+
 usage() {
-	echo "Usage ${0} [--add|--del]"
+	rm -f "${TMP}"
+	echo "Usage ${0} [--add|--del|--admin <username>]"
 	exit
 }
 
@@ -12,22 +15,35 @@ if [ -z "${1}" ]; then
 fi
 
 ARG="${1}"
-TMP=$(mktemp)
 
 if [ "${ARG}" = '-a' ] || [ "${ARG}" = '--add' ]; then
 
 	jq --tab ".pzservers |= (. + [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
 	cp "${TMP}" "${CONFIG}"
-	rm -f "${TMP}"
 
 elif [ "${ARG}" = '-d' ] || [ "${ARG}" = '--del' ]; then
 
 	jq --tab ".pzservers |= (. - [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
 	cp "${TMP}" "${CONFIG}"
-	rm -f "${TMP}"
+
+elif [ "${ARG}" = '-A' ] || [ "${ARG}" = '--admin' ]; then
+
+	USERNAME="${2}"
+	if [ -z "${USERNAME}" ]; then
+		echo Option \`${ARG}\` requires a username
+		echo
+		usage "${0}"
+	fi
+
+	jq --tab ".admin=\"${USERNAME}\"" "${CONFIG}" > "${TMP}"
+	cp "${TMP}" "${CONFIG}"
 
 else
 	echo "Invalid option ${ARG}"
 	echo
 	usage "${0}"
 fi
+
+rm -f "${TMP}"
+
+echo OK
