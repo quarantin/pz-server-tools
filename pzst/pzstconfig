@@ -9,4 +9,4 @@ fi
 
 "${EDITOR}" "${CONFIG}"
 
-"$(dirname "${0}")/pzst" checkconfig
+"$(dirname "${0}")/pzst" checkconfig | grep -v OK
