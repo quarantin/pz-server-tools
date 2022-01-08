@@ -8,14 +8,11 @@ if ! [ -d "${PZSERVER}" ]; then
 	exit
 fi
 
-VERSION=0.0.1
-JAVAMODSHOME="${HOME}/javamods"
-CLONEURL="https://github.com/quarantin/javamods/"
-
 rm -rf "${JAVAMODSHOME}"
-git clone --quiet --depth 1 -c advice.detachedHead=false --branch "${VERSION}" "${CLONEURL}" "${JAVAMODSHOME}"
 
-mkdir -p "${JAVAMODSDIR}"
-cp "${JAVAMODSHOME}/config.json" "${JAVAMODSDIR}"
+git clone --quiet --depth 1 -c advice.detachedHead=false --branch "${JAVAMODSVERSION}" "${JAVAMODSURL}" "${JAVAMODSHOME}"
+
+mkdir -p "${JAVAMODSCONFIGDIR}"
+cp "${JAVAMODSHOME}/config.json" "${JAVAMODSCONFIGDIR}"
 
 echo OK
