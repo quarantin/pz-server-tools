@@ -4,9 +4,9 @@
 sudo echo -n
 
 CONFIG='/etc/pzst/config.json'
+REPO="$(dirname "$(dirname "${0}")")"
 
-if ! [ -f "${CONFIG}" ]; then
-	REPO="$(dirname "$(dirname "${0}")")"
+if ! [ -f "${CONFIG}" ] || [ -d "${REPO}/scripts" ]; then
 	. "${REPO}/scripts/pzenv"
 
 else
