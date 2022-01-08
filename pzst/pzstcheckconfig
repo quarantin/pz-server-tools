@@ -1,5 +1,6 @@
 #!/bin/bash
 
-. "$(dirname "${0}")/pzstenv"
+# Don't load pzstenv in case config.json is broken
+#. "$(dirname "${0}")/pzstenv"
 
-python -m json.tool "${CONFIG}" > /dev/null && echo OK
+jq '' "/etc/pzst/config.json" > /dev/null && echo OK
