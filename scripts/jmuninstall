@@ -2,19 +2,12 @@
 
 . "$(dirname "${0}")/pzenv"
 
-ARCHIVE='javamods-linux.zip'
-
 if ! [ -d "${PZSERVER}" ]; then
 	echo No installed pzserver found
 	exit
 fi
 
-TMP=$(mktemp)
-jq 'del(.javamods)' "${LOCALCONFIG}" > "${TMP}"
-mv "${TMP}" "${LOCALCONFIG}"
-
 rm -f \
-	"${PZSERVER}/${ARCHIVE}"               \
 	"${PZSERVER}/javamods.json"            \
 	"${PZSERVER}/javamods-server-start.sh" \
 	"${PZSERVER}/java/javamods.jar"
