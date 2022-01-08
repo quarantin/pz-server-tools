@@ -1,6 +1,5 @@
 #!/bin/bash
 
-REPO="$(dirname "$(dirname "${0}")")"
-. "${REPO}/scripts/pzenv"
+. "$(dirname "${0}")/pzenv"
 
 python -m json.tool "${CONFIG}" > /dev/null && echo OK

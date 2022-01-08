@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+if [ -f "${CONFIG}" ]; then
+	echo Configuration not found
+	exit
+fi
+
+"${EDITOR}" "${CONFIG}"

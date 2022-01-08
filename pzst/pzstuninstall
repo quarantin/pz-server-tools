@@ -3,8 +3,16 @@
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
-REPO="$(dirname "$(dirname "${0}")")"
-. "${REPO}/scripts/pzenv"
+CONFIG='/etc/pzst/config.json'
+
+if ! [ -f "${CONFIG}" ]; then
+	REPO="$(dirname "$(dirname "${0}")")"
+	. "${REPO}/scripts/pzenv"
+
+else
+	REPO="$(jq -r '.install' "${CONFIG}")"
+	. "$(dirname "${0}")/pzenv"
+fi
 
 SRC="${REPO}/src"
 

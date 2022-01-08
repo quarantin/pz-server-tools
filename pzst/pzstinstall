@@ -4,13 +4,22 @@ set -e
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
-REPO="$(dirname "$(dirname "${0}")")"
-. "${REPO}/scripts/pzenv"
+CONFIG='/etc/pzst/config.json'
+
+if ! [ -f "${CONFIG}" ]; then
+	REPO="$(dirname "$(dirname "${0}")")"
+	. "${REPO}/scripts/pzenv"
+
+else
+	REPO="$(jq -r '.install' "${CONFIG}")"
+	. "$(dirname "${0}")/pzenv"
+fi
 
 REPOCONFIG="${REPO}/${CONFIGFILE}.example"
 REPOCRON="${REPO}/cron/${NAME}"
 REPOENV="${REPO}/env"
 SCRIPTS="${REPO}/scripts"
+PZST="${REPO}/pzst"
 SRC="${REPO}/src"
 
 if ! [ -f "${INSTALLCHECK}" ]; then
@@ -74,6 +83,10 @@ sudo chmod 664       "${CONFIG}"
 
 sudo mv "${REPOENV}" "${CONFIGDIR}"
 sudo chown -R root:root "${CONFIGENV}"
+
+for SCRIPT in $(ls -1 "${PZST}/"); do
+	sudo cp -f "${PZST}/${SCRIPT}" "${BIN}"
+done
 
 for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
