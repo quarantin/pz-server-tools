@@ -98,5 +98,3 @@ sudo chmod 644 "${CRONFILE}"
 sudo /etc/init.d/cron restart > /dev/null
 
 sudo touch "${INSTALLCHECK}"
-
-echo OK
