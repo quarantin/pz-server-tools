@@ -16,7 +16,7 @@ Run the following commands to install Project Zomboid Server Tools:
 
 	git clone https://github.com/quarantin/pz-server-tools
 	cd pz-server-tools
-	./pzst/pzstinstall
+	./pzst/pzst install
 
 # Updating Project Zomboid Server Tools
 To update Project Zomboid Server Tools, run the following commands:
