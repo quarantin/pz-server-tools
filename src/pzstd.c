@@ -20,8 +20,6 @@
 
 #include "pzst.h"
 
-//#define DEBUG
-
 #define MAX_WAIT 30
 
 #define PZST_GROUP "pzst"
@@ -174,7 +172,10 @@ int send_command(struct ioctl_command *cmd, char *strerr, size_t strerrsz) {
 
 	close(fd);
 
-	return wait_pz_pid(cmd->pid, strerr, strerrsz);
+	if (!strcmp(cmd->command, "quit"))
+		return wait_pz_pid(cmd->pid, strerr, strerrsz);
+
+	return 0;
 }
 
 void server_accept(int sock) {
