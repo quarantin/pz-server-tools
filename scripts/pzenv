@@ -145,8 +145,6 @@ check_admin_exists() {
 	if [ -f "${PZSERVERDB}" ]; then
 		echo $(sqlite3 "${PZSERVERDB}" "SELECT username FROM whitelist WHERE username=\"${ADMINUSER}\"")
 	fi
-
-	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
 }
 
 check_first_time() {
@@ -159,6 +157,8 @@ check_first_time() {
 
 		read_port
 	fi
+
+	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
 }
 
 check_running() {
