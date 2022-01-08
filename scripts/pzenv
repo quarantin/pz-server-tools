@@ -43,12 +43,12 @@ PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
 
 JAVAMODSVERSION=0.0.1
-JAVAMODSHOME="${HOME}/javamods"
+JAVAMODSARCHIVE="javamods-${JAVAMODSVERSION}.zip"
 JAVAMODSCONFIGDIR="${HOME}/.javamods"
 JAVAMODSCONFIG="${JAVAMODSCONFIGDIR}/config.json"
 JAVAMODSSTART="${PZSERVER}/javamods-start-server.sh"
 JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
-JAVAMODSURL='https://github.com/quarantin/javamods/'
+JAVAMODSURL="https://github.com/quarantin/javamods/releases/download/${JAVAMODSVERSION}/${JAVAMODSARCHIVE}"
 
 if [ -f "${CONFIG}" ]; then
 	EDITOR="$(jq -r .editor "${CONFIG}")"
