@@ -4,12 +4,15 @@ To install Project Zomboid Server Tools, you have to create a system account nam
 	sudo useradd --create-home --shell /bin/bash pzstadmin
 
 Set a password for user **pzstadmin**:
+
 	sudo passwd pzstadmin
 
 Add user **pzstadmin** to group **sudo**:
+
 	sudo usermod -aG sudo pzstadmin
 
 Login as user **pzstadmin**:
+
 	sudo -i -u pzstadmin
 
 Run the following commands to install Project Zomboid Server Tools:
