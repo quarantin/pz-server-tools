@@ -8,6 +8,7 @@ A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
 - Update pzserver from Steam automatically
 - Restart pzserver when a mod is updated on Steam Workshop
 - Manage multiple pzservers running on the same machine
+- Run pzserver in the background (no need for screen!)
 - Many more...
 
 # Tools
