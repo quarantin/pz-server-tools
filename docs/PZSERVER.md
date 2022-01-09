@@ -86,10 +86,11 @@ If you want to stop your pzserver run the following command:
 	pzserver quit
 
 # Killing Project Zomboid Dedicated Server
-In case your pzserver is not responding to other commands, you might want to kill the process. Beware though because it won't perform a clean shutdown of the pzserver!!!
+In case your pzserver is not responding to other commands, you might want to kill the process.<br>
+Beware though because it won't perform a clean shutdown of the pzserver!!!
 
-**WARNING**: Data loss is to be expected if you use this command!
-**WARNING**: It might very well corrupt your saved game!
+**WARNING**: Data loss is to be expected if you use this command!<br>
+**WARNING**: It might very well corrupt your saved game!<br>
 **WARNING**: Only use this command as a last resort!
 
 	pzserver kill
