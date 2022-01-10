@@ -11,7 +11,8 @@ import logging
 from pwd import getpwnam
 from os.path import exists
 from datetime import timedelta
-from subprocess import call, DEVNULL
+from subprocess import run, DEVNULL
+from pypzst import get_pzserver_pid
 
 loglevel = logging.DEBUG
 logfile = '/var/log/pzst.log'
@@ -25,13 +26,13 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 
 class PZRestarterJob:
 
-	def __init__(self, config, server, restart_delay=0, restart_sequence=None):
+	def __init__(self, config, server, restart_delay=0, restart_sequence=[]):
 		self.server = server
 		self.interrupted = False
-		self.env = dict(os.environ)
-		self.env['USER'] = server
+		self.lockpath = '/var/cache/pzst/restartjob.' + server
 
 		restart_sequence = restart_sequence or config.get('restart-sequence', [15, 10, 5, 2, 1])
+
 		signal.signal(signal.SIGINT, self.signal_handler)
 
 		logger.info(server + ': Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
@@ -53,7 +54,6 @@ class PZRestarterJob:
 	def lock(self):
 
 		flags = os.O_CREAT|os.O_EXCL|os.O_WRONLY
-		self.lockpath = '/var/cache/pzst/restartjob.' + self.server
 
 		try:
 
@@ -72,11 +72,13 @@ class PZRestarterJob:
 
 	def pzserver_message(self, message):
 		logger.info(self.server + ': Sending message: ' + message)
-		call(['/usr/local/bin/pzmessage', message ], env=self.env, stdout=DEVNULL)
+		pid = get_pzserver_pid(self.server)
+		run(['/usr/local/bin/pzstc', pid, 'servermsg', '"' + message + '"' ], stdout=DEVNULL)
 
 	def pzserver_restart(self):
 		logger.info(self.server + ': Restarting now!')
-		call(['/usr/local/bin/pzrestart' ], env=self.env, stdout=DEVNULL)
+		pid = get_pzserver_pid(self.server)
+		run(['/usr/local/bin/pzstc', pid, 'quit' ])
 
 	def sleep(self, delay):
 
@@ -101,7 +103,7 @@ class PZRestarterJob:
 		alerts = list(sequence)
 		for delay in sequence:
 
-			if self.interrupted:
+			if delay == 0 or self.interrupted:
 				break
 
 			countdown = sum(alerts)
@@ -158,7 +160,7 @@ if __name__ == '__main__':
 
 		elif arg in [ '-n', '--now' ]:
 			restart_delay = 0
-			restart_sequence = [ 0 ]
+			restart_sequence.append(0)
 
 		elif arg.isnumeric():
 			restart_sequence.append(int(arg))
