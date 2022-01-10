@@ -4,6 +4,8 @@
 
 check_is_pzserver_user
 
+check_not_running
+
 check_first_time
 
 detach "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${@} &
