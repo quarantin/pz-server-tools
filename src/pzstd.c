@@ -144,6 +144,7 @@ int wait_pz_pid(pid_t pz_pid, char *strerr, size_t strerrsz) {
 		usleep(200 * 1000);
 	}
 
+	snprintf(strerr, strerrsz, "OK");
 	return 0;
 }
 
@@ -159,7 +160,7 @@ int send_command(struct ioctl_command *cmd, char *strerr, size_t strerrsz) {
 
 	fd = open(path, O_WRONLY);
 	if (fd < 0) {
-		snprintf(strerr, strerrsz,"ERROR: open failed: %s", strerror(errno));
+		snprintf(strerr, strerrsz, "ERROR: open failed: %s", strerror(errno));
 		return -1;
 	}
 
@@ -173,7 +174,8 @@ int send_command(struct ioctl_command *cmd, char *strerr, size_t strerrsz) {
 	close(fd);
 
 	if (!strcmp(cmd->command, "quit"))
-		return wait_pz_pid(cmd->pid, strerr, strerrsz);
+		if (wait_pz_pid(cmd->pid, strerr, strerrsz))
+			return -1;
 
 	return 0;
 }
