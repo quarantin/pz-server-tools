@@ -30,7 +30,6 @@ class PZRestarterJob:
 		self.interrupted = False
 		self.env = dict(os.environ)
 		self.env['USER'] = server
-		self.lockpath = '/var/cache/pzst/restartjob.' + server
 
 		restart_sequence = restart_sequence or config.get('restart-sequence', [15, 10, 5, 2, 1])
 		signal.signal(signal.SIGINT, self.signal_handler)
@@ -54,6 +53,7 @@ class PZRestarterJob:
 	def lock(self):
 
 		flags = os.O_CREAT|os.O_EXCL|os.O_WRONLY
+		self.lockpath = '/var/cache/pzst/restartjob.' + self.server
 
 		try:
 
@@ -155,6 +155,10 @@ if __name__ == '__main__':
 
 		if arg in [ '-d', '--delay' ]:
 			restart_delay = int(next(args))
+
+		elif arg in [ '-n', '--now' ]:
+			restart_delay = 0
+			restart_sequence = [ 0 ]
 
 		elif arg.isnumeric():
 			restart_sequence.append(int(arg))
