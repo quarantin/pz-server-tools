@@ -11,7 +11,4 @@ MAILTO=root
 * * * * *	root /usr/local/bin/pzupdateall
 
 # Don't change this line!
-* * * * *	root /usr/local/bin/pzrestartall
-
-# Don't change this line!
 0 1 * * * root /usr/local/bin/pzclearbackupsall
