@@ -8,4 +8,6 @@ install_steamcmd
 
 pzst_config --add
 
+mkdir -p "${HOME}/Zomboid/mods"
+
 echo OK
