@@ -3,7 +3,7 @@
 
 #include <sys/types.h>
 
-#define MAX_COMMAND_SIZE 64
+#define MAX_COMMAND_SIZE 128
 
 #define SERVER_PORT 666
 #define SERVER_QUEUE 10
