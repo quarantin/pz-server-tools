@@ -11,7 +11,7 @@
 
 struct ioctl_command {
 	pid_t pid;
-	char command[MAX_COMMAND_SIZE];
+	char command[MAX_COMMAND_SIZE + 1];
 };
 
 #endif
