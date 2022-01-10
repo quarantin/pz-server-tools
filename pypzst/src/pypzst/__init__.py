@@ -77,6 +77,7 @@ def init_log(name, logfile, server=''):
 	dateformat = '%Y-%m-%d %H:%M:%S'
 
 	logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
+	logging.getLogger('retry.api').setLevel(logging.INFO)
 	logging.getLogger('urllib3.connectionpool').setLevel(logging.INFO)
 	logger = logging.getLogger(name)
 	logger.addHandler(logging.StreamHandler(sys.stdout))
