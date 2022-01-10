@@ -134,7 +134,14 @@ read_port() {
 		OUTPUT=$(ss -nluw | grep ":${PORT} ")
 		if [ -z "${OUTPUT}" ]; then
 			mkdir -p "${PZSERVERDIR}"
-			echo "DefaultPort=${PORT}" > "${PZSERVERCONFIG}"
+			touch "${PZSERVERCONFIG}"
+			DEFAULTPORTSET="$(grep DefaultPort "${PZSERVERCONFIG}")"
+			if [ -z "${DEFAULTPORTSET}" ]; then
+				sed -i "s/.*\(DefaultPort\).*/\1=${PORT}/" "${PZSERVERCONFIG}"
+			else
+				echo "DefaultPort=${PORT}" >> "${PZSERVERCONFIG}"
+			fi
+
 			break
 		fi
 
