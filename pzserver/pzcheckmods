@@ -150,7 +150,7 @@ class PZModMonitor:
 			for server, server_config in self.server_configs.items():
 				if mod in server_config.get('WorkshopItems', []):
 					servers_to_restart.add(server)
-					break
+					continue
 
 		for server in servers_to_restart:
 			self.restart_server(server)
