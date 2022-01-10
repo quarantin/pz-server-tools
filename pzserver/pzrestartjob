@@ -14,15 +14,6 @@ from datetime import timedelta
 from subprocess import run, DEVNULL
 from pypzst import get_pzserver_pid
 
-loglevel = logging.DEBUG
-logfile = '/var/log/pzst.log'
-logformat = '%(asctime)s %(name)s %(message)s'
-dateformat = '%Y-%m-%d %H:%M:%S'
-
-logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
-logger = logging.getLogger('PZRestarterJob')
-logger.addHandler(logging.StreamHandler(sys.stdout))
-
 
 def isfloat(string):
 	try:
@@ -44,7 +35,9 @@ class PZRestarterJob:
 		signal.signal(signal.SIGINT, self.signal_handler)
 		signal.signal(signal.SIGTERM, self.signal_handler)
 
-		logger.info(server + ': Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
+		self.logger = self.init_log(server)
+
+		self.logger.info(server + ': Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
 
 		self.lock()
 
@@ -60,6 +53,18 @@ class PZRestarterJob:
 
 		self.unlock()
 
+	def init_log(self, server):
+
+		loglevel = logging.DEBUG
+		logfile = '/var/log/pzst/pzrestartjob.%s.log' % server
+		logformat = '%(asctime)s %(name)s %(message)s'
+		dateformat = '%Y-%m-%d %H:%M:%S'
+
+		logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
+		logger = logging.getLogger('PZRestarterJob')
+		logger.addHandler(logging.StreamHandler(sys.stdout))
+		return logger
+
 	def lock(self):
 
 		flags = os.O_CREAT|os.O_EXCL|os.O_WRONLY
@@ -71,7 +76,7 @@ class PZRestarterJob:
 		except OSError as error:
 
 			if error.errno == errno.EEXIST:
-				logger.info(self.server + ': Another instance of this script is already running!')
+				self.logger.info(self.server + ': Another instance of this script is already running!')
 				sys.exit(0)
 
 			raise
@@ -80,12 +85,12 @@ class PZRestarterJob:
 		os.remove(self.lockpath)
 
 	def pzserver_message(self, message):
-		logger.info(self.server + ': Sending message: ' + message)
+		self.logger.info(self.server + ': Sending message: ' + message)
 		pid = get_pzserver_pid(self.server)
 		run(['/usr/local/bin/pzstc', pid, 'servermsg', '"' + message + '"' ], stdout=DEVNULL)
 
 	def pzserver_restart(self):
-		logger.info(self.server + ': Restarting now!')
+		self.logger.info(self.server + ': Restarting now!')
 		pid = get_pzserver_pid(self.server)
 		run(['/usr/local/bin/pzstc', pid, 'quit' ])
 
@@ -102,7 +107,7 @@ class PZRestarterJob:
 
 		if restart_delay != 0:
 			plural = restart_delay >= 2 and 's' or ''
-			logger.info(self.server + ': Waiting %d minute%s before initiating restart sequence' % (restart_delay, plural))
+			self.logger.info(self.server + ': Waiting %d minute%s before initiating restart sequence' % (restart_delay, plural))
 			self.sleep(restart_delay * 60)
 
 	def wait_restart_sequence(self, restart_sequence):
@@ -148,7 +153,7 @@ class PZRestarterJob:
 
 	def user_interrupted(self):
 		message = ': Job interrupted by user!'
-		logger.info(self.server + message)
+		self.logger.info(self.server + message)
 		self.unlock()
 		sys.exit(0)
 
