@@ -8,18 +8,8 @@ if [ -z "${USERS}" ]; then
 	exit
 fi
 
-STATUS='No pzserver to restart'
 for USER in ${USERS[@]}; do
-
-	# Don't use RESTARTSWITCH from pzenv because
-	# this it's run as a cron job as pzst user
-	RESTARTSWITCH="${CACHEDIR}/restart.${USER}"
-
-	if [ -f "${RESTARTSWITCH}" ]; then
-		pzrestartjob "${USER}" > /dev/null &
-		STATUS='OK'
-	fi
-
+	detach /usr/local/bin/pzrestartjob "${USER}" $@ > /dev/null &
 done
 
-echo "${STATUS}"
+echo OK
