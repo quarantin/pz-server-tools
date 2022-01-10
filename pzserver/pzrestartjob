@@ -24,6 +24,14 @@ logger = logging.getLogger('PZRestarterJob')
 logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
+def isfloat(string):
+	try:
+		float(string)
+		return True
+
+	except:
+		return False
+
 class PZRestarterJob:
 
 	def __init__(self, config, server, restart_delay=0, restart_sequence=[]):
@@ -83,7 +91,7 @@ class PZRestarterJob:
 
 	def sleep(self, delay):
 
-		for second in range(0, delay):
+		for second in range(0, int(delay)):
 
 			if self.interrupted:
 				break
@@ -110,8 +118,13 @@ class PZRestarterJob:
 			countdown = sum(alerts)
 			alerts.remove(delay)
 
-			minutes = str(timedelta(minutes=countdown)).lstrip('0').lstrip(':')
-			message = 'Restarting server in %s' % minutes
+			delta = timedelta(minutes=countdown)
+			clean_delta = str(delta).lstrip(':0')
+			unit = delta.total_seconds() < 60 and 'seconds' or 'minute'
+			plural = delta.total_seconds() / 60 >= 2 and 's' or ''
+			message = 'Restarting server in %s %s%s' % (clean_delta, unit, plural)
+			if delay < 5:
+				message += '. Find a safe place for logout!'
 			self.pzserver_message(message)
 
 			self.sleep(delay * 60)
@@ -163,8 +176,8 @@ if __name__ == '__main__':
 			restart_delay = 0
 			restart_sequence.append(0)
 
-		elif arg.isnumeric():
-			restart_sequence.append(int(arg))
+		elif arg.isnumeric() or isfloat(arg):
+			restart_sequence.append(float(arg))
 
 		else:
 			server = arg
