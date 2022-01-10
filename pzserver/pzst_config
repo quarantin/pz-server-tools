@@ -52,7 +52,7 @@ elif [ "${ARG}" = '-i' ] || [ "${ARG}" = '--install' ]; then
 		usage
 	fi
 
-	jq --tab ".install=\"${INSTALLPATH}\"" "${CONFIG}" > "${TMP}"
+	jq --tab ".user=\"${USER}\" | .install=\"${INSTALLPATH}\"" "${CONFIG}" > "${TMP}"
 	cp "${TMP}" "${CONFIG}"
 
 elif [ "${ARG}" = '-p' ] || [ "${ARG}" = '--port' ]; then
