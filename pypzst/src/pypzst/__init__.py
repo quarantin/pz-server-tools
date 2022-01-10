@@ -81,6 +81,9 @@ def init_log(name, logfile, server=''):
 	logging.getLogger('urllib3.connectionpool').setLevel(logging.INFO)
 	logger = logging.getLogger(name)
 	logger.addHandler(logging.StreamHandler(sys.stdout))
+
+	os.chmod(logfile, 0o664)
+
 	return logger
 
 def isfloat(string):
