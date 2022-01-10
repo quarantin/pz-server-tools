@@ -5,7 +5,7 @@ import logging
 import requests
 
 import os
-from os.path import join
+from os.path import exists, join
 
 from retry import retry
 from pwd import getpwnam, getpwuid
@@ -77,13 +77,16 @@ def init_log(name, logfile, server=''):
 	logformat = '%(asctime)s %(name)s %(message)s'
 	dateformat = '%Y-%m-%d %H:%M:%S'
 
+	set_permissions = not exists(logfile)
+
 	logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
 	logging.getLogger('retry.api').setLevel(logging.INFO)
 	logging.getLogger('urllib3.connectionpool').setLevel(logging.INFO)
 	logger = logging.getLogger(name)
 	logger.addHandler(logging.StreamHandler(sys.stdout))
 
-	os.chmod(logfile, 0o664)
+	if set_permissions:
+		os.chmod(logfile, 0o664)
 
 	return logger
 
