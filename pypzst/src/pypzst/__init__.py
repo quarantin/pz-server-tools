@@ -1,10 +1,14 @@
 #!/usr/bin/env python
 
+import sys
+import logging
+
 import os
 from os.path import join
 
 from retry import retry
 from pwd import getpwnam, getpwuid
+
 
 def get_pzserver_pid(user):
 
@@ -60,3 +64,28 @@ def get_mod_updates(mods):
 		}
 
 	return mods
+
+
+def init_log(name, logfile, server=''):
+
+	if server:
+		server = '.' + server
+
+	loglevel = logging.DEBUG
+	logfile = '/var/log/pzst/%s%s.log' % (logfile, server)
+	logformat = '%(asctime)s %(name)s %(message)s'
+	dateformat = '%Y-%m-%d %H:%M:%S'
+
+	logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
+	logging.getLogger('urllib3.connectionpool').setLevel(logging.INFO)
+	logger = logging.getLogger(name)
+	logger.addHandler(logging.StreamHandler(sys.stdout))
+	return logger
+
+def isfloat(string):
+	try:
+		float(string)
+		return True
+
+	except:
+		return False

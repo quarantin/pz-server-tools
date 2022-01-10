@@ -6,22 +6,13 @@ import json
 import time
 import errno
 import signal
-import logging
 
 from pwd import getpwnam
 from os.path import exists
 from datetime import timedelta
 from subprocess import run, DEVNULL
-from pypzst import get_pzserver_pid
+from pypzst import get_pzserver_pid, init_log, isfloat
 
-
-def isfloat(string):
-	try:
-		float(string)
-		return True
-
-	except:
-		return False
 
 class PZRestarterJob:
 
@@ -35,7 +26,7 @@ class PZRestarterJob:
 		signal.signal(signal.SIGINT, self.signal_handler)
 		signal.signal(signal.SIGTERM, self.signal_handler)
 
-		self.logger = self.init_log(server)
+		self.logger = init_log('PZRestarterJob', 'pzrestartjob', server)
 
 		self.logger.info(server + ': Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
 
@@ -52,18 +43,6 @@ class PZRestarterJob:
 		self.pzserver_restart()
 
 		self.unlock()
-
-	def init_log(self, server):
-
-		loglevel = logging.DEBUG
-		logfile = '/var/log/pzst/pzrestartjob.%s.log' % server
-		logformat = '%(asctime)s %(name)s %(message)s'
-		dateformat = '%Y-%m-%d %H:%M:%S'
-
-		logging.basicConfig(filename=logfile, format=logformat, datefmt=dateformat, level=loglevel)
-		logger = logging.getLogger('PZRestarterJob')
-		logger.addHandler(logging.StreamHandler(sys.stdout))
-		return logger
 
 	def lock(self):
 
