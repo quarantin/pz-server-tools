@@ -1,0 +1,3 @@
+#!/bin/bash
+
+complete -W "intsall uninstall console log" javamods

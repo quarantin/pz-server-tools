@@ -6,6 +6,7 @@ sudo echo -n
 
 . "$(dirname "${0}")/pzstenv"
 
+COMPLETION="${REPO}/completion"
 REPOCONFIG="${REPO}/${CONFIGFILE}.example"
 REPOCRON="${REPO}/cron/${NAME}"
 REPOENV="${REPO}/env"
@@ -86,6 +87,8 @@ done
 for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
 done
+
+sudo cp "${COMPLETION}/"* /etc/bash_completion.d/
 
 sudo USER=${USER} pzst_config --install "$(realpath "${REPO}")"
 

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+complete -W "install uninstall update config checkconfig" pzst
