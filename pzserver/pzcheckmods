@@ -7,12 +7,11 @@ import sys
 import json
 import time
 import errno
-import requests
 
 from retry import retry
 from subprocess import Popen, DEVNULL
 from datetime import datetime, timedelta
-from pypzst import init_log
+from pypzst import get_mod_updates, init_log
 
 
 class PZModMonitor:
@@ -96,35 +95,8 @@ class PZModMonitor:
 
 		return old_cache
 
-	@retry(tries=5)
 	def get_new_cache(self, mods):
-
-		steam_url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
-
-		if len(mods) == 0:
-			return {}
-
-		data = {}
-		data['itemcount'] = len(mods)
-
-		for i, workshop_id in enumerate(mods):
-			key = 'publishedfileids[%d]' % i
-			data[key] = workshop_id
-
-		jsondata = requests.post(steam_url, data=data).json()
-
-		mods = {}
-
-		for workshop_item in jsondata['response']['publishedfiledetails']:
-
-			mod_id = workshop_item.get('publishedfileid')
-
-			mods[mod_id] = {
-				'name':    workshop_item.get('title', mod_id),
-				'updated': workshop_item.get('time_updated', 0),
-			}
-
-		return mods
+		return get_mod_updates(mods)
 
 	def check_mod_updates(self, old_cache, new_cache):
 

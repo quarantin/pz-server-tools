@@ -60,8 +60,8 @@ def get_mod_updates(mods):
 		mod_id = workshop_item['publishedfileid']
 
 		mods[mod_id] = {
-			'name':    workshop_item['title'],
-			'updated': workshop_item['time_updated'],
+			'name':    workshop_item.get('title', mod_id),
+			'updated': workshop_item.get('time_updated', 0),
 		}
 
 	return mods
