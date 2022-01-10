@@ -1,10 +1,17 @@
 #!/bin/bash
 
-killall pzrestartjob 2> /dev/null
+PIDS=("$(ps -A -f | grep "pzrestartjob.${USER}" | grep -v grep | awk '{ print $2 }')")
 
-if [ "${?}" = "0" ]; then
+if [ -z "${PIDS}" ]; then
+	echo No restart job running
+	exit
+fi
+
+sudo kill ${PIDS[@]}
+
+if [ "${?}" = '0' ]; then
 	pzmessage "Server restart has been canceled by operator" > /dev/null
 	echo OK
 else
-	echo No restart job running
+	echo Failed to kill restart job
 fi
