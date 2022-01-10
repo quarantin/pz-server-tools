@@ -32,7 +32,7 @@ sudo rm -f /etc/systemd/system/pzstd.service
 
 sudo make -C "${SRC}" uninstall > /dev/null
 
-sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}" "${LOGFILE}"
+sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}" "${LOGDIR}/"*
 
 if [ -d "${CACHEDIR}" ]; then
 	sudo rmdir "${CACHEDIR}"
@@ -40,6 +40,10 @@ fi
 
 if [ -d "${CONFIGDIR}" ]; then
 	sudo rmdir "${CONFIGDIR}"
+fi
+
+if [ -d "${LOGDIR}" ]; then
+	sudo rmdir "${LOGDIR}"
 fi
 
 echo [*] Removing system user: pzst

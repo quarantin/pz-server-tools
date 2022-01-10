@@ -59,9 +59,9 @@ sudo rm -rf "${CONFIGENV}"
 
 echo [*] Installing Project Zomboid Server Tools
 
-sudo touch           "${LOGFILE}"
-sudo chown root:pzst "${LOGFILE}"
-sudo chmod 664       "${LOGFILE}"
+sudo mkdir -p        "${LOGDIR}"
+sudo chown root:pzst "${LOGDIR}"
+sudo chmod 2775      "${LOGDIR}"
 
 sudo mkdir -p        "${CACHEDIR}"
 sudo chown root:pzst "${CACHEDIR}"

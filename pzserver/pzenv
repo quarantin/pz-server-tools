@@ -3,7 +3,7 @@
 NAME='pzst'
 
 BIN='/usr/local/bin'
-LOGFILE="/var/log/${NAME}.log"
+LOGDIR='/var/log/pzst'
 PYTHON='/usr/bin/python'
 
 CACHEDIR="/var/cache/${NAME}"
