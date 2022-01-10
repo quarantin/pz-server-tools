@@ -50,7 +50,7 @@ python3 -m pip install -r "${REPO}/requirements.txt" > /dev/null
 
 python3 -m build "${REPO}/pypzst" > /dev/null
 
-python3 -m pip install pypzst/dist/pypzst-0.0.1-py3-none-any.whl > /dev/null
+python3 -m pip install "${REPO}/pypzst/dist/pypzst-0.0.1-py3-none-any.whl" > /dev/null
 
 deactivate
 
