@@ -2,6 +2,7 @@
 
 import sys
 import logging
+import requests
 
 import os
 from os.path import join
