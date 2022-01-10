@@ -10,4 +10,10 @@ rm -rf "${PZSERVER}"
 
 pzst_config --del
 
+rm -f "${LOCALCONFIG}"
+
+if [ -d "${LOCALCONFIGDIR}" ]; then
+	rmdir "${LOCALCONFIGDIR}"
+fi
+
 echo OK
