@@ -10,6 +10,7 @@ import errno
 import requests
 
 from retry import retry
+from subprocess import Popen, DEVNULL
 from datetime import datetime, timedelta
 
 
@@ -152,8 +153,17 @@ class PZModMonitor:
 					break
 
 		for server in servers_to_restart:
-			restartswitch = '/var/cache/pzst/restart.' + server
-			open(restartswitch, 'w').close()
+			self.restart_server(server)
+
+	def restart_server(self, server):
+
+		args = {
+			'stdin':     DEVNULL,
+			'stdout':    DEVNULL,
+			'stderr':    DEVNULL,
+		}
+
+		Popen(['/usr/local/bin/pzrestartjob', server], **args)
 
 if __name__ == '__main__':
 
