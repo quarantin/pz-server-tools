@@ -1,0 +1,10 @@
+#!/bin/bash
+
+killall pzrestartjob 2> /dev/null
+
+if [ "${?}" = "0" ]; then
+	pzmessage "Server restart has been canceled by operator" > /dev/null
+	echo OK
+else
+	echo No restart job running
+fi

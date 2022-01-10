@@ -26,6 +26,7 @@ usage() {
 	echo
 	echo '  start          Start pzserver in the background'
 	echo '  restart        Restart pzserver'
+	echo '  cancelrestart  Cancel restart job'
 	echo '  stop           Stop pzserver'
 	echo '  kill           Kill pzserver (unclean shutdown)'
 	echo
@@ -106,6 +107,10 @@ case "${COMMAND}" in
 
 	restart)
 		"${BASE}/pzrestart" $@
+		;;
+
+	cancelrestart)
+		"${BASE}/pzcancelrestart" $@
 		;;
 
 	stop|quit)

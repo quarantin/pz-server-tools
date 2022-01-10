@@ -49,6 +49,7 @@ Here's the help section for the **`pzserver`** command:
 
 	  start          Start pzserver in the background
 	  restart        Restart pzserver
+	  cancelrestart  Cancel restart job
 	  stop           Stop pzserver
 	  kill           Kill pzserver (unclean shutdown)
 
