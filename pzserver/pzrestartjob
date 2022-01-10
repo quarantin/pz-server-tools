@@ -34,6 +34,7 @@ class PZRestarterJob:
 		restart_sequence = restart_sequence or config.get('restart-sequence', [15, 10, 5, 2, 1])
 
 		signal.signal(signal.SIGINT, self.signal_handler)
+		signal.signal(signal.SIGTERM, self.signal_handler)
 
 		logger.info(server + ': Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
 
