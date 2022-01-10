@@ -7,11 +7,10 @@ check_is_pzserver_user
 check_running
 
 NOW="${1}"
-if [ "${NOW}" == '--now' ]; then
-	pzrestartjob -d 0 0
+if [ "${NOW}" = '-n' ] || [ "${NOW}" = '--now' ]; then
+	pzrestartjob "${USER}" $@
 
 else
-	detach pzrestartjob "${USER}" &
+	detach /usr/local/bin/pzrestartjob "${USER}" $@ &
+	echo OK
 fi
-
-echo OK
