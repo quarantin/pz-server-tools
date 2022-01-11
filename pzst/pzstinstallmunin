@@ -1,0 +1,58 @@
+#!/bin/bash
+set -e
+
+# Ask for sudo password before printing anything to the console
+sudo echo -n
+
+. "$(dirname "${0}")/pzstenv"
+
+HTPASSWD=/etc/pzst/htpasswd
+DEFAULT=/etc/nginx/sites-enabled/default
+PACKAGES='apache2-utils nginx munin munin-node munin-plugins munin-plugins-core munin-plugins-extra'
+
+if [ -f "${DEFAULT}" ]; then
+	NGINXINSTALLED=true
+fi
+
+echo [*] Updating package cache
+sudo apt-get -qq update
+
+echo [*] Upgrading packages
+sudo apt-get -qq --yes upgrade 3>&1 2>&3- 1>/dev/null
+
+echo -n [*] Installing packages
+for PACKAGE in ${PACKAGES}; do
+	echo -n .
+	sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
+done
+echo
+
+echo Enter munin username \(default: munin\):
+read -e MUNINUSER
+
+if [ -z "${MUNINUSER}" ]; then
+	MUNINUSER=munin
+fi
+
+echo
+echo Enter password for ${MUNINUSER}
+sudo htpasswd -c "${HTPASSWD}" "${MUNINUSER}"
+
+sudo cp "${REPO}/nginx/pzst.conf" /etc/nginx/sites-available/
+
+if ! [ -e "/etc/nginx/sites-enabled/pzst.conf" ]; then
+	sudo ln -s /etc/nginx/sites-available/pzst.conf /etc/nginx/sites-enabled/
+fi
+
+if [ -z "${NGINXINSTALLED}" ]; then
+	sudo rm -f "${DEFAULT}"
+fi
+
+sudo service nginx restart
+
+SERVERADDRESS=$(wget -q -O- https://api.ipify.org)
+echo
+echo Munin should be accessible at this address:
+echo http://${SERVERADDRESS}/munin/
+echo
+echo OK
