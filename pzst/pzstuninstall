@@ -3,6 +3,13 @@
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
+# Safety check, don't do anything if we can't find pzstenv
+PZSTENV=/usr/local/bin/pzstenv
+if ! [ -f "${PZSTENV}" ]; then
+	echo Nothing to uninstall
+	exit
+fi
+
 . "$(dirname "${0}")/pzstenv"
 
 SRC="${REPO}/src"
