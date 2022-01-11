@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+# Ask for sudo password before printing anything to the console
+sudo echo -n
+
+. "$(dirname "${0}")/pzstenv"
+
+HTPASSWD=/etc/pzst/htpasswd
+
+sudo rm -f "${HTPASSWD}"
+
+sudo rm -f /etc/nginx/sites-enabled/pzst.conf
+
+sudo rm -f /etc/nginx/sites-available/pzst.conf
+
+sudo service nginx restart
+
+echo OK
