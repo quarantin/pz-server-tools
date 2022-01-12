@@ -192,8 +192,13 @@ check_running() {
 check_not_running() {
 
 	PZPID=$(get_pz_pid)
+	MESSAGE="${1}"
+	if [ -z "${MESSAGE}" ]; then
+		MESSAGE='pzserver already running.'
+	fi
+
 	if ! [ -z "${PZPID}" ]; then
-		echo pzserver already running.
+		echo -e ${MESSAGE}
 		exit
 	fi
 }
