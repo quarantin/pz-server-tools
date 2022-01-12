@@ -14,10 +14,7 @@ while true; do
 
 	"${PZSERVERSTART}" ${@} &> /dev/null
 
-	#if [ -d "${PZSERVERSAVE}" ]; then
-	#	mkdir -p "${PZSERVERBACKUP}"
-	#	cp -a "${PZSERVERSAVE}" "${PZSERVERBACKUP}/$(date +%Y%m%d-%H%M%S)"
-	#fi
+	pzserver backupsave
 
 	if [ -f "${KILLSWITCH}" ]; then
 		echo Kill switch detected, quitting.
