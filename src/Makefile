@@ -1,6 +1,7 @@
 BIN    := /usr/local/bin
 PZSTC  := pzstc
 PZSTD  := pzstd
+PZWRAP := pzwrap
 DETACH := detach
 CFLAGS := -Wall -Werror -Wextra -pedantic
 
@@ -33,6 +34,7 @@ installpzstd:
 installdetach:
 	cp $(DETACH) $(BIN)
 	chmod 755 $(BIN)/$(DETACH)
+	cd $(BIN) && rm -f $(PZWRAP) && ln -s $(DETACH) $(PZWRAP)
 
 uninstall:
 	rm -f $(BIN)/$(PZSTC) $(BIN)/$(PZSTD) $(BIN)/$(DETACH)
