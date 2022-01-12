@@ -25,6 +25,7 @@ LOCK="${CACHEDIR}/lock"
 KILLSWITCH="${CACHEDIR}/kill.${USER}"
 INSTALLCHECK="${CONFIGDIR}/.installed"
 SOCKETPATH="${CACHEDIR}/pzst.sock"
+RESTARTJOBPATH="${CACHEDIR}/restartjob.${USER}"
 
 STEAM="${HOME}/Steam"
 STEAMCMD="${STEAM}/steamcmd.sh"
