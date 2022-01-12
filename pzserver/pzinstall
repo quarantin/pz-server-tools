@@ -10,4 +10,7 @@ pzst_config --add
 
 mkdir -p "${HOME}/Zomboid/mods"
 
+# Prevent exit from hiding the exit status code of ProjectZomboid process
+sed -i '/^exit 0$/d' "${PZSERVERSTART}"
+
 echo OK
