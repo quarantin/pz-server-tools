@@ -18,7 +18,7 @@ while true; do
 		UNSAFEBACKUP='.unsafe'
 	fi
 
-	pzbackupsave
+	UNSAFEBACKUP=${UNSAFEBACKUP} pzbackupsave
 
 	if [ -f "${KILLSWITCH}" ]; then
 		echo Kill switch detected, quitting.
