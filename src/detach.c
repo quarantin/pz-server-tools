@@ -11,7 +11,7 @@
 int main(int argc, char **argv, char **envp) {
 
 	pid_t pid;
-	int master;
+	int master, status;
 
 	if (argc < 2) {
 		printf("Usage: %s <command>\n", argv[0]);
@@ -26,6 +26,6 @@ int main(int argc, char **argv, char **envp) {
 		return 0;
 	}
 
-	wait(NULL);
-	exit(EXIT_SUCCESS);
+	wait(&status);
+	exit(!WIFEXITED(status) || WEXITSTATUS(status));
 }
