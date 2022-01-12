@@ -21,6 +21,7 @@ usage() {
 	echo '  userpasswd     Change pzserver user password'
 	echo '  status         Check pzserver status'
 	echo '  console        Show pzserver console output'
+	echo '  backupsave     Perform a backup of the current save'
 	echo '  clearbackups   Clear old backups'
 	echo '  clearzpop      Clear zombie population'
 	echo
@@ -91,6 +92,10 @@ case "${COMMAND}" in
 
 	console|log)
 		"${BASE}/pzconsole" $@
+		;;
+
+	backupsave)
+		"${BASE}/pzbackupsave" $@
 		;;
 
 	clearbackups)

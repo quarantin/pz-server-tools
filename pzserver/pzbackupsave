@@ -1,0 +1,26 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+check_is_pzserver_user
+
+FORCE="${1}"
+if [ "${FORCE}" = '-f' ] || [ "${FORCE}" = '--force' ]; then
+
+	echo WARNING: Performing a backup while pzserver is running is not safe and might corrupt your backup.
+	echo WARNING: Use at your own risk!
+	echo
+
+	ask_confirmation
+	if [ "${?}" != '0' ]; then
+		echo Aborted.
+		exit
+	fi
+
+	shift
+
+else
+	check_not_running "pzserver is running.\\n\\nStop the server before performing a backup.\\n(You can add --force to force a backup operation)"
+fi
+
+rsync -a ${@} "${PZSERVERSAVE}" "${PZSERVERBACKUP}" && echo OK

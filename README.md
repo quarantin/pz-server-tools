@@ -44,6 +44,7 @@ Here's the help section for the **`pzserver`** command:
 	  userpasswd     Change pzserver user password
 	  status         Check pzserver status
 	  console        Show pzserver console output
+	  backupsave     Perform a backup of the current save
 	  clearbackups   Clear old backups
 	  clearzpop      Clear zombie population
 
