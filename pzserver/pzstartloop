@@ -8,7 +8,7 @@ check_not_running
 
 while true; do
 
-	rm -f "${KILLSWITCH}" "${RESTARTSWITCH}"
+	rm -f "${KILLSWITCH}"
 
 	[[ -f "${PZSERVERLOG}" ]] && cp "${PZSERVERLOG}" "${PZSERVERLOG}.old"
 
@@ -19,7 +19,6 @@ while true; do
 	#	cp -a "${PZSERVERSAVE}" "${PZSERVERBACKUP}/$(date +%Y%m%d-%H%M%S)"
 	#fi
 
-	rm -f "${RESTARTSWITCH}"
 	if [ -f "${KILLSWITCH}" ]; then
 		echo Kill switch detected, quitting.
 		rm -f "${KILLSWITCH}"
