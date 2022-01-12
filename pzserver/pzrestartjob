@@ -61,7 +61,8 @@ class PZRestarterJob:
 			raise
 
 	def unlock(self):
-		os.remove(self.lockpath)
+		if exists(self.lockpath):
+			os.remove(self.lockpath)
 
 	def pzserver_message(self, message):
 		self.logger.info(self.server + ': Sending message: ' + message)
@@ -76,6 +77,9 @@ class PZRestarterJob:
 	def sleep(self, delay):
 
 		for second in range(0, int(delay)):
+
+			if not exists(self.lockpath):
+				self.interrupted = True
 
 			if self.interrupted:
 				break
