@@ -22,7 +22,6 @@ usage() {
 	echo '  status         Check pzserver status'
 	echo '  console        Show pzserver console output'
 	echo '  backupsave     Perform a backup of the current save'
-	echo '  clearbackups   Clear old backups'
 	echo '  clearzpop      Clear zombie population'
 	echo
 	echo '  start          Start pzserver in the background'
@@ -96,10 +95,6 @@ case "${COMMAND}" in
 
 	backupsave)
 		"${BASE}/pzbackupsave" $@
-		;;
-
-	clearbackups)
-		"${BASE}/pzclearbackups" $@
 		;;
 
 	clearzpop)

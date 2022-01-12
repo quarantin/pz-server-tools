@@ -1,5 +1,5 @@
 #!/bin/bash
 
-ACTIONS="install uninstall config sandbox spawnpoints spawnregions checkmods maxmen adminpasswd userpasswd status console log backupsave clearbackups clearzpop start restart cancelrestart stop quit kill command cmd message msg"
+ACTIONS="install uninstall config sandbox spawnpoints spawnregions checkmods maxmen adminpasswd userpasswd status console log backupsave clearzpop start restart cancelrestart stop quit kill command cmd message msg"
 
 complete -W "${ACTIONS}" pzserver

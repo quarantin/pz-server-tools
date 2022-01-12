@@ -45,7 +45,6 @@ Here's the help section for the **`pzserver`** command:
 	  status         Check pzserver status
 	  console        Show pzserver console output
 	  backupsave     Perform a backup of the current save
-	  clearbackups   Clear old backups
 	  clearzpop      Clear zombie population
 
 	  start          Start pzserver in the background
