@@ -94,11 +94,11 @@ case "${COMMAND}" in
 		;;
 
 	clearbackups)
-		"${BASE}/pzclearbackups"
+		"${BASE}/pzclearbackups" $@
 		;;
 
 	clearzpop)
-		"${BASE}/pzclearzpop"
+		"${BASE}/pzclearzpop" $@
 		;;
 
 	start)
