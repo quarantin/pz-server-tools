@@ -30,11 +30,12 @@ def get_pzserver_pid(user):
 		with open(filepath) as fd:
 			command = fd.read().strip()
 
-		#print(command)
 		if command not in [ 'ProjectZomboid3', 'ProjectZomboid6' ]:
 			continue
 
 		return pid
+
+	return 'invalid'
 
 @retry(tries=5)
 def get_mod_updates(mods):
