@@ -8,4 +8,4 @@ check_running
 
 touch "${KILLSWITCH}"
 
-kill -SIGKILL "${PZPID}" && echo OK
+kill $@ "${PZPID}" && echo OK
