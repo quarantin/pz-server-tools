@@ -12,7 +12,11 @@ while true; do
 
 	[[ -f "${PZSERVERLOG}" ]] && cp "${PZSERVERLOG}" "${PZSERVERLOG}.old"
 
-	"${PZSERVERSTART}" ${@} &> /dev/null
+	pzwrap "${PZSERVERSTART}" ${@} &> /dev/null
+
+	if [ "${?}" != '0' ]; then
+		UNSAFEBACKUP='.unsafe'
+	fi
 
 	pzbackupsave
 
