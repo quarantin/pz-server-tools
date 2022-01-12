@@ -1,17 +1,12 @@
 #!/bin/bash
 
-PIDS=("$(ps -A -f | grep "pzrestartjob.${USER}" | grep -v grep | awk '{ print $2 }')")
+. "$(dirname "${0}")/pzenv"
 
-if [ -z "${PIDS}" ]; then
+if ! [ -f "${RESTARTJOBPATH}" ]; then
 	echo No restart job running
 	exit
 fi
 
-sudo kill ${PIDS[@]}
+rm -f "${RESTARTJOBPATH}"
 
-if [ "${?}" = '0' ]; then
-	pzmessage "Server restart has been canceled by operator" > /dev/null
-	echo OK
-else
-	echo Failed to kill restart job
-fi
+pzmessage "Server restart has been canceled by operator"
