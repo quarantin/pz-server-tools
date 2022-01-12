@@ -224,3 +224,27 @@ get_pz_pid() {
 
 	done
 }
+
+ask_confirmation() {
+
+	MESSAGE="${1}"
+	if [ -z "${MESSAGE}" ]; then
+		MESSAGE='Are you sure you want to proceed?'
+	fi
+
+	while true; do
+
+		echo ${MESSAGE}
+		echo
+		echo Type \`yes\` to continue, or \`no\` to abort:
+		read -e CONFIRM
+		echo
+
+		if [ "${CONFIRM}" = 'n' ] || [ "${CONFIRM}" = 'no' ]; then
+			return 1
+
+		elif [ "${CONFIRM}" = 'y' ] || [ "${CONFIRM}" = 'yes' ]; then
+			return 0
+		fi
+	done
+}
