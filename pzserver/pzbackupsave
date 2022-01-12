@@ -7,8 +7,8 @@ check_is_pzserver_user
 FORCE="${1}"
 if [ "${FORCE}" = '-f' ] || [ "${FORCE}" = '--force' ]; then
 
-	echo WARNING: Performing a backup while pzserver is running is not safe and might corrupt your backup.
-	echo WARNING: Use at your own risk!
+	echo WARNING: Performing a backup while pzserver is running is not safe and might corrupt your backup!
+	echo WARNING: USE AT YOUR OWN RISK!!!
 	echo
 
 	ask_confirmation
