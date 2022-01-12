@@ -14,7 +14,7 @@ while true; do
 
 	"${PZSERVERSTART}" ${@} &> /dev/null
 
-	pzserver backupsave
+	pzbackupsave
 
 	if [ -f "${KILLSWITCH}" ]; then
 		echo Kill switch detected, quitting.
