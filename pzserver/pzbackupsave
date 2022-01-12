@@ -23,4 +23,4 @@ else
 	check_not_running "pzserver is running.\\n\\nStop the server before performing a backup.\\n(You can add --force to force a backup operation)"
 fi
 
-rsync -a ${@} "${PZSERVERSAVE}" "${PZSERVERBACKUP}" && echo OK
+rsync -a ${@} "${PZSERVERSAVE}" "${PZSERVERBACKUP}${UNSAFEBACKUP}" && echo OK
