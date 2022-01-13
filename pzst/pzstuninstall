@@ -39,7 +39,7 @@ sudo rm -f /etc/systemd/system/pzstd.service
 
 sudo make -C "${SRC}" uninstall > /dev/null
 
-sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}"
+sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}" "${CONFIGDIR}/htpasswd"
 
 if [ -d "${CACHEDIR}" ]; then
 	sudo rmdir "${CACHEDIR}"
@@ -50,11 +50,7 @@ if [ -d "${CONFIGDIR}" ]; then
 fi
 
 if [ -d "${LOGDIR}" ]; then
-
-	for LOGFILE in $(ls "${LOGDIR}"); do
-		sudo rm -f "${LOGFILE}"
-	done
-
+	sudo rm -f "${LOGFILE}/*.log"
 	sudo rmdir "${LOGDIR}"
 fi
 
