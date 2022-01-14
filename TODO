@@ -9,9 +9,8 @@
 - Fix pzcommand
 	Check all commands are working
 	Show error message if command is invalid or unknown
-- Map problem: Detect map mods and create symlinks
-	https://youtu.be/z11zDix8l2Y?t=539
-	https://theindiestone.com/forums/index.php?%2Ftopic%2F18329-mod-and-map-installation-instructions-on-multiplayer-server-pz-3320%2F
+- Troubleshing
+	Error! app state is 0x202 after update job (out of space)
 - Make a web UI
 	Controls:
 		Start - Start server
@@ -34,16 +33,3 @@
 
 	Extra:
 		big servers have bad zombie issues and the zpop files should be deleted here and there... for resource issues this helps alot after testing. 
-
-- Nice to have:
-	WHAT'S EXPORTED/IMPORTED:
-	* Character's Name and Surname
-	* Character's sex and model
-	* Character's Profession
-	* Character's Traits
-	* Character's known recipes
-	* Character's EXP levels, bonuses and even current exp
-	* Character's read books, read page counts, and exp multipliers
-
-- Troubleshing
-	Error! app state is 0x202 after update job (out of space)
