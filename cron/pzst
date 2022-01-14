@@ -9,3 +9,6 @@ MAILTO=root
 
 # Don't change this line!
 * * * * *	root /usr/local/bin/pzupdateall
+
+# Don't change this line!
+0 7 * * * root /usr/local/bin/pzstupdate
