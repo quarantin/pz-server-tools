@@ -37,6 +37,8 @@ if ! [ -f "${INSTALLCHECK}" ]; then
 	echo [*] Adding system user: pzst
 
 	sudo useradd -r pzst 2> /dev/null || true
+
+	sudo touch "${INSTALLCHECK}"
 fi
 
 echo [*] Creating virtual environment
@@ -103,5 +105,3 @@ sudo service pzstd restart
 sudo cp "${REPOCRON}" "${CRONFILE}"
 sudo chmod 644 "${CRONFILE}"
 sudo /etc/init.d/cron restart > /dev/null
-
-sudo touch "${INSTALLCHECK}"
