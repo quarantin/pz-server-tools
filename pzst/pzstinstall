@@ -41,7 +41,7 @@ fi
 
 echo [*] Creating virtual environment
 
-virtualenv -p python3 "${REPOENV}" > /dev/null
+python3 -m venv "${REPOENV}" > /dev/null
 
 chmod -R go-w "${REPOENV}"
 
