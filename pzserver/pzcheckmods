@@ -11,7 +11,7 @@ import errno
 from retry import retry
 from subprocess import Popen, DEVNULL
 from datetime import datetime, timedelta
-from pypzst import get_mod_updates, init_log
+from pypzst import get_mod_updates, init_log, save_bot_data
 
 
 class PZModMonitor:
@@ -29,13 +29,14 @@ class PZModMonitor:
 		old_cache = self.get_old_cache()
 		new_cache = self.get_new_cache(mods)
 
-		if update_cache:
-			with open(cache_path, 'w') as fd:
-				fd.write(json.dumps(new_cache) + os.linesep)
-
 		updated_mods = self.check_mod_updates(old_cache, new_cache)
 		if not updated_mods:
 			self.logger.info('No mod update detected')
+
+		if update_cache:
+			with open(cache_path, 'w') as fd:
+				fd.write(json.dumps(new_cache) + os.linesep)
+			save_bot_data(self.server_configs, updated_mods)
 
 		if restart:
 			self.restart_servers(updated_mods)
@@ -100,20 +101,22 @@ class PZModMonitor:
 
 	def check_mod_updates(self, old_cache, new_cache):
 
-		mods = set()
+		mods = {}
 
 		for mod_id, mod in new_cache.items():
 
 			if mod_id not in old_cache:
 				self.logger.info('New mod detected: [' + mod_id + '] ' + mod['name'])
-				mods.add(mod_id)
+				mod['status'] = 'new'
+				mods[mod_id] = mod
 
 			else:
 				old_update = old_cache[mod_id]['updated']
 				new_update = new_cache[mod_id]['updated']
 				if old_update < new_update:
 					self.logger.info('Mod update detected: [' + mod_id + '] ' + mod['name'])
-					mods.add(mod_id)
+					mod['status'] = 'updated'
+					mods[mod_id] = mod
 
 		return mods
 
@@ -121,9 +124,9 @@ class PZModMonitor:
 
 		servers_to_restart = set()
 
-		for mod in mods:
+		for mod_id in mods:
 			for server, server_config in self.server_configs.items():
-				if mod in server_config.get('WorkshopItems', []):
+				if mod_id in server_config.get('WorkshopItems', []):
 					servers_to_restart.add(server)
 					continue
 

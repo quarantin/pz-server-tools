@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import json
 import logging
 import requests
 
@@ -10,6 +11,34 @@ from os.path import exists, join
 from retry import retry
 from pwd import getpwnam, getpwuid
 
+BOT_CACHE = '/var/cache/pzst/bot.json'
+BOT_CONFIG = '/etc/pzst/bot.json'
+PZST_CONFIG = '/etc/pzst/config.json'
+WORKSHOP_URL = 'https://steamcommunity.com/sharedfiles/filedetails/?id='
+
+def get_bot_cache():
+
+	with open(BOT_CACHE) as fd:
+		bot_cache = json.loads(fd.read())
+
+	return bot_cache
+
+def get_bot_config():
+
+	with open(BOT_CONFIG) as fd:
+		bot_config = json.loads(fd.read())
+
+	return bot_config
+
+def get_mod_url(workshop_id):
+	return WORKSHOP_URL + workshop_id
+
+def get_pzst_config():
+
+	with open(PZST_CONFIG) as fd:
+		pzst_config = json.loads(fd.read())
+
+	return pzst_config
 
 def get_pzserver_pid(user):
 
@@ -67,6 +96,21 @@ def get_mod_updates(mods):
 
 	return mods
 
+def save_bot_data(servers, updated_mods):
+
+	if not updated_mods:
+		return
+
+	bot_data = {}
+	for mod_id, mod in updated_mods.items():
+		for server, server_config in servers.items():
+			if not bot_data.get(server):
+				bot_data[server] = {}
+			if mod_id in server_config.get('WorkshopItems', []):
+				bot_data[server][mod_id] = mod
+
+	with open(BOT_CACHE, 'w') as fd:
+		fd.write(json.dumps(bot_data))
 
 def init_log(name, logfile, server=''):
 
