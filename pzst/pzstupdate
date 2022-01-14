@@ -17,11 +17,11 @@ if ! [ -z "${1}" ]; then
 fi
 
 if [ "${BRANCH}" != "${CURRENT_BRANCH}" ]; then
-	git checkout --quiet "${BRANCH}"
+	sudo -u "${PZSTUSER}" git checkout --quiet "${BRANCH}"
 fi
 
-git fetch --quiet
+sudo -u "${PZSTUSER}" git fetch --quiet
 
-git reset --quiet --hard "origin/${BRANCH}"
+sudo -u "${PZSTUSER}" git reset --quiet --hard "origin/${BRANCH}"
 
-"${REPO}/pzst/pzstinstall"
+sudo -u "${PZSTUSER}" "${REPO}/pzst/pzstinstall"
