@@ -33,6 +33,7 @@ STEAMCMDARCHIVE='steamcmd_linux.tar.gz'
 STEAMCMDARCHIVEPATH="/tmp/${STEAMCMDARCHIVE}"
 STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE}"
 
+ZOMBOIDGAMEID='108600'
 ZOMBOID="${HOME}/Zomboid"
 PZSERVER="${HOME}/pzserver"
 PZSERVERDB="${ZOMBOID}/db/servertest.db"
@@ -41,6 +42,8 @@ PZSERVERLOG="${ZOMBOID}/server-console.txt"
 PZSERVERSAVE="${ZOMBOID}/Saves/"
 PZSERVERBACKUP="${ZOMBOID}/Backups"
 PZSERVERCONFIG="${PZSERVERDIR}/servertest.ini"
+PZSERVERMAPDIR="${PZSERVER}/media/maps"
+PZSERVERMODDIR="${PZSERVER}/steamapps/workshop/content/${ZOMBOIDGAMEID}"
 PZSERVERSTART="${PZSERVER}/start-server.sh"
 PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
 PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
