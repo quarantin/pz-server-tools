@@ -21,6 +21,7 @@ usage() {
 	echo '  userpasswd     Change pzserver user password'
 	echo '  status         Check pzserver status'
 	echo '  console        Show pzserver console output'
+	echo '  linkmaps       Create symlinks for map mods'
 	echo '  backupsave     Perform a backup of the current save'
 	echo '  clearzpop      Clear zombie population'
 	echo
@@ -91,6 +92,10 @@ case "${COMMAND}" in
 
 	console|log)
 		"${BASE}/pzconsole" $@
+		;;
+
+	linkmaps)
+		"${BASE}/pzlinkmaps" $@
 		;;
 
 	backupsave)

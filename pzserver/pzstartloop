@@ -12,6 +12,8 @@ while true; do
 
 	[[ -f "${PZSERVERLOG}" ]] && cp "${PZSERVERLOG}" "${PZSERVERLOG}.old"
 
+	pzlinkmaps
+
 	pzwrap "${PZSERVERSTART}" ${@} &> /dev/null
 
 	if [ "${?}" != '0' ]; then

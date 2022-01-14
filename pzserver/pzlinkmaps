@@ -1,0 +1,25 @@
+#!/bin/bash
+
+. "$(dirname "${0}")/pzenv"
+
+check_is_pzserver_user
+
+IFS="
+"
+
+MODS=($(compgen -G "${PZSERVERMODDIR}/*/mods/*/media/maps"))
+for MOD in ${MODS[@]}; do
+
+	MAPS=($(find $MOD -mindepth 1 -maxdepth 1))
+	for MAP in ${MAPS[@]}; do
+
+		LINK="${PZSERVERMAPDIR}/$(basename "${MAP}")"
+		if [ -L "${LINK}" ] && [ -e "${LINK}" ]; then
+			continue
+		fi
+
+		rm -rf "${LINK}"
+
+		ln -s "${MAP}" "${LINK}"
+	done
+done

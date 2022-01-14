@@ -9,6 +9,7 @@ A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
 - Restart pzserver when a mod is updated on Steam Workshop
 - Manage multiple pzservers running on the same machine
 - Run pzserver in the background (no need for screen!)
+- Create links automatically for your map mods
 - Many more...
 
 # Tools
@@ -44,6 +45,7 @@ Here's the help section for the **`pzserver`** command:
 	  userpasswd     Change pzserver user password
 	  status         Check pzserver status
 	  console        Show pzserver console output
+	  linkmaps       Create links for map mods
 	  backupsave     Perform a backup of the current save
 	  clearzpop      Clear zombie population
 
