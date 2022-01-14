@@ -2,9 +2,11 @@
 
 CONFIG='/etc/pzst/config.json'
 REPO="$(dirname "$(dirname "${0}")")"
+PZSTUSER="${USER}"
 
 if [ -f "${CONFIG}" ]; then
 	REPO="$(jq -r '.install' "${CONFIG}")"
+	PZSTUSER="$(jq -r '.user' "${CONFIG}")"
 fi
 
 . "${REPO}/pzserver/pzenv"
