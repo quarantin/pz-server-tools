@@ -16,9 +16,11 @@ from pypzst import get_pzserver_pid, init_log, isfloat
 
 class PZRestarterJob:
 
-	def __init__(self, config, server, restart_delay=0, restart_sequence=[]):
+	def __init__(self, config, server, restart_delay=0, restart_sequence=[], stop_server=False):
 		self.server = server
 		self.interrupted = False
+		self.stop_server = stop_server
+		self.killswitch = '/var/cache/pzst/kill.' + server
 		self.lockpath = '/var/cache/pzst/restartjob.' + server
 
 		restart_sequence = restart_sequence or config.get('restart-sequence', [15, 10, 5, 2, 1])
@@ -70,7 +72,16 @@ class PZRestarterJob:
 		run(['/usr/local/bin/pzstc', pid, 'servermsg', '"' + message + '"' ], stdout=DEVNULL)
 
 	def pzserver_restart(self):
-		self.logger.info(self.server + ': Restarting now!')
+
+		action = 'Restarting'
+
+		if self.stop_server:
+			action = 'Stopping'
+			if not exists(self.killswitch):
+				open(self.killswitch, 'w').close()
+				os.chmod(self.killswitch, 0o664)
+
+		self.logger.info(self.server + ': %s now!' % action)
 		pid = get_pzserver_pid(self.server)
 		run(['/usr/local/bin/pzstc', pid, 'quit' ])
 
@@ -153,6 +164,7 @@ if __name__ == '__main__':
 	server = None
 	restart_delay = 0
 	restart_sequence = []
+	stop_server = False
 
 	args = iter(sys.argv[1:])
 	for arg in args:
@@ -164,6 +176,9 @@ if __name__ == '__main__':
 			restart_delay = 0
 			restart_sequence.append(0)
 
+		elif arg in [ '-s', '--stop' ]:
+			stop_server = True
+
 		elif arg.isnumeric() or isfloat(arg):
 			restart_sequence.append(float(arg))
 
@@ -174,4 +189,4 @@ if __name__ == '__main__':
 		print('Usage: %s <pzserver>' % sys.argv[0], file=sys.stderr)
 		sys.exit(1)
 
-	PZRestarterJob(config, server, restart_delay=restart_delay, restart_sequence=restart_sequence)
+	PZRestarterJob(config, server, restart_delay=restart_delay, restart_sequence=restart_sequence, stop_server=stop_server)
