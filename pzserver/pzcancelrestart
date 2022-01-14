@@ -9,4 +9,4 @@ fi
 
 rm -f "${RESTARTJOBPATH}"
 
-pzmessage "Server restart has been canceled by operator"
+pzmessage "Server restart was canceled by operator"
