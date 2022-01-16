@@ -1,5 +1,8 @@
 # Project Zomboid Server Tools
-A set of tools to help you run Project Zomboid Dedicated Server (Linux only).
+A set of tools to help you run Project Zomboid Dedicated Server.
+
+# Supported Plateform
+Ubuntu 20.04
 
 # Features
 - Install pzserver easily in a single command
