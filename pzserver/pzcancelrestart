@@ -9,4 +9,9 @@ fi
 
 rm -f "${RESTARTJOBPATH}"
 
+if [ -z "$(get_pz_pid)" ]; then
+	echo OK
+	exit
+fi
+
 pzmessage "Server restart was canceled by operator"
