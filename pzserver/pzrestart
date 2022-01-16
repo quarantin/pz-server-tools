@@ -6,6 +6,11 @@ check_is_pzserver_user
 
 check_running
 
+if [ -e "${RESTARTJOBPATH}" ]; then
+	echo Server restart already in progress
+	exit
+fi
+
 NOW="${1}"
 if [ "${NOW}" = '-n' ] || [ "${NOW}" = '--now' ]; then
 	pzrestartjob "${USER}" $@
