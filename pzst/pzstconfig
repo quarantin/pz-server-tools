@@ -7,6 +7,6 @@ if ! [ -f "${CONFIG}" ]; then
 	exit
 fi
 
-"${EDITOR}" "${CONFIG}"
+sudo "${EDITOR}" "${CONFIG}"
 
 "$(dirname "${0}")/pzst" checkconfig | grep -v OK
