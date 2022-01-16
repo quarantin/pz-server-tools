@@ -20,6 +20,8 @@ while true; do
 		UNSAFEBACKUP='.unsafe'
 	fi
 
+	pzcancelrestart
+
 	UNSAFEBACKUP=${UNSAFEBACKUP} pzbackupsave
 
 	if [ -f "${KILLSWITCH}" ]; then
