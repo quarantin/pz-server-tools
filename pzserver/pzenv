@@ -48,6 +48,7 @@ PZSERVERSTART="${PZSERVER}/start-server.sh"
 PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
 PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
+PZSERVERLOCK="${CACHEDIR}/pzserver.${USER}.lock"
 
 JAVAMODSVERSION=0.0.1
 JAVAMODSARCHIVE="javamods-${JAVAMODSVERSION}.zip"
