@@ -1,3 +1,4 @@
+- Add hook system to execute scripts on server restart
 - Fix pzstenv: Add more checks to ensure we get the correct path to REPO
 - Remove user from config.json in case we detect there's no pzserver installed for that user
 - Add restore save backup
