@@ -16,6 +16,6 @@ if [ "${NOW}" = '-n' ] || [ "${NOW}" = '--now' ]; then
 	pzrestartjob "${USER}" $@
 
 else
-	detach /usr/local/bin/pzrestartjob "${USER}" $@ &
+	detach pzrestartjob "${USER}" $@ &
 	echo OK
 fi

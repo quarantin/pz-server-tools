@@ -9,7 +9,7 @@ if [ -z "${USERS}" ]; then
 fi
 
 for USER in ${USERS[@]}; do
-	detach /usr/local/bin/pzrestartjob "${USER}" $@ > /dev/null &
+	detach pzrestartjob "${USER}" $@ > /dev/null &
 done
 
 echo OK
