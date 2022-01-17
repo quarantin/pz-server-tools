@@ -5,7 +5,7 @@
 check_is_pzserver_user
 
 if ! [ -d "${PZSERVERDIR}" ] || ! [ -f "${PZSERVERSANDBOX}" ]; then
-	echo Configuration not found.
+	echo Configuration not found
 	exit
 fi
 

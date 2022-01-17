@@ -5,7 +5,7 @@
 check_is_pzserver_user
 
 if ! [ -f "${JAVAMODSCONSOLE}" ]; then
-	echo No log file found for this user.
+	echo No log file found for this user
 	exit
 fi
 

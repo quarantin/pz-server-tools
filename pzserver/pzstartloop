@@ -25,10 +25,10 @@ while true; do
 	UNSAFEBACKUP=${UNSAFEBACKUP} pzbackupsave
 
 	if [ -f "${KILLSWITCH}" ]; then
-		echo Kill switch detected, quitting.
+		echo Kill switch detected, quitting
 		rm -f "${KILLSWITCH}"
 		break
 	fi
 
-	echo Restarting.
+	echo Restarting...
 done

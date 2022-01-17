@@ -13,7 +13,7 @@ detach flock -n "${PZSERVERLOCK}" "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPT
 sleep 0.5
 
 if [ -z "$(jobs -r)" ]; then
-	echo pzserver already running.
+	echo pzserver already running
 
 else
 	echo OK
