@@ -10,4 +10,11 @@ check_first_time
 
 detach flock -n "${PZSERVERLOCK}" "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${@} &
 
-echo OK
+sleep 0.5
+
+if [ -z "$(jobs -r)" ]; then
+	echo pzserver already running.
+
+else
+	echo OK
+fi
