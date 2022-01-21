@@ -140,6 +140,7 @@ read_port() {
 		if [ -z "${OUTPUT}" ]; then
 			mkdir -p "${PZSERVERDIR}"
 			touch "${PZSERVERCONFIG}"
+			chmod 644 "${PZSERVERCONFIG}"
 			DEFAULTPORTSET="$(grep DefaultPort "${PZSERVERCONFIG}")"
 			if [ -z "${DEFAULTPORTSET}" ]; then
 				sed -i "s/.*\(DefaultPort\).*/\1=${PORT}/" "${PZSERVERCONFIG}"
