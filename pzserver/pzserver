@@ -17,7 +17,6 @@ usage() {
 	echo '  checkmods      Check mod updates'
 	echo '  maxmen         Change pzserver maximum memory allocation'
 	echo
-	echo '  adminpasswd    Change pzserver admin password'
 	echo '  userpasswd     Change pzserver user password'
 	echo '  status         Check pzserver status'
 	echo '  console        Show pzserver console output'
@@ -76,10 +75,6 @@ case "${COMMAND}" in
 
 	maxmen)
 		"${BASE}/pzmaxmem" $@
-		;;
-
-	adminpasswd)
-		"${BASE}/pzadminpasswd" $@
 		;;
 
 	userpasswd)

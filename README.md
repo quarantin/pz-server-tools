@@ -44,7 +44,6 @@ Here's the help section for the **`pzserver`** command:
 	  checkmods      Check mod updates
 	  maxmen         Change pzserver maximum memory allocation
 
-	  adminpasswd    Change pzserver admin password
 	  userpasswd     Change pzserver user password
 	  status         Check pzserver status
 	  console        Show pzserver console output
