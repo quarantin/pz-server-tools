@@ -75,6 +75,7 @@ Here's the help section for the **`pzst`** command:
 
 	  config         Edit pzst configuration
 	  checkconfig    Check pzst configuration for syntax errors
+	  clearbackups   Clear old backups
 
 ## Command `javamods`
 Here's the help section for the **`javamods`** command:

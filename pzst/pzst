@@ -13,6 +13,7 @@ usage() {
 	echo
 	echo '  config         Edit pzst configuration'
 	echo '  checkconfig    Check pzst configuration for syntax errors'
+	echo '  clearbackups   Clear old backups'
 	echo
 	exit
 }
@@ -45,6 +46,11 @@ case "${COMMAND}" in
 	checkconfig)
 		"${BASE}/pzstcheckconfig" $@
 		;;
+
+	clearbackups)
+		"${BASE}/pzstclearbackups" $@
+		;;
+
 	*)
 		echo Unknown command ${COMMAND}
 		echo

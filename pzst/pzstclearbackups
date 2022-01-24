@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Ask for sudo password before printing anything to the console
+sudo echo -n
+
+. "$(dirname "${0}")/pzstenv"
+
+MAXBACKUPS="$(jq -r 'try ."max-backups" // 5' "${CONFIG}")"
+let "MAXBACKUPS+=1"
+
+USERS=($(jq -r -c 'try .pzservers[]' "${CONFIG}"))
+if [ -z "${USERS}" ]; then
+	echo No pzserver configured
+	exit
+fi
+
+IFS="
+"
+
+for USER in ${USERS[@]}; do
+
+	BACKUPS=($(find /home/${USER}/Zomboid/Saves.*.tar.lz4 -type f ! -size 0 | sort -r | tail -n +${MAXBACKUPS}))
+	for BACKUP in ${BACKUPS[@]}; do
+
+		echo Deleting ${BACKUP}
+		sudo rm -f "${BACKUP}"
+
+	done
+done
