@@ -3,6 +3,7 @@
 		"07:45"
 	],
 	"editor": "nano",
+	"max-backups": 5,
 	"pzservers": [
 
 	],
