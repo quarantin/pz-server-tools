@@ -12,3 +12,6 @@ MAILTO=root
 
 # Don't change this line!
 0 7 * * *	root /usr/local/bin/pzstupdate
+
+# Don't change this line!
+*/10 * * * *	root /usr/local/bin/pzstclearbackups
