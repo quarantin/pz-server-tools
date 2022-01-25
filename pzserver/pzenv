@@ -17,6 +17,7 @@ CONFIG="${CONFIGDIR}/${CONFIGFILE}"
 
 LOCALCONFIGDIR="${HOME}/.pzst"
 LOCALCONFIG="${LOCALCONFIGDIR}/config.json"
+LOCALCRONDIR="${LOCALCONFIGDIR}/crontabs"
 LOCALLOG="${LOCALCONFIGDIR}/pzst.log"
 
 CRONDIR="/etc/cron.d"
@@ -59,7 +60,9 @@ JAVAMODSSTART="${PZSERVER}/javamods-start-server.sh"
 JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
 JAVAMODSURL="https://github.com/quarantin/javamods/releases/download/${JAVAMODSVERSION}/${JAVAMODSARCHIVE}"
 
+REPO="$(dirname "$(dirname "${0}")")"
 if [ -f "${CONFIG}" ]; then
+    REPO="$(jq -r '.install' "${CONFIG}")"
 	EDITOR="$(jq -r 'try .editor // "nano"' "${CONFIG}" 2> /dev/null)"
 	if [ -z "${EDITOR}" ]; then
 		EDITOR=nano
