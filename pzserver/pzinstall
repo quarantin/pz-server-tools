@@ -8,6 +8,10 @@ install_steamcmd
 
 pzst_config --add
 
+mkdir -p "${LOCALCRONDIR}"
+cp "${REPO}/cron/pzserver" "${LOCALCRONDIR}"
+cat "${LOCALCRONDIR}/"* | crontab -
+
 # Create missing folder to avoid java exception
 mkdir -p "${HOME}/Zomboid/mods"
 
