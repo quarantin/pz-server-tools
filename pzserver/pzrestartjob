@@ -22,13 +22,17 @@ class PZRestarterJob:
 		self.stop_server = stop_server
 		self.killswitch = '/var/cache/pzst/kill.' + server
 		self.lockpath = '/var/cache/pzst/restartjob.' + server
-
 		restart_sequence = restart_sequence or config.get('restart-sequence', [15, 10, 5, 2, 1])
 
 		signal.signal(signal.SIGINT, self.signal_handler)
 		signal.signal(signal.SIGTERM, self.signal_handler)
 
 		self.logger = init_log('PZRestarterJob', 'pzrestartjob', server)
+
+		self.pid = get_pzserver_pid(server)
+		if not self.pid:
+			self.logger.info(server + ': No pzserver process running')
+			return
 
 		self.logger.info(server + ': Restart job started (delay: %d, restart_sequence: %s)' % (restart_delay, restart_sequence))
 
@@ -68,8 +72,7 @@ class PZRestarterJob:
 
 	def pzserver_message(self, message):
 		self.logger.info(self.server + ': Sending message: ' + message)
-		pid = get_pzserver_pid(self.server)
-		run(['/usr/local/bin/pzstc', pid, 'servermsg', '"' + message + '"' ], stdout=DEVNULL)
+		run(['/usr/local/bin/pzstc', self.pid, 'servermsg', '"' + message + '"' ], stdout=DEVNULL)
 
 	def pzserver_restart(self):
 
@@ -82,8 +85,7 @@ class PZRestarterJob:
 				os.chmod(self.killswitch, 0o664)
 
 		self.logger.info(self.server + ': %s now!' % action)
-		pid = get_pzserver_pid(self.server)
-		run(['/usr/local/bin/pzstc', pid, 'quit' ])
+		run(['/usr/local/bin/pzstc', self.pid, 'quit' ])
 
 	def sleep(self, delay):
 
