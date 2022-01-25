@@ -8,7 +8,7 @@ if [ -z "${RESTARTS}" ]; then
 	exit
 fi
 
-INDEX=$(jq -r -c "try .pzservers | index(\"${USER}\")")
+INDEX=$(jq -r -c "try .pzservers | index(\"${USER}\")" "${CONFIG}")
 if [ "${INDEX}" = 'null' ]; then
 	echo No pzserver configured for user ${USER}
 	exit
@@ -16,6 +16,7 @@ fi
 
 DATE=$(date +%H:%M)
 MSG="Performing daily restart (${DATE})"
+STATUS='No daily-restart to perform now'
 
 for RESTART in ${RESTARTS[@]}; do
 
@@ -28,5 +29,8 @@ for RESTART in ${RESTARTS[@]}; do
 		echo pzinstall status: $?     >> "${LOCALLOG}"
 		pzstart                       >> "${LOCALLOG}"
 		echo pzstart status: $?       >> "${LOCALLOG}"
+		STATUS='OK'
 	fi
 done
+
+echo ${STATUS}
