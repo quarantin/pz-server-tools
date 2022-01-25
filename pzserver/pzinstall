@@ -8,6 +8,7 @@ install_steamcmd
 
 pzst_config --add
 
+# Create missing folder to avoid java exception
 mkdir -p "${HOME}/Zomboid/mods"
 
 # Prevent exit from hiding the exit status code of ProjectZomboid process
