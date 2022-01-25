@@ -23,12 +23,10 @@ else
 	check_not_running "pzserver is running.\\n\\nStop the server before performing a backup.\\n(You can add --force to force a backup operation)"
 fi
 
-rsync -a --delete ${@} "${PZSERVERSAVE}" "${PZSERVERBACKUP}${UNSAFEBACKUP}"
+tar cf - "${PZSERVERSAVE}" | lz4 > "${ZOMBOID}/Saves.$(date +%Y%m%d-%H%M%S)${UNSAFEBACKUP}.tar.lz4"
 if [ "${?}" != '0' ]; then
 	echo Something went wrong!
 	exit
 fi
-
-detach tar cf - "${PZSERVERBACKUP}${UNSAFEBACKUP}" | lz4 > "${ZOMBOID}/Saves.$(date +%Y%m%d-%H%M%S).tar.lz4" &
 
 echo OK
