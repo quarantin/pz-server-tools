@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Ask for sudo password before printing anything to the console
 sudo echo -n
@@ -28,12 +27,13 @@ sudo apt-get -qq update
 echo [*] Upgrading packages
 sudo apt-get -qq --yes upgrade 3>&1 2>&3- 1>/dev/null
 
-echo -n [*] Installing packages
 for PACKAGE in ${PACKAGES}; do
-	echo -n .
-	sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
+	dpkg -s "${PACKAGE}" &> /dev/null
+	if [ "${?}" != '0' ]; then
+		echo [*] Installing new package \`${PACKAGE}\`
+		sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
+	fi
 done
-echo
 
 echo [*] Adding system user: pzst
 
