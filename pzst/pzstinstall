@@ -35,9 +35,11 @@ for PACKAGE in ${PACKAGES}; do
 	fi
 done
 
-echo [*] Adding system user: pzst
-
-sudo useradd -r pzst 2> /dev/null || true
+getent passwd pzst &> /dev/null
+if [ "${?}" != '0' ]; then
+	echo [*] Adding system user: pzst
+	sudo useradd -r pzst
+fi
 
 echo [*] Creating virtual environment
 
