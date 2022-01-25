@@ -35,7 +35,7 @@ def get_pzserver_pid(user):
 
 		return pid
 
-	return 'invalid'
+	return None
 
 @retry(tries=5)
 def get_mod_updates(mods):
