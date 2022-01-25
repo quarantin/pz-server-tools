@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ask for sudo password before printing anything to the console
-sudo echo -n
-
 . "$(dirname "${0}")/pzenv"
 
 RESTARTS=($(jq -r -c 'try ."daily-restarts"[]' "${CONFIG}"))
@@ -11,28 +8,25 @@ if [ -z "${RESTARTS}" ]; then
 	exit
 fi
 
-USERS=($(jq -r -c 'try .pzservers[]' "${CONFIG}"))
-if [ -z "${USERS}" ]; then
-	echo No pzserver configured
+INDEX=$(jq -r -c "try .pzservers | index(\"${USER}\")")
+if [ "${INDEX}" = 'null' ]; then
+	echo No pzserver configured for user ${USER}
 	exit
 fi
 
 DATE=$(date +%H:%M)
+MSG="Performing daily restart (${DATE})"
 
 for RESTART in ${RESTARTS[@]}; do
 
 	if [ "${RESTART}" = "${DATE}" ]; then
 
-		for USER in ${USERS[@]}; do
-
-			echo Updating pzservers \`${USER}\`
-
-			sudo -u "${USER}" pzrestartjob "${USER}" --stop
-			sudo -u "${USER}" pzinstall
-			sudo -u "${USER}" pzstart
-
-		done
-
-		break
+		echo "${MSG}"                 >> "${LOCALLOG}"
+		pzrestartjob "${USER}" --stop >> "${LOCALLOG}"
+		echo pzrestartjob status: $?  >> "${LOCALLOG}"
+		pzinstall                     >> "${LOCALLOG}"
+		echo pzinstall status: $?     >> "${LOCALLOG}"
+		pzstart                       >> "${LOCALLOG}"
+		echo pzstart status: $?       >> "${LOCALLOG}"
 	fi
 done
