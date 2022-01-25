@@ -22,7 +22,6 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 
-
 	size = argc - 3;
 	for (int i = 2; i < argc; i++)
 		size += strlen(argv[i]);
