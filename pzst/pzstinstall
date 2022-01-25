@@ -14,30 +14,27 @@ SCRIPTS="${REPO}/pzserver"
 PZST="${REPO}/pzst"
 SRC="${REPO}/src"
 
-if ! [ -f "${INSTALLCHECK}" ]; then
+PACKAGES='gcc iproute2 jq libc6-dev libsdl2-2.0-0:i386 lz4 make python3 python3-venv sqlite3 unzip wget'
 
-	PACKAGES='gcc iproute2 jq libc6-dev libsdl2-2.0-0:i386 lz4 make python3 python3-venv sqlite3 unzip wget'
+echo [*] Adding architecture i386
+sudo dpkg --add-architecture i386
 
-	echo [*] Adding architecture i386
-	sudo dpkg --add-architecture i386
+echo [*] Updating package cache
+sudo apt-get -qq update
 
-	echo [*] Updating package cache
-	sudo apt-get -qq update
+echo [*] Upgrading packages
+sudo apt-get -qq --yes upgrade 3>&1 2>&3- 1>/dev/null
 
-	echo [*] Upgrading packages
-	sudo apt-get -qq --yes upgrade 3>&1 2>&3- 1>/dev/null
+echo -n [*] Installing packages
+for PACKAGE in ${PACKAGES}; do
+	echo -n .
+	sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
+done
+echo
 
-	echo -n [*] Installing packages
-	for PACKAGE in ${PACKAGES}; do
-		echo -n .
-		sudo apt-get install -qq --yes ${PACKAGE} 3>&1 2>&3- 1>/dev/null | grep -v 'Extracting templates from packages' || true
-	done
-	echo
+echo [*] Adding system user: pzst
 
-	echo [*] Adding system user: pzst
-
-	sudo useradd -r pzst 2> /dev/null || true
-fi
+sudo useradd -r pzst 2> /dev/null || true
 
 echo [*] Creating virtual environment
 
@@ -103,5 +100,3 @@ sudo service pzstd restart
 sudo cp "${REPOCRON}" "${CRONFILE}"
 sudo chmod 644 "${CRONFILE}"
 sudo /etc/init.d/cron restart > /dev/null
-
-sudo touch "${INSTALLCHECK}"

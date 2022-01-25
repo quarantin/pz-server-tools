@@ -14,8 +14,6 @@ fi
 
 SRC="${REPO}/src"
 
-sudo rm -f "${INSTALLCHECK}"
-
 echo [*] Deleting virtual environment
 
 sudo rm -rf "${CONFIGENV}"
