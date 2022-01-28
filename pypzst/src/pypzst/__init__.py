@@ -10,6 +10,7 @@ from os.path import exists, isfile, join
 from retry import retry
 from pwd import getpwnam, getpwuid
 
+from pypzst.rcon import Client
 
 def get_pzserver_pid(user):
 
@@ -136,3 +137,27 @@ def parse_server_config(server):
 			server_config[key] = next(iter(values))
 
 	return server_config
+
+def kick_all_players(server):
+
+	server_config = parse_server_config(server)
+	port = server_config.get('RCONPort', '27015')
+	passwd = server_config.get('RCONPassword')
+	if not passwd:
+		print('RCON is disabled')
+		return
+
+	client = Client('localhost', port, passwd)
+
+	response = client.run('players')
+	users = iter(response.split('\n'))
+	next(users)
+
+	kicked = 0
+	for user in users:
+		if user:
+			command = ' '.join([ 'kickuser', user[1:] ])
+			client.run(command)
+			kicked += 1
+
+	print('Kicked %d players' % kicked)
