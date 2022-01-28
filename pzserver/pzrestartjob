@@ -11,7 +11,7 @@ from pwd import getpwnam
 from os.path import exists
 from datetime import timedelta
 from subprocess import run, DEVNULL
-from pypzst import get_pzserver_pid, init_log, isfloat
+from pypzst import get_pzserver_pid, init_log, isfloat, kick_all_players
 
 
 class PZRestarterJob:
@@ -85,6 +85,7 @@ class PZRestarterJob:
 				os.chmod(self.killswitch, 0o664)
 
 		self.logger.info(self.server + ': %s now!' % action)
+		kick_all_players(self.server)
 		run(['/usr/local/bin/pzstc', self.pid, 'quit' ])
 
 	def sleep(self, delay):
