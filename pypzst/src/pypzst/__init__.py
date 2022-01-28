@@ -5,7 +5,7 @@ import logging
 import requests
 
 import os
-from os.path import exists, join
+from os.path import exists, isfile, join
 
 from retry import retry
 from pwd import getpwnam, getpwuid
@@ -98,3 +98,41 @@ def isfloat(string):
 
 	except:
 		return False
+
+def parse_server_config(server):
+
+	server_config = {}
+
+	server_ini = '/home/%s/Zomboid/Server/servertest.ini' % server
+	if not isfile(server_ini):
+		return server_config
+
+	with open(server_ini) as fd:
+		lines = fd.readlines()
+
+	for line in lines:
+
+		line = line.strip()
+		if not line:
+			continue
+
+		tokens = line.split('=', 1)
+
+		key = tokens[0].strip()
+		value = tokens[1].strip()
+
+		values = set()
+		for value in value.split(';'):
+			value = value.strip()
+			if value:
+				values.add(value)
+
+		server_config[key] = values
+
+		if not values:
+			server_config[key] = ''
+
+		elif len(values) == 1:
+			server_config[key] = next(iter(values))
+
+	return server_config

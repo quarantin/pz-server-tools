@@ -11,7 +11,7 @@ import errno
 from retry import retry
 from subprocess import Popen, DEVNULL
 from datetime import datetime, timedelta
-from pypzst import get_mod_updates, init_log
+from pypzst import get_mod_updates, init_log, parse_server_config
 
 
 class PZModMonitor:
@@ -45,43 +45,11 @@ class PZModMonitor:
 
 		for server in servers:
 
-			self.server_configs[server] = self.parse_server_config(server)
+			self.server_configs[server] = parse_server_config(server)
 			for mod in self.server_configs[server].get('WorkshopItems', []):
 				mods.add(mod)
 
 		return mods
-
-	def parse_server_config(self, server):
-
-		server_config = {}
-
-		server_ini = '/home/%s/Zomboid/Server/servertest.ini' % server
-		if not isfile(server_ini):
-			return server_config
-
-		with open(server_ini) as fd:
-			lines = fd.readlines()
-
-		for line in lines:
-
-			line = line.strip()
-			if not line:
-				continue
-
-			tokens = line.split('=', 1)
-
-			key = tokens[0].strip()
-			value = tokens[1].strip()
-
-			values = set()
-			for value in value.split(';'):
-				value = value.strip()
-				if value:
-					values.add(value)
-
-			server_config[key] = values
-
-		return server_config
 
 	def get_old_cache(self):
 
