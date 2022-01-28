@@ -50,6 +50,7 @@ Here's the help section for the **`pzserver`** command:
 	  linkmaps       Create links for map mods
 	  backupsave     Perform a backup of the current save
 	  clearzpop      Clear zombie population
+	  kickall        Kill all connected players
 
 	  start          Start pzserver in the background
 	  restart        Restart pzserver

@@ -23,6 +23,7 @@ usage() {
 	echo '  linkmaps       Create symlinks for map mods'
 	echo '  backupsave     Perform a backup of the current save'
 	echo '  clearzpop      Clear zombie population'
+	echo '  kickall        Kill all connected players'
 	echo
 	echo '  start          Start pzserver in the background'
 	echo '  restart        Restart pzserver'
@@ -99,6 +100,10 @@ case "${COMMAND}" in
 
 	clearzpop)
 		"${BASE}/pzclearzpop" $@
+		;;
+
+	kickall)
+		"${BASE}/pzkickall" $@
 		;;
 
 	start)

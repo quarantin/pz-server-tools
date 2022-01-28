@@ -1,0 +1,7 @@
+#!/etc/pzst/env/bin/python
+
+import getpass
+from pypzst import kick_all_players
+
+pzserver = getpass.getuser()
+kick_all_players(pzserver)
