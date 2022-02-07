@@ -141,6 +141,10 @@ def parse_server_config(server):
 def kick_all_players(server):
 
 	server_config = parse_server_config(server)
+	if not server_config:
+		print('No pzserver found for user ' + server)
+		return
+
 	port = server_config.get('RCONPort', '27015')
 	passwd = server_config.get('RCONPassword')
 	if not passwd:
