@@ -1,3 +1,4 @@
+- Implement new commands softreset and hardreset
 - Switch to user crontab when appropriate
 - Add hook system to execute scripts on server restart
 - Fix pzstenv: Add more checks to ensure we get the correct path to REPO
