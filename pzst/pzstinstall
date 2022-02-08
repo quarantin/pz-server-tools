@@ -92,7 +92,7 @@ done
 
 sudo cp "${COMPLETION}/"* /etc/bash_completion.d/
 
-sudo USER=${USER} pzst_config --install "$(realpath "${REPO}")"
+sudo -u pzst USER=${USER} pzst_config --install "$(realpath "${REPO}")"
 
 make -C "${SRC}" clean > /dev/null
 make -C "${SRC}" > /dev/null
