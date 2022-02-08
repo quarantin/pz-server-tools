@@ -59,7 +59,7 @@ JAVAMODSSTART="${PZSERVER}/javamods-start-server.sh"
 JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
 JAVAMODSURL="https://github.com/quarantin/javamods/releases/download/${JAVAMODSVERSION}/${JAVAMODSARCHIVE}"
 
-if [ "${UID}" = '0' ]; then
+if [ "${UID}" = '0' ] && [ "${ALLOW_ROOT}" != 'true' ]; then
 	echo Don\'t run this command as root
 	exit
 fi
