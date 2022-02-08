@@ -59,6 +59,11 @@ JAVAMODSSTART="${PZSERVER}/javamods-start-server.sh"
 JAVAMODSCONSOLE="${ZOMBOID}/javamods-console.txt"
 JAVAMODSURL="https://github.com/quarantin/javamods/releases/download/${JAVAMODSVERSION}/${JAVAMODSARCHIVE}"
 
+if [ "${UID}" = '0' ]; then
+	echo Don\'t run this command as root
+	exit
+fi
+
 REPO="$(dirname "$(dirname "${0}")")"
 if [ -f "${CONFIG}" ]; then
     REPO="$(jq -r '.install' "${CONFIG}")"
