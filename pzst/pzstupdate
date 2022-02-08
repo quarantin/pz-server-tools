@@ -3,6 +3,8 @@
 # Ask for sudo password before printing anything to the console
 sudo echo -n
 
+ALLOW_ROOT='true'
+
 . "$(dirname "${0}")/pzstenv"
 
 echo [*] Updating Project Zomboid Server Tools
