@@ -14,7 +14,7 @@ if [ -z "${1}" ]; then
 	usage
 fi
 
-if ! [ -f "${LOCALCONFIG}" ]; then
+if ! [ -f "${LOCALCONFIG}" ] && [ "${USER}" != 'pzst' ]; then
 	mkdir -p "${LOCALCONFIGDIR}"
 	echo '{}' > "${LOCALCONFIG}"
 fi
