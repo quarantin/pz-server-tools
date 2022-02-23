@@ -2,9 +2,14 @@
 
 . "$(dirname "${0}")/pzenv"
 
+APPID='380870'
+if ! [ -z "${1}" ]; then
+	APPID="${1}"
+fi
+
 install_steamcmd
 
-"${STEAM}/steamcmd.sh" +force_install_dir "${HOME}/pzserver/" +login anonymous +app_update 380870 b41multiplayer validate +quit
+"${STEAM}/steamcmd.sh" +force_install_dir "${HOME}/pzserver/" +login anonymous +app_update "${APPID}" b41multiplayer validate +quit
 
 pzst_config --add
 
