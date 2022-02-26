@@ -114,7 +114,7 @@ def parse_server_config(server):
 	for line in lines:
 
 		line = line.strip()
-		if not line:
+		if not line or line.startswith('#'):
 			continue
 
 		tokens = line.split('=', 1)
