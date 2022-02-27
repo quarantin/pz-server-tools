@@ -1,3 +1,4 @@
+- Fix bug in pzstinstall with pzst_config user not being able to create home folder of pzst (it's not meant to happen)
 - Implement new commands softreset and hardreset
 - Switch to user crontab when appropriate
 - Add hook system to execute scripts on server restart
