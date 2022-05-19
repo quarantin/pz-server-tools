@@ -85,7 +85,7 @@ class PZRestarterJob:
 				os.chmod(self.killswitch, 0o664)
 
 		self.logger.info(self.server + ': %s now!' % action)
-		kick_all_players(self.server)
+		#kick_all_players(self.server)
 		run(['/usr/local/bin/pzstc', self.pid, 'quit' ])
 
 	def sleep(self, delay):
