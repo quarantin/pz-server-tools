@@ -48,7 +48,7 @@ if [ -d "${CONFIGDIR}" ]; then
 fi
 
 if [ -d "${LOGDIR}" ]; then
-	sudo rm -f "${LOGFILE}/*.log"
+	sudo rm -f "${LOGDIR}/"*.log
 	sudo rmdir "${LOGDIR}"
 fi
 
