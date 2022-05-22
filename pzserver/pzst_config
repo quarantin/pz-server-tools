@@ -14,14 +14,14 @@ if [ -z "${1}" ]; then
 	usage
 fi
 
-if ! [ -f "${LOCALCONFIG}" ] && [ "${USER}" != 'pzst' ]; then
-	mkdir -p "${LOCALCONFIGDIR}"
-	echo '{}' > "${LOCALCONFIG}"
-fi
-
 ARG="${1}"
 
 if [ "${ARG}" = '-a' ] || [ "${ARG}" = '--add' ]; then
+
+	if ! [ -f "${LOCALCONFIG}" ]; then
+		mkdir -p "${LOCALCONFIGDIR}"
+		echo '{}' > "${LOCALCONFIG}"
+	fi
 
 	jq --tab ".pzservers |= (. + [\"${USER}\"] | unique)" "${CONFIG}" > "${TMP}"
 	cp "${TMP}" "${CONFIG}"
