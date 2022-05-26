@@ -8,9 +8,9 @@ if [ -z "${RESTARTS}" ]; then
 	exit
 fi
 
-INDEX=$(jq -r -c "try .pzservers | index(\"${USER}\")" "${CONFIG}")
+INDEX=$(jq -r -c "try .pzservers | index(\"$(id -un)\")" "${CONFIG}")
 if [ "${INDEX}" = 'null' ]; then
-	echo No pzserver configured for user ${USER}
+	echo No pzserver configured for user $(id -un)
 	exit
 fi
 
@@ -23,7 +23,7 @@ for RESTART in ${RESTARTS[@]}; do
 	if [ "${RESTART}" = "${DATE}" ]; then
 
 		echo "${MSG}"                 >> "${LOCALLOG}"
-		pzrestartjob "${USER}" --stop >> "${LOCALLOG}"
+		pzrestartjob "$(id -un)" --stop >> "${LOCALLOG}"
 		echo pzrestartjob status: $?  >> "${LOCALLOG}"
 		pzinstall                     >> "${LOCALLOG}"
 		echo pzinstall status: $?     >> "${LOCALLOG}"
