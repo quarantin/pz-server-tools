@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -z "${USER}" ]; then
+	USER="$(id -un)"
+fi
+
 NAME='pzst'
 
 BIN='/usr/local/bin'
