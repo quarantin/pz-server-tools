@@ -1,1 +1,1 @@
-* * * * * /usr/local/bin/pzupdate
+* * * * * /usr/local/bin/pzupdate 2>> /var/log/pzst/pzupdate.log
