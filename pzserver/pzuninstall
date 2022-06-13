@@ -10,7 +10,11 @@ rm -rf "${PZSERVER}"
 
 pzst_config --del
 
-rm -f "${LOCALCONFIG}"
+rm -f "${LOCALCONFIG}" "${LOCALLOG}" "${LOCALCRONDIR}/pzserver"
+
+if [ -d "${LOCALCRONDIR}" ]; then
+	rmdir "${LOCALCRONDIR}"
+fi
 
 if [ -d "${LOCALCONFIGDIR}" ]; then
 	rmdir "${LOCALCONFIGDIR}"
