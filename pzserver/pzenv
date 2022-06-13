@@ -7,6 +7,10 @@ fi
 NAME='pzst'
 
 BIN='/usr/local/bin'
+if [ -z "$(echo $PATH | grep "${BIN}")" ]; then
+	PATH="${PATH}:${BIN}"
+fi
+
 LOGDIR='/var/log/pzst'
 PYTHON='/usr/bin/python'
 
