@@ -56,7 +56,7 @@ fi
 
 echo [*] Removing system user: pzst
 
-sudo userdel pzst
+sudo userdel pzst 2> /dev/null
 
 PZSTGROUP=$(getent group pzst)
 if ! [ -z "${PZSTGROUP}" ]; then
