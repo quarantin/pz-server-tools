@@ -18,7 +18,7 @@ if ! [ -z "${MAXMEM}" ]; then
 fi
 
 mkdir -p "${LOCALCRONDIR}"
-cp "${REPO}/cron/pzserver" "${LOCALCRONDIR}"
+cp "${LIB}/cron/pzserver" "${LOCALCRONDIR}"
 cat "${LOCALCRONDIR}/"* | crontab -
 
 # Create missing folder to avoid java exception

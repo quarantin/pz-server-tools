@@ -90,6 +90,13 @@ for SCRIPT in $(ls -1 "${SCRIPTS}/"); do
 	sudo cp -f "${SCRIPTS}/${SCRIPT}" "${BIN}"
 done
 
+sudo mkdir -p "${LIB}"
+sudo chmod 755 "${LIB}"
+
+sudo cp -r "${REPO}/cron" "${LIB}/"
+sudo chmod 755 "${LIB}/cron"
+sudo chmod 644 "${LIB}/cron/"*
+
 sudo cp "${COMPLETION}/"* /etc/bash_completion.d/
 
 sudo -u pzst USER=${USER} pzst_config --install "$(realpath "${REPO}")"

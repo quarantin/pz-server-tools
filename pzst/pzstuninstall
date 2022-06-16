@@ -23,6 +23,8 @@ echo [*] Uninstalling Project Zomboid Server Tools
 sudo rm -f "${CRONFILE}"
 sudo /etc/init.d/cron restart > /dev/null
 
+sudo rm -rf "${LIB}"
+
 for SCRIPT in $(ls -1 "${REPO}/pzserver"); do
 	sudo rm -f "${BIN}/${SCRIPT}"
 done
