@@ -2,6 +2,13 @@
 
 . "$(dirname "${0}")/pzenv"
 
+ADMIN="$(jq -r 'try .admin' "${LOCALCONFIG}")"
+if [ -z "${ADMIN}" ]; then
+	echo This pzserver is not fully configured yet.
+	echo Please run \`pz start\` before using this command.
+	exit
+fi
+
 RESTARTS=($(jq -r -c 'try ."daily-restarts"[]' "${CONFIG}"))
 if [ -z "${RESTARTS}" ]; then
 	echo No daily-restart configured
