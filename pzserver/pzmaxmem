@@ -11,11 +11,23 @@ if len(sys.argv) < 2:
 	print('Usage: %s <gigabytes>' % sys.argv[0])
 	sys.exit()
 
-gigabytes = sys.argv[1]
+gigabytes = int(sys.argv[1])
+
+user = os.getenv('USER')
+
+configpath = '/home/%s/.pzst/config.json' % user
+if isfile(configpath):
+	with open(configpath, 'r') as fd:
+		config = json.loads(fd.read())
+		config['maxmem'] = gigabytes
+	with open(configpath, 'w') as fd:
+		fd.write(json.dumps(config, indent='\t'))
+
+success = False
 
 for arch in [ 32, 64 ]:
 
-	filepath = '/home/%s/pzserver/ProjectZomboid%d.json' % (os.getenv('USER'), arch)
+	filepath = '/home/%s/pzserver/ProjectZomboid%d.json' % (user, arch)
 	if not isfile(filepath):
 		continue
 
@@ -24,9 +36,15 @@ for arch in [ 32, 64 ]:
 
 	for index, option in enumerate(jsondata['vmArgs']):
 		if option.startswith('-Xmx'):
-			jsondata['vmArgs'][index] = '-Xmx' + gigabytes + 'g'
+			jsondata['vmArgs'][index] = '-Xmx%dg' % gigabytes
 
 	with open(filepath, 'w') as fd:
 		fd.write(json.dumps(jsondata, indent='\t') + os.linesep)
 
-print('OK')
+	success = True
+
+if success:
+	print('OK')
+
+else:
+	print('No pzserver available for user %s' % user)
