@@ -81,6 +81,10 @@ if [ -f "${CONFIG}" ]; then
 	fi
 fi
 
+if [ -f "${LOCALCONFIG}" ]; then
+	MAXMEM="$(jq -r 'try .maxmem // 8' "${LOCALCONFIG}" 2> /dev/null)"
+fi
+
 if [ -f "${JAVAMODSCONFIG}" ] && [ -f "${JAVAMODSSTART}" ]; then
 	ENABLEJAVAMODS="$(jq -r 'try .enabled' "${JAVAMODSCONFIG}" 2> /dev/null)"
 	if [ "${ENABLEJAVAMODS}" = 'true' ] ; then
