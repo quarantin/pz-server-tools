@@ -13,6 +13,10 @@ install_steamcmd
 
 pzst_config --add
 
+if ! [ -z "${MAXMEM}" ]; then
+	pzmaxmem "${MAXMEM}" > /dev/null
+fi
+
 mkdir -p "${LOCALCRONDIR}"
 cp "${REPO}/cron/pzserver" "${LOCALCRONDIR}"
 cat "${LOCALCRONDIR}/"* | crontab -
