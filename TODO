@@ -1,5 +1,3 @@
-- Fix infinite loop when running pzupdate from cron and pzstart was not run yet
-	Possible fix: Move first time logic from pzstart to pzinstall?
 - Fix bug in pzstinstall with pzst_config user not being able to create home folder of pzst (it's not meant to happen)
 - Implement new commands softreset and hardreset
 - Switch to user crontab when appropriate
