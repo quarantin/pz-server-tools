@@ -72,7 +72,7 @@ Here's the help section for the **`pzst`** command:
 
 	  install        Install pzst
 	  update         Update pzst
-	  unintsall      Uninstall pzst
+	  uninstall      Uninstall pzst
 
 	  config         Edit pzst configuration
 	  checkconfig    Check pzst configuration for syntax errors
