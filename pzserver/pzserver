@@ -9,6 +9,7 @@ usage() {
 	echo
 	echo '  install        Install or update pzserver'
 	echo '  uninstall      Uninstall pzserver'
+	echo '  deletepz       Delete Project Zomboid'
 	echo
 	echo '  config         Edit pzserver configuration (servertest.ini)'
 	echo '  sandbox        Edit pzserver sandbox settings'
@@ -52,6 +53,10 @@ case "${COMMAND}" in
 
 	uninstall)
 		"${BASE}/pzuninstall" $@
+		;;
+
+	deletepz)
+		"${BASE}/pzdeletepz" $@
 		;;
 
 	config)

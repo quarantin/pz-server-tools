@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ -z "${1}" ] || ( [ "${1}" != "--server" ] && [ "${1}" != "--saves" ] && [ "${1}" != "--all" ] ); then
+	echo Usage: ${0} \[--server\|--saves\|--all\]
+	exit
+fi
+
+. "$(dirname "${0}")/pzenv"
+
+check_is_pzserver_user
+
+check_not_running "pzserver is running.\\n\\nStop the server before deleting Project Zomboid."
+
+echo "WARNING: You're about to delete Project Zomboid. This action is irreversible."
+ask_confirmation
+
+if [ "${1}" = "--server" ] || [ "${1}" = "--all" ]; then
+	echo rm -rf "${PZSERVER}"
+fi
+
+if [ "${1}" = "--saves" ] || [ "${1}" = "--all" ]; then
+	echo rm -rf "${ZOMBOID}"
+fi
+
+echo OK

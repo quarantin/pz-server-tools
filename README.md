@@ -36,6 +36,7 @@ Here's the help section for the **`pzserver`** command:
 
 	  install        Install or update pzserver
 	  uninstall      Uninstall pzserver
+	  deletepz       Delete Project Zomboid
 
 	  config         Edit pzserver configuration (servertest.ini)
 	  sandbox        Edit pzserver sandbox settings
