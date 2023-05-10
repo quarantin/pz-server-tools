@@ -40,6 +40,9 @@ sudo rm -f /etc/systemd/system/pzstd.service
 sudo make -C "${SRC}" uninstall > /dev/null
 
 sudo rm -f "${CACHE}" "${LOCK}" "${SOCKETPATH}" "${CONFIG}" "${CRONFILE}" "${CONFIGDIR}/htpasswd"
+for COMP in "${REPO}/completion/"*; do
+	rm -f "/etc/bash_completion.d/${COMP}"
+done
 
 if [ -d "${CACHEDIR}" ]; then
 	sudo rmdir "${CACHEDIR}"
