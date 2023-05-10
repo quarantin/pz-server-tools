@@ -3,3 +3,4 @@
 /src/pzstd
 /pypzst/dist/
 /pypzst/src/pypzst.egg-info/
+__pycache__
