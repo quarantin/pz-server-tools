@@ -121,7 +121,7 @@ class PZRestarterJob:
 			alerts.remove(delay)
 
 			delta = timedelta(minutes=countdown)
-			clean_delta = str(delta).lstrip(':0').rstrip(':00')
+			clean_delta = self.get_clean_delta(delta)
 			unit = delta.total_seconds() < 60 and 'seconds' or 'minute'
 			plural = delta.total_seconds() / 60 >= 2 and 's' or ''
 			message = 'Restarting server in %s %s%s' % (clean_delta, unit, plural)
@@ -130,6 +130,15 @@ class PZRestarterJob:
 			self.pzserver_message(message)
 
 			self.sleep(delay * 60)
+
+	def get_clean_delta(self, delta):
+
+		clean_delta = str(delta).lstrip('0').lstrip(':').lstrip('0')
+
+		if clean_delta.endswith(':00'):
+			clean_delta = clean_delta[0:-3]
+
+		return clean_delta
 
 	def get_restart_sequence(self, restart_sequence):
 
