@@ -1,0 +1,33 @@
+#!/bin/bash
+
+OUTPUT=/tmp/troubleshoot.log
+
+search_pz_pid() {
+
+        while read PROC; do
+
+                grep -l 'ProjectZomboid' "${PROC}/comm" 2> /dev/null | cut -f3 -d/
+
+        done < <(find /proc -maxdepth 1 -type d -user "${USER}")
+}
+
+date &>> "${OUTPUT}"
+
+uname -a &>> "${OUTPUT}"
+
+lsb_release -a &>> "${OUTPUT}"
+
+id &>> "${OUTPUT}"
+
+for PID in $(search_pz_pid); do
+	ls -l "/proc/${PID}/fd/0" &>> "${OUTPUT}"
+done
+
+ps aux &>> "${OUTPUT}"
+
+cat ~/Zomboid/server-console.txt &>> "${OUTPUT}"
+
+rm -f "${OUTPUT}.gz"
+gzip "${OUTPUT}"
+
+echo Debug logs have been saved to ${OUTPUT}.gz
