@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "${USER}" ]; then
-	USER="$(id -un)"
+	export USER="$(id -un)"
 fi
 
 NAME='pzst'
