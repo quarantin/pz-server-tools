@@ -56,13 +56,16 @@ def get_mod_updates(mods):
 	jsondata = requests.post(steam_url, data=data).json()
 
 	mods = {}
+	response = jsondata.get('response', {})
 
-	for workshop_item in jsondata['response']['publishedfiledetails']:
+	for workshop_item in response.get('publishedfiledetails', []):
 
-		mod_id = workshop_item['publishedfileid']
+		mod_id = workshop_item.get('publishedfileid', False)
+		if not mod_id:
+			continue
 
 		mods[mod_id] = {
-			'name':    workshop_item.get('title', mod_id),
+			'name':	   workshop_item.get('title', mod_id),
 			'updated': workshop_item.get('time_updated', 0),
 		}
 
