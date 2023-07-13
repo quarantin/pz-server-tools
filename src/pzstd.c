@@ -24,6 +24,7 @@
 
 #define PZST_GROUP "pzst"
 #define PROC_NAME "ProjectZomboid"
+#define PROC_NAME_ALT "java"
 
 
 int init_socket() {
@@ -114,7 +115,7 @@ int check_permission(pid_t pid, char *strerr, size_t strerrsz) {
 
 	buf[size - 1] = 0;
 
-	if (strncmp(buf, PROC_NAME, strlen(PROC_NAME))) {
+	if (strncmp(buf, PROC_NAME, strlen(PROC_NAME)) && strncmp(buf, PROC_NAME_ALT, strlen(PROC_NAME_ALT))) {
 		snprintf(strerr, strerrsz, "ERROR: Permission denied: Not a pzserver pid");
 		return -1;
 	}
