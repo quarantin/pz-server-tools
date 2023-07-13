@@ -7,7 +7,7 @@ CFLAGS := -Wall -Werror -Wextra -pedantic
 
 all: build
 
-build: buildpzst buildpzstd builddetach
+build: buildpzst buildpzstd builddetach buildpzwrap
 
 buildpzst:
 	gcc $(CFLAGS) -o $(PZSTC) $(PZSTC).c
@@ -16,12 +16,15 @@ buildpzstd:
 	gcc $(CFLAGS) -o $(PZSTD) $(PZSTD).c
 
 builddetach:
-	gcc $(CFLAGS) -o $(DETACH) $(DETACH).c -lutil
+	gcc $(CFLAGS) -DDETACH -o $(DETACH) $(DETACH).c -lutil
+
+buildpzwrap:
+	gcc $(CFLAGS) -DPZWRAP -o $(PZWRAP) $(DETACH).c -lutil
 
 clean:
 	rm -f $(PZSTC) $(PZSTD) $(DETACH)
 
-install: uninstall clean build installpzst installpzstd installdetach
+install: uninstall clean build installpzst installpzstd installdetach installpzwrap
 
 installpzst:
 	cp $(PZSTC) $(BIN)
@@ -34,7 +37,11 @@ installpzstd:
 installdetach:
 	cp $(DETACH) $(BIN)
 	chmod 755 $(BIN)/$(DETACH)
-	cd $(BIN) && rm -f $(PZWRAP) && ln -s $(DETACH) $(PZWRAP)
+
+installpzwrap:
+	rm -f $(BIN)/$(PZWRAP)
+	cp $(PZWRAP) $(BIN)
+	chmod 755 $(BIN)/$(PZWRAP)
 
 uninstall:
-	rm -f $(BIN)/$(PZSTC) $(BIN)/$(PZSTD) $(BIN)/$(DETACH)
+	rm -f $(BIN)/$(PZSTC) $(BIN)/$(PZSTD) $(BIN)/$(DETACH) $(BIN)/$(PZWRAP)

@@ -7,6 +7,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 
 int search(char *program, char *filepath, size_t filepathsz) {
@@ -38,18 +39,30 @@ int search(char *program, char *filepath, size_t filepathsz) {
 	return -1;
 }
 
-int endswith(char *string, char *pattern) {
+#ifdef PZWRAP
 
-	size_t slen = strlen(string);
-	size_t plen = strlen(pattern);
+void write_pid(pid_t pid) {
 
-	return slen >= plen && !strcmp(string + slen - plen, pattern);
+	int fd;
+	char buf[32];
+
+	fd = open("/var/cache/pzst/pzserver.pid", O_CREAT|O_WRONLY, 0644);
+	if (fd == -1) {
+		perror("open failed");
+		return;
+	}
+
+	snprintf(buf, sizeof(buf), "%d", pid);
+	write(fd, buf, strlen(buf));
+	close(fd);
 }
+
+#endif
 
 int main(int argc, char **argv, char **envp) {
 
 	pid_t pid;
-	int master, status;
+	int status;
 	char exepath[BUFSIZ];
 
 	if (argc < 2) {
@@ -62,11 +75,20 @@ int main(int argc, char **argv, char **envp) {
 		exit(EXIT_FAILURE);
 	}
 
-	if (endswith(argv[0], "detach"))
-		pid = forkpty(&master, NULL, NULL, NULL);
+#ifdef DETACH
 
-	else
-		pid = fork();
+	int master;
+	pid = forkpty(&master, NULL, NULL, NULL);
+
+#elif PZWRAP
+
+	pid = fork();
+
+#else
+
+	#error Specify DETACH or PZWRAP
+
+#endif
 
 	if (!pid) {
 		execve(exepath, &argv[1], envp);
@@ -74,6 +96,12 @@ int main(int argc, char **argv, char **envp) {
 		exit(EXIT_FAILURE);
 		return 0;
 	}
+
+#ifdef PZWRAP
+	else {
+		write_pid(pid);
+	}
+#endif
 
 	wait(&status);
 	exit(!WIFEXITED(status) || WEXITSTATUS(status));
