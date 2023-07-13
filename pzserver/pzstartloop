@@ -14,6 +14,8 @@ while true; do
 
 	pzlinkmaps
 
+	set_pzserverstart
+
 	pzwrap "${PZSERVERSTART}" ${@} &> /dev/null
 
 	if [ "${?}" != '0' ]; then

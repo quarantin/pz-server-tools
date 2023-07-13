@@ -45,3 +45,20 @@ Assuming you want to restart all your pzservers every day at 00:00, 06:00, 12:00
 			"18:00"
 		]
 	}
+
+## Alternate Start Script
+WARNING: This feature is not compatible with javamods! If you enable this, javamods will be disabled.
+
+By default pzst is using the script `start-server.sh` to start the pzserver. In case you need to use an alternate start script, proceed as follow.
+
+Edit the file **/etc/pzst/config.json** as root:
+
+	sudo nano /etc/pzst/config.json
+
+Assuming your alternate start script is named `start-server-other.sh`, your configuration should look like this:
+
+	{
+		"pzserverstart": "start-server-other.sh"
+	}
+
+In case you want to restore the default start script, simply remove the "pzserverstart" from the file **/etc/pzst/config.json**.

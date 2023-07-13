@@ -54,7 +54,6 @@ PZSERVERBACKUP="${ZOMBOID}/Backups"
 PZSERVERCONFIG="${PZSERVERDIR}/servertest.ini"
 PZSERVERMAPDIR="${PZSERVER}/media/maps"
 PZSERVERMODDIR="${PZSERVER}/steamapps/workshop/content/${ZOMBOIDGAMEID}"
-PZSERVERSTART="${PZSERVER}/start-server.sh"
 PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
 PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
 PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
@@ -86,13 +85,6 @@ if [ -f "${LOCALCONFIG}" ]; then
 	MAXMEM="$(jq -r 'try .maxmem // 8' "${LOCALCONFIG}" 2> /dev/null)"
 fi
 
-if [ -f "${JAVAMODSCONFIG}" ] && [ -f "${JAVAMODSSTART}" ]; then
-	ENABLEJAVAMODS="$(jq -r 'try .enabled' "${JAVAMODSCONFIG}" 2> /dev/null)"
-	if [ "${ENABLEJAVAMODS}" = 'true' ] ; then
-		PZSERVERSTART="${JAVAMODSSTART}"
-	fi
-fi
-
 install_steamcmd() {
 
 	if ! [ -d "${STEAM}" ] || ! [ -f "${STEAMCMD}" ]; then
@@ -100,6 +92,33 @@ install_steamcmd() {
 		wget -q -O "${STEAMCMDARCHIVEPATH}" "${STEAMCMD_URL}"
 		tar xf "${STEAMCMDARCHIVEPATH}" -C "${STEAM}"
 		rm -f "${STEAMCMDARCHIVEPATH}"
+	fi
+}
+
+set_pzserverstart() {
+
+	PZSERVERSTARTSCRIPT="$(jq -r 'try .pzserverstart // "start-server.sh"' "${CONFIG}" 2> /dev/null || echo 'start-server.sh')"
+	PZSERVERSTART="${PZSERVER}/${PZSERVERSTARTSCRIPT}"
+	if ! [ -f "${PZSERVERSTART}" ]; then
+		PZSERVERSTART="${PZSERVERSTARTSCRIPT}"
+	fi
+
+	if ! [ -f "${PZSERVERSTART}" ]; then
+		echo "You specified an alternate start script but the path you specified doesn't exist: ${PZSERVERSTART}"
+		PZSERVERSTART="${PZSERVER}/start-server.sh"
+		echo "Using default start script: ${PZSERVERSTART}"
+	fi
+
+	if [ -f "${JAVAMODSCONFIG}" ] && [ -f "${JAVAMODSSTART}" ]; then
+		ENABLEJAVAMODS="$(jq -r 'try .enabled' "${JAVAMODSCONFIG}" 2> /dev/null)"
+		if [ "${ENABLEJAVAMODS}" = 'true' ] ; then
+			if [ "${PZSERVERSTARTSCRIPT}" = 'start-server.sh' ]; then
+				PZSERVERSTART="${JAVAMODSSTART}"
+			else
+				echo "You specified an alternate start script for pzserver and enabled javamods at the same time, but these two features are incompatible."
+				echo "Javamods will be disabled until you removed 'pzserverstart' from ${CONFIG}."
+			fi
+		fi
 	fi
 }
 
