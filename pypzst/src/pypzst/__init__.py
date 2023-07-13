@@ -12,7 +12,18 @@ from pwd import getpwnam, getpwuid
 
 from pypzst.rcon import Client
 
+def get_pzserver_ppid():
+
+	pidfile = '/var/cache/pzst/pzserver.pid'
+	if exists(pidfile):
+		with open(pidfile) as fd:
+			return int(fd.read())
+
 def get_pzserver_pid(user):
+
+	ppid = get_pzserver_ppid()
+	if not ppid:
+		return None
 
 	proc = '/proc'
 	uid = getpwnam(user).pw_uid
@@ -27,14 +38,13 @@ def get_pzserver_pid(user):
 		if uid != fileinfo.st_uid:
 			continue
 
-		filepath = join(proc, pid, 'comm')
+		filepath = join(proc, pid, 'status')
 		with open(filepath) as fd:
-			command = fd.read().strip()
+			data = fd.read().strip()
 
-		if command not in [ 'ProjectZomboid3', 'ProjectZomboid6' ]:
-			continue
-
-		return pid
+		pattern = 'PPid:\t%d' % ppid
+		if pattern in data:
+			return pid
 
 	return None
 
