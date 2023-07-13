@@ -251,9 +251,15 @@ check_not_running() {
 
 search_pz_pid() {
 
+	PARENT_PID=$(cat /var/cache/pzst/pzserver.pid 2> /dev/null)
+	if ! [ -f "/proc/${PARENT_PID}/status" ]; then
+		return
+	fi
+
+	PPID_STRING="PPid:	${PARENT_PID}"
 	while read PROC; do
 
-		grep -l 'ProjectZomboid' "${PROC}/comm" 2> /dev/null | cut -f3 -d/
+		grep -l "${PPID_STRING}" "${PROC}/status" 2> /dev/null | cut -f3 -d/
 
 	done < <(find /proc -maxdepth 1 -type d -user "${USER}")
 }
