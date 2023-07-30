@@ -25,6 +25,10 @@ done
 
 ps aux &>> "${OUTPUT}"
 
+echo "pzserver.pid:" >> "${OUTPUT}"
+cat /var/cache/pzst/pzserver.pid >> "${OUTPUT}"
+echo >> "${OUTPUT}"
+
 cat ~/Zomboid/server-console.txt &>> "${OUTPUT}"
 
 rm -f "${OUTPUT}.gz"
