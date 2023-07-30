@@ -4,8 +4,18 @@
 
 check_is_pzserver_user
 
-check_running
+#check_running
 
 touch "${KILLSWITCH}"
+
+PZPID=$(get_pz_pid)
+if [ -z "${PZPID}" ]; then
+	PZPID=$(pidof detach)
+fi
+
+if [ -z "${PZPID}" ]; then
+	echo "No running pzserver found"
+	exit
+fi
 
 kill $@ "${PZPID}" && echo OK
