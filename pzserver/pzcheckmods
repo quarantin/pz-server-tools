@@ -32,8 +32,8 @@ class PZModMonitor:
 				fd.write(json.dumps(new_cache) + os.linesep)
 
 		updated_mods = self.check_mod_updates(old_cache, new_cache)
-		if not updated_mods:
-			self.logger.info('No mod update detected')
+		#if not updated_mods:
+		#	self.logger.info('No mod update detected')
 
 		if restart:
 			self.restart_servers(updated_mods)
