@@ -46,7 +46,7 @@ void write_pid(pid_t pid) {
 	int fd;
 	char buf[32];
 
-	fd = open("/var/cache/pzst/pzserver.pid", O_CREAT|O_WRONLY, 0644);
+	fd = open("/var/cache/pzst/pzserver.pid", O_CREAT|O_WRONLY|O_TRUNC, 0644);
 	if (fd == -1) {
 		perror("open failed");
 		return;
