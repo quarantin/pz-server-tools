@@ -10,7 +10,7 @@ touch "${KILLSWITCH}"
 
 PZPID=$(get_pz_pid)
 if [ -z "${PZPID}" ]; then
-	PZPID=$(pidof detach)
+	PZPID=$(pgrep -u ${USER} detach | tr '\n' ' ')
 fi
 
 if [ -z "${PZPID}" ]; then
