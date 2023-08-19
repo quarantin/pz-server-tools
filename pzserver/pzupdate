@@ -29,13 +29,9 @@ for RESTART in ${RESTARTS[@]}; do
 
 	if [ "${RESTART}" = "${DATE}" ]; then
 
-		echo "${MSG}"                 >> "${LOCALLOG}"
-		pzrestartjob "${USER}" --stop >> "${LOCALLOG}"
-		echo pzrestartjob status: $?  >> "${LOCALLOG}"
-		pzinstall                     >> "${LOCALLOG}"
-		echo pzinstall status: $?     >> "${LOCALLOG}"
-		pzstart                       >> "${LOCALLOG}"
-		echo pzstart status: $?       >> "${LOCALLOG}"
+		pzrestartjob "${USER}" --stop
+		pzinstall
+		pzstart
 		STATUS='OK'
 	fi
 done
