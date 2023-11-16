@@ -108,7 +108,7 @@ def parse_server_config(server):
 	server_config = {}
 
 
-	server_ini = '/home/%s/Zomboid/Server/%s.ini' % server
+	server_ini = '/home/%s/Zomboid/Server/%s.ini' % (server, server)
 	if not isfile(server_ini):
 		return server_config
 
