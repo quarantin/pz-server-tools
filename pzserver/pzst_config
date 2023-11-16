@@ -6,7 +6,7 @@ TMP=$(mktemp)
 
 usage() {
 	rm -f "${TMP}"
-	echo "Usage ${0} [--add|--del|--admin <username>|--servername <name>|--install <path>|--port <port>]"
+	echo "Usage ${0} [--add|--del|--admin <username>|--install <path>|--port <port>]"
 	exit
 }
 
