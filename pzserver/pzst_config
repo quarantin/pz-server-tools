@@ -6,7 +6,7 @@ TMP=$(mktemp)
 
 usage() {
 	rm -f "${TMP}"
-	echo "Usage ${0} [--add|--del|--admin <username>|--install <path>|--port <port>]"
+	echo "Usage ${0} [--add|--del|--admin <username>|--servername <name>|--install <path>|--port <port>]"
 	exit
 }
 
@@ -41,6 +41,17 @@ elif [ "${ARG}" = '-A' ] || [ "${ARG}" = '--admin' ]; then
 	fi
 
 	jq --tab ".admin=\"${USERNAME}\"" "${LOCALCONFIG}" > "${TMP}"
+	cp "${TMP}" "${LOCALCONFIG}"
+elif [ "${ARG}" = '-s' ] || [ "${ARG}" = '--servername' ]; then
+
+	SERVERNAME="${2}"
+	if [-z "${SERVERNAME}" ]; then
+		echo Option \`${ARG}\` requires a name
+		echo
+		usage
+	fi
+
+	jq --tab ".servername=\"${SERVERNAME}\"" "${LOCALCONFIG}" > "${TMP}"
 	cp "${TMP}" "${LOCALCONFIG}"
 
 elif [ "${ARG}" = '-i' ] || [ "${ARG}" = '--install' ]; then
