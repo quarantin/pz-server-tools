@@ -3,6 +3,7 @@
 import sys
 import logging
 import requests
+import subprocess
 
 import os
 from os.path import exists, isfile, join
@@ -107,7 +108,10 @@ def parse_server_config(server):
 
 	server_config = {}
 
-	server_ini = '/home/%s/Zomboid/Server/servertest.ini' % server
+	localconfig = '$HOME/.pzst/config.json'
+	get_config = "jq -r 'try .servername' %s 2> /dev/null" % localconfig
+	servername = subprocess.run(['bash','-c',get_config])
+	server_ini = '/home/%s/Zomboid/Server/%s.ini' % (server, servername)
 	if not isfile(server_ini):
 		return server_config
 
