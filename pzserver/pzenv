@@ -45,19 +45,20 @@ STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE
 
 ZOMBOIDGAMEID='108600'
 ZOMBOID="${HOME}/Zomboid"
+PZSERVERNAME="servertest"
 PZSERVER="${HOME}/pzserver"
-PZSERVERDB="${ZOMBOID}/db/servertest.db"
+PZSERVERDB="${ZOMBOID}/db/${PZSERVERNAME}.db"
 PZSERVERDIR="${ZOMBOID}/Server"
 PZSERVERLOG="${ZOMBOID}/server-console.txt"
 PZSERVERSAVE="${ZOMBOID}/Saves"
 PZSERVERBACKUP="${ZOMBOID}/Backups"
-PZSERVERCONFIG="${PZSERVERDIR}/servertest.ini"
+PZSERVERCONFIG="${PZSERVERDIR}/${PZSERVERNAME}.ini"
 PZSERVERMAPDIR="${PZSERVER}/media/maps"
 PZSERVERMODDIR="${PZSERVER}/steamapps/workshop/content/${ZOMBOIDGAMEID}"
 PZSERVERSTART="${PZSERVER}/start-server.sh"
-PZSERVERSANDBOX="${PZSERVERDIR}/servertest_SandboxVars.lua"
-PZSERVERSPAWNPOINTS="${PZSERVERDIR}/servertest_spawnpoints.lua"
-PZSERVERSPAWNREGIONS="${PZSERVERDIR}/servertest_spawnregions.lua"
+PZSERVERSANDBOX="${PZSERVERDIR}/${PZSERVERNAME}_SandboxVars.lua"
+PZSERVERSPAWNPOINTS="${PZSERVERDIR}/${PZSERVERNAME}_spawnpoints.lua"
+PZSERVERSPAWNREGIONS="${PZSERVERDIR}/${PZSERVERNAME}_spawnregions.lua"
 PZSERVERLOCK="${CACHEDIR}/pzserver.${USER}.lock"
 
 JAVAMODSVERSION=0.0.1
@@ -101,6 +102,10 @@ install_steamcmd() {
 		tar xf "${STEAMCMDARCHIVEPATH}" -C "${STEAM}"
 		rm -f "${STEAMCMDARCHIVEPATH}"
 	fi
+}
+
+read_servername() {
+	
 }
 
 read_adminuser() {
@@ -197,6 +202,7 @@ check_first_time() {
 
 	ADMINUSER="$(jq -r 'try .admin // "pzadmin"' "${LOCALCONFIG}" 2> /dev/null)"
 	ADMINUSEROPTION="-adminusername ${ADMINUSER}"
+	SERVERNAMEOPTION="-servername ${PZSERVERNAME}"
 }
 
 check_is_pzserver_user() {
