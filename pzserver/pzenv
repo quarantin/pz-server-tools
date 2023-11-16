@@ -104,19 +104,6 @@ install_steamcmd() {
 	fi
 }
 
-#read_servername() {
-#	DEFAULT_SERVERNAME='servertest'
-#	echo Enter new server name \(default: ${DEFAULT_SERVERNAME}\)
-#	read -e SERVERNAME
-#
-#	if [ -z "${SERVERNAME}" ]; then
-#		SERVERNAME="${DEFAULT_SERVERNAME}"
-#	fi
-#
-#	PZSERVERNAME="${SERVERNAME}"
-#	pzst_config --servername "${SERVERNAME}"
-#}
-
 read_adminuser() {
 
 	DEFAULT_ADMINUSER='pzadmin'
@@ -199,13 +186,6 @@ check_admin_exists() {
 }
 
 check_first_time() {
-
-	#SERVERNAME="$(jq -r 'try .servername' "${LOCALCONFIG}" 2> /dev/null)"
-	#if [ -z "${SERVERNAME}" ]; then
-	#	read_servername
-	#fi
-
-	#PZSERVERNAME="${SERVERNAME}"
 
 	if [ -z "$(check_admin_exists)" ]; then
 

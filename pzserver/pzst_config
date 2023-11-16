@@ -42,17 +42,6 @@ elif [ "${ARG}" = '-A' ] || [ "${ARG}" = '--admin' ]; then
 
 	jq --tab ".admin=\"${USERNAME}\"" "${LOCALCONFIG}" > "${TMP}"
 	cp "${TMP}" "${LOCALCONFIG}"
-elif [ "${ARG}" = '-s' ] || [ "${ARG}" = '--servername' ]; then
-
-	SERVERNAME="${2}"
-	if [-z "${SERVERNAME}" ]; then
-		echo Option \`${ARG}\` requires a name
-		echo
-		usage
-	fi
-
-	jq --tab ".servername=\"${SERVERNAME}\"" "${LOCALCONFIG}" > "${TMP}"
-	cp "${TMP}" "${LOCALCONFIG}"
 
 elif [ "${ARG}" = '-i' ] || [ "${ARG}" = '--install' ]; then
 
