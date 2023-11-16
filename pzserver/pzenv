@@ -45,7 +45,7 @@ STEAMCMD_URL="https://steamcdn-a.akamaihd.net/client/installer/${STEAMCMDARCHIVE
 
 ZOMBOIDGAMEID='108600'
 ZOMBOID="${HOME}/Zomboid"
-PZSERVERNAME="servertest"
+PZSERVERNAME="${USER}"
 PZSERVER="${HOME}/pzserver"
 PZSERVERDB="${ZOMBOID}/db/${PZSERVERNAME}.db"
 PZSERVERDIR="${ZOMBOID}/Server"
@@ -104,9 +104,18 @@ install_steamcmd() {
 	fi
 }
 
-read_servername() {
-	
-}
+#read_servername() {
+#	DEFAULT_SERVERNAME='servertest'
+#	echo Enter new server name \(default: ${DEFAULT_SERVERNAME}\)
+#	read -e SERVERNAME
+#
+#	if [ -z "${SERVERNAME}" ]; then
+#		SERVERNAME="${DEFAULT_SERVERNAME}"
+#	fi
+#
+#	PZSERVERNAME="${SERVERNAME}"
+#	pzst_config --servername "${SERVERNAME}"
+#}
 
 read_adminuser() {
 
@@ -190,6 +199,13 @@ check_admin_exists() {
 }
 
 check_first_time() {
+
+	#SERVERNAME="$(jq -r 'try .servername' "${LOCALCONFIG}" 2> /dev/null)"
+	#if [ -z "${SERVERNAME}" ]; then
+	#	read_servername
+	#fi
+
+	#PZSERVERNAME="${SERVERNAME}"
 
 	if [ -z "$(check_admin_exists)" ]; then
 
