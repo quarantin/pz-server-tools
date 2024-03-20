@@ -4,7 +4,6 @@
 
 check_is_pzserver_user
 
-flock -n "${PZSERVERLOCK}" echo > /dev/null
 if [ "${?}" = '0' ] && [ -z "$(get_pz_pid)" ]; then
 	echo Status: Not running
 

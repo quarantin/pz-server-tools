@@ -8,7 +8,7 @@ check_not_running
 
 check_first_time
 
-detach flock -n "${PZSERVERLOCK}" "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${@} &
+detach "$(dirname "${0}")/pzstartloop" ${ADMINUSEROPTION} ${ADMINPASSWDOPTION} ${@} &
 
 sleep 0.5
 
